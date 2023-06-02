@@ -4,20 +4,20 @@ plugins {
     id("net.labymod.gradle.addon")
 }
 
-group = "org.example"
+group = "me.noci"
 version = "1.0.0"
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 
 labyMod {
-    defaultPackageName = "org.example" //change this to your main package name (used by all modules)
+    defaultPackageName = "me.noci.advancedtooltip"
     addonInfo {
-        namespace = "example"
-        displayName = "ExampleAddon"
-        author = "Example Author"
-        description = "Example Description"
+        namespace = "advancedtooltip"
+        displayName = "Advanced Tooltip"
+        author = "Noci"
+        description = "Add more informations to the tooltip of an item."
         minecraftVersion = "*"
-        version = System.getenv().getOrDefault("VERSION", "0.0.1")
+        version = System.getenv().getOrDefault("VERSION", version)
     }
 
     minecraft {

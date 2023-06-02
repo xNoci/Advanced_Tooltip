@@ -1,4 +1,4 @@
-rootProject.name = "labymod4-addon-template"
+rootProject.name = "Advanced_Tooltip"
 
 pluginManagement {
     val labyGradlePluginVersion = "0.3.20"
@@ -23,3 +23,4 @@ plugins.apply("net.labymod.gradle")
 
 include(":api")
 include(":core")
+include(":game-runner")

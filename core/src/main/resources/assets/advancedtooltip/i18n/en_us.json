@@ -1,7 +1,7 @@
 {
-  "example": {
+  "advancedtooltip": {
     "settings": {
-      "name": "ExampleAddon",
+      "name": "Advanced Tooltip",
       "enabled": {
         "name": "Enabled"
       }
