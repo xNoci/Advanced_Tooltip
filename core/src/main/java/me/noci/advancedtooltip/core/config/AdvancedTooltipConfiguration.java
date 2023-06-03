@@ -15,6 +15,10 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     @SwitchSetting
     private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
 
+    @SettingSection("items")
+    @SwitchSetting
+    private final ConfigProperty<Boolean> showAnvilUses = new ConfigProperty<>(true);
+
     @SettingSection("food_info")
     @DropdownSetting
     private final ConfigProperty<SaturationType> saturationLevel = new ConfigProperty<>(SaturationType.CURRENT_SATURATION);
@@ -29,6 +33,10 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     @Override
     public ConfigProperty<Boolean> enabled() {
         return this.enabled;
+    }
+
+    public ConfigProperty<Boolean> showAnvilUses() {
+        return this.showAnvilUses;
     }
 
     public ConfigProperty<SaturationType> saturationLevel() {

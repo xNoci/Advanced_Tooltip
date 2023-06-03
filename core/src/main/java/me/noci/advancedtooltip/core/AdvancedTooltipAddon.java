@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.noci.advancedtooltip.core.config.AdvancedTooltipConfiguration;
 import me.noci.advancedtooltip.core.generated.DefaultReferenceStorage;
 import me.noci.advancedtooltip.core.listener.FoodItemTooltipDebugListener;
+import me.noci.advancedtooltip.core.listener.ItemAnvilUsesListener;
 import me.noci.advancedtooltip.core.utils.DefaultFoodInfo;
 import me.noci.advancedtooltip.core.utils.FoodInfo;
 import net.labymod.api.Laby;
@@ -43,6 +44,7 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
             this.registerListener(new FoodItemTooltipDebugListener(this, foodInfo));
         }
 
+        this.registerListener(new ItemAnvilUsesListener(this));
         this.logger().info("Enabled the Addon");
     }
 

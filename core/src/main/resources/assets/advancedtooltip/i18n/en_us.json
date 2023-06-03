@@ -5,6 +5,9 @@
       "enabled": {
         "name": "Enabled"
       },
+      "showAnvilUses": {
+        "name": "Show anvil uses"
+      },
       "foodLevel": {
         "name": "Show food level"
       },
@@ -24,6 +27,9 @@
         "name": "Debug Mode"
       },
       "header": {
+        "items": {
+          "name": "Items"
+        },
         "food_info": {
           "name": "Food information"
         },
@@ -31,6 +37,9 @@
           "name": "Developer Section"
         }
       }
+    },
+    "tooltip": {
+      "anvil_usages": "Anvil usages: %s"
     }
   }
 }
