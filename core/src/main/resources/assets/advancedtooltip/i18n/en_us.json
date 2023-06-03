@@ -4,6 +4,23 @@
       "name": "Advanced Tooltip",
       "enabled": {
         "name": "Enabled"
+      },
+      "foodLevel": {
+        "name": "Show food level"
+      },
+      "saturationLevel": {
+        "name": "Show saturation level"
+      },
+      "debugMode": {
+        "name": "Debug Mode"
+      },
+      "header": {
+        "food_info": {
+          "name": "Food information"
+        },
+        "developer": {
+          "name": "Developer Section"
+        }
       }
     }
   }

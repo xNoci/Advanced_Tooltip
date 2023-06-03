@@ -14,6 +14,9 @@ dependencies {
     // You have to specify the repository, there are getters for maven central and sonatype, every
     // other repository has to be specified with their url. Example:
     // maven(mavenCentral(), "org.apache.httpcomponents:httpclient:4.5.13")
+
+    compileOnly("org.projectlombok:lombok:1.18.28")
+    annotationProcessor("org.projectlombok:lombok:1.18.28")
 }
 
 labyModProcessor {
