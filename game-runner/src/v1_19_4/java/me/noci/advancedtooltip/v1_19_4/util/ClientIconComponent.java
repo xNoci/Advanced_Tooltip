@@ -1,6 +1,7 @@
 package me.noci.advancedtooltip.v1_19_4.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
 import me.noci.advancedtooltip.core.utils.IconData;
 import net.labymod.api.client.render.matrix.Stack;
 import net.minecraft.client.gui.Font;
@@ -11,21 +12,23 @@ import java.util.List;
 
 public class ClientIconComponent implements ClientTooltipComponent {
 
-    private static final int ICON_SIZE = 8;
-    private static final int ICON_SPACING = 2;
-
     private final List<IconData> icons;
+    private final int iconSize;
+    private final int iconSpacing;
     private final int height;
     private final int width;
 
     public ClientIconComponent(List<IconData> icons) {
+        iconSize = AdvancedTooltipAddon.getInstance().configuration().iconSize().get();
+        iconSpacing = AdvancedTooltipAddon.getInstance().configuration().iconSpacing().get();
+
         int height = 0;
         int width = 0;
 
         for (IconData icon : icons) {
-            width += ICON_SIZE + ICON_SPACING;
+            width += iconSize + iconSpacing;
 
-            int iconHeight = ICON_SIZE;
+            int iconHeight = iconSize;
             if (iconHeight > height) {
                 height = iconHeight;
             }
@@ -52,8 +55,8 @@ public class ClientIconComponent implements ClientTooltipComponent {
 
         int cx = x;
         for (IconData icon : icons) {
-            icon.draw(stack, cx, y, ICON_SIZE);
-            cx += ICON_SIZE + ICON_SPACING;
+            icon.draw(stack, cx, y, iconSize);
+            cx += iconSize + iconSpacing;
         }
     }
 }

@@ -20,6 +20,7 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     private final ConfigProperty<SaturationType> saturationLevel = new ConfigProperty<>(SaturationType.CURRENT_SATURATION);
     @SwitchSetting
     private final ConfigProperty<Boolean> foodLevel = new ConfigProperty<>(true);
+    private final FoodIconSubSetting foodIconSetting = new FoodIconSubSetting();
 
     @SettingSection("developer")
     @SwitchSetting @SettingDevelopment
@@ -36,6 +37,14 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
 
     public ConfigProperty<Boolean> foodLevel() {
         return this.foodLevel;
+    }
+
+    public ConfigProperty<Integer> iconSize() {
+        return this.foodIconSetting.iconSize;
+    }
+
+    public ConfigProperty<Integer> iconSpacing() {
+        return this.foodIconSetting.iconSpacing;
     }
 
     public ConfigProperty<Boolean> debugMode() {

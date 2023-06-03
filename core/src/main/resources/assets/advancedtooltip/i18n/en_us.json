@@ -11,6 +11,15 @@
       "saturationLevel": {
         "name": "Show saturation level"
       },
+      "foodIconSetting": {
+        "name": "Food icon settings",
+        "iconSize": {
+          "name": "Icon size"
+        },
+        "iconSpacing": {
+          "name": "Icon spacing"
+        }
+      },
       "debugMode": {
         "name": "Debug Mode"
       },
