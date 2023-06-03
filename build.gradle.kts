@@ -15,8 +15,8 @@ labyMod {
         namespace = "advancedtooltip"
         displayName = "Advanced Tooltip"
         author = "Noci"
-        description = "Add more informations to the tooltip of an item."
-        minecraftVersion = "*"
+        description = "Add more information to the tooltip of an item."
+        minecraftVersion = "1.19.4"
         version = System.getenv().getOrDefault("VERSION", version)
     }
 
