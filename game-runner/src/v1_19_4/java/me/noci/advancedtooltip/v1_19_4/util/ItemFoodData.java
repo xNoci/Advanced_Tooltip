@@ -6,7 +6,6 @@ import me.noci.advancedtooltip.core.config.SaturationType;
 import me.noci.advancedtooltip.core.utils.FoodInfo;
 import me.noci.advancedtooltip.core.utils.IconData;
 import net.labymod.api.client.world.item.ItemStack;
-import net.labymod.v1_19_4.client.util.ItemUtil;
 import org.apache.commons.compress.utils.Lists;
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class ItemFoodData {
             return List.of();
         }
 
-        ItemStack labyItemStack = ItemUtil.getLabyItemStack(itemStack);
+        ItemStack labyItemStack = ItemCast.toLabyItemStack(itemStack);
         FoodInfo foodInfo = addon.getFoodInfo();
         ArrayList<IconComponent> iconComponents = Lists.newArrayList();
 
