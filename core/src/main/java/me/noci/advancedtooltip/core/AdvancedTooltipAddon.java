@@ -31,7 +31,7 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
 
     @Override
     protected void enable() {
-        DefaultReferenceStorage referenceStorage = this.getReferenceStorageAccessor();
+        DefaultReferenceStorage referenceStorage = this.referenceStorageAccessor();
         FoodInfo foodInfo = referenceStorage.getFoodInfo();
         if (foodInfo != null) {
             this.foodInfo = foodInfo;

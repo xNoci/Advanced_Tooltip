@@ -12,7 +12,6 @@ import net.labymod.api.event.client.world.ItemStackTooltipEvent;
 
 public class FoodItemTooltipDebugListener {
 
-
     private final AdvancedTooltipAddon addon;
     private final FoodInfo foodInfo;
 
