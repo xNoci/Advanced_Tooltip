@@ -7,10 +7,14 @@ import net.labymod.api.client.render.matrix.Stack;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentContents;
+import net.minecraft.network.chat.Style;
+import net.minecraft.util.FormattedCharSequence;
 
 import java.util.List;
 
-public class VersionedClientIconComponent extends ClientIconComponent implements ClientTooltipComponent {
+public class VersionedClientIconComponent extends ClientIconComponent implements ClientTooltipComponent, Component {
 
     public VersionedClientIconComponent(List<FoodIcons> icons) {
         super(icons);
@@ -27,5 +31,24 @@ public class VersionedClientIconComponent extends ClientIconComponent implements
         renderIcons(stack, x, y);
     }
 
+    @Override
+    public Style getStyle() {
+        return null;
+    }
+
+    @Override
+    public ComponentContents getContents() {
+        return null;
+    }
+
+    @Override
+    public List<Component> getSiblings() {
+        return null;
+    }
+
+    @Override
+    public FormattedCharSequence getVisualOrderText() {
+        return null;
+    }
 }
 
