@@ -2,8 +2,9 @@ package me.noci.advancedtooltip.v1_19_3.mixins;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
-import me.noci.advancedtooltip.v1_19_3.utils.IconComponent;
-import me.noci.advancedtooltip.v1_19_3.utils.ItemFoodData;
+import me.noci.advancedtooltip.core.utils.FoodIcons;
+import me.noci.advancedtooltip.v1_19_3.utils.IconComponentWrapper;
+import me.noci.advancedtooltip.v1_19_3.utils.ItemCast;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTextTooltip;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -37,8 +38,12 @@ public abstract class ScreenTooltipRenderer {
         }
 
         if (itemStack.isEdible()) {
+            net.labymod.api.client.world.item.ItemStack labyItemStack = ItemCast.toLabyItemStack(itemStack);
+            List<IconComponentWrapper> icons = FoodIcons.getIcons(labyItemStack, IconComponentWrapper::new, IconComponentWrapper.class);
+
             List<Component> components = This().getTooltipFromItem(itemStack);
-            components.addAll(ItemFoodData.getIconFoodData(itemStack));
+            components.addAll(icons);
+
             This().renderTooltip(poseStack, components, itemStack.getTooltipImage(), x, y);
             ci.cancel();
         }
@@ -51,8 +56,8 @@ public abstract class ScreenTooltipRenderer {
         }
 
         List<ClientTooltipComponent> clientTooltipComponents = components.stream().map(component -> {
-            if (component instanceof IconComponent iconComponent) {
-                return iconComponent.getClientIconComponent();
+            if (component instanceof IconComponentWrapper wrapper) {
+                return wrapper.getClientIconComponent();
             }
             return new ClientTextTooltip(component.getVisualOrderText());
         }).collect(Collectors.toList());
