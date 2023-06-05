@@ -22,16 +22,13 @@ public class CreativeModeInventoryTooltipRenderer {
 
     @Inject(method = "renderTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/CreativeModeInventoryScreen;renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/util/List;Ljava/util/Optional;II)V"), locals = LocalCapture.CAPTURE_FAILHARD)
     public void renderTooltip(PoseStack poseStack, ItemStack itemStack, int x, int y, CallbackInfo ci, boolean $$4, boolean $$5, boolean $$6, TooltipFlag.Default $$7, TooltipFlag $$8, List<Component> $$9, List<Component> finalComponents) {
-        if (!AdvancedTooltipAddon.enabled()) {
+        if (!AdvancedTooltipAddon.enabled() || !itemStack.isEdible()) {
             return;
         }
 
-        if (itemStack.isEdible()) {
-            net.labymod.api.client.world.item.ItemStack labyItemStack = ItemCast.toLabyItemStack(itemStack);
-            List<VersionedClientIconComponent> icons = FoodIcons.getIcons(labyItemStack, VersionedClientIconComponent::new, VersionedClientIconComponent.class);
+        net.labymod.api.client.world.item.ItemStack labyItemStack = ItemCast.toLabyItemStack(itemStack);
+        List<VersionedClientIconComponent> icons = FoodIcons.getIcons(labyItemStack, VersionedClientIconComponent::new, VersionedClientIconComponent.class);
 
-            finalComponents.addAll(icons);
-        }
+        finalComponents.addAll(icons);
     }
-
 }

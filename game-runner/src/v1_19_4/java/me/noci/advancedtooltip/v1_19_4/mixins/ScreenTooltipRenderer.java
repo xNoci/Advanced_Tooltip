@@ -8,8 +8,6 @@ import me.noci.advancedtooltip.v1_19_4.util.VersionedClientIconComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTextTooltip;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositioner;
-import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
@@ -17,6 +15,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
@@ -27,48 +26,39 @@ import java.util.stream.Collectors;
 @Mixin(Screen.class)
 public abstract class ScreenTooltipRenderer {
 
-    private Screen This() {
-        return ((Screen) (Object) this);
-    }
+    @Shadow
+    public abstract List<Component> getTooltipFromItem(ItemStack $$0);
 
-    @Inject(at = @At("HEAD"), method = "renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/item/ItemStack;II)V", cancellable = true)
+    @Shadow
+    public abstract void renderTooltip(PoseStack $$0, List<Component> $$1, Optional<TooltipComponent> $$2, int $$3, int $$4);
+
+    @Inject(method = "renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/item/ItemStack;II)V", at = @At("HEAD"), cancellable = true)
     public void renderItemStackToolTipp(PoseStack poseStack, ItemStack itemStack, int x, int y, CallbackInfo ci) {
-        if (!AdvancedTooltipAddon.enabled()) {
+        if (!AdvancedTooltipAddon.enabled() || !itemStack.isEdible()) {
             return;
         }
 
-        if (itemStack.isEdible()) {
-            net.labymod.api.client.world.item.ItemStack labyItemStack = ItemCast.toLabyItemStack(itemStack);
-            List<VersionedClientIconComponent> icons = FoodIcons.getIcons(labyItemStack, VersionedClientIconComponent::new, VersionedClientIconComponent.class);
+        net.labymod.api.client.world.item.ItemStack labyItemStack = ItemCast.toLabyItemStack(itemStack);
+        List<VersionedClientIconComponent> icons = FoodIcons.getIcons(labyItemStack, VersionedClientIconComponent::new, VersionedClientIconComponent.class);
 
-            List<Component> components = This().getTooltipFromItem(itemStack);
-            components.addAll(icons);
+        List<Component> components = getTooltipFromItem(itemStack);
+        components.addAll(icons);
 
-            This().renderTooltip(poseStack, components, itemStack.getTooltipImage(), x, y);
-            ci.cancel();
-        }
+        renderTooltip(poseStack, components, itemStack.getTooltipImage(), x, y);
+
+        ci.cancel();
     }
 
-    @Inject(method = "renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/util/List;Ljava/util/Optional;II)V", at = @At("HEAD"), cancellable = true)
-    public void convertIconComponent(PoseStack poseStack, List<Component> components, Optional<TooltipComponent> tooltipComponent, int x, int y, CallbackInfo ci) {
-        if (!AdvancedTooltipAddon.enabled()) {
-            return;
-        }
+    @ModifyVariable(method = "renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/util/List;Ljava/util/Optional;II)V", at = @At(value = "STORE"), index = 6)
+    public List<ClientTooltipComponent> alterComponentList(List<ClientTooltipComponent> original, PoseStack poseStack, List<Component> components) {
+        if (!AdvancedTooltipAddon.enabled()) return original;
 
-        List<ClientTooltipComponent> clientTooltipComponents = components.stream().map(component -> {
+        return components.stream().map(component -> {
             if (component instanceof VersionedClientIconComponent iconComponent) {
                 return iconComponent;
             }
             return new ClientTextTooltip(component.getVisualOrderText());
         }).collect(Collectors.toList());
-
-        tooltipComponent.ifPresent(component -> clientTooltipComponents.add(1, ClientTooltipComponent.create(component)));
-
-        renderTooltipInternal(poseStack, clientTooltipComponents, x, y, DefaultTooltipPositioner.INSTANCE);
-        ci.cancel();
     }
-
-    @Shadow
-    protected abstract void renderTooltipInternal(PoseStack poseStack, List<ClientTooltipComponent> ctComponents, int x, int y, ClientTooltipPositioner ctPositioner);
 
 }
