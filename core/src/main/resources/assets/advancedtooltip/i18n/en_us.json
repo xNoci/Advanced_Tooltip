@@ -6,13 +6,16 @@
         "name": "Enabled"
       },
       "showAnvilUses": {
-        "name": "Show anvil uses"
+        "name": "Show anvil uses",
+        "description": "Displays the amount of anvils uses of an item in its tooltip."
       },
       "foodLevel": {
-        "name": "Show food level"
+        "name": "Show food level",
+        "description": "Displays the nutrition of a food item in its tooltip."
       },
       "saturationLevel": {
-        "name": "Show saturation level"
+        "name": "Show saturation level",
+        "description": "Displays the saturation of a food item in its tooltip.\n\nHidden: Turns this function off.\nCurrent saturation: Displays the level of saturation reached after eating.\nMax saturation: Displays the maximum possible saturation level of a food."
       },
       "foodIconSetting": {
         "name": "Food icon settings",
