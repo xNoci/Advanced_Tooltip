@@ -16,7 +16,7 @@ labyMod {
         displayName = "Advanced Tooltip"
         author = "Noci"
         description = "Add more information to the tooltip of an item."
-        minecraftVersion = "1.19.3,1.19.4"
+        minecraftVersion = "1.19.2<1.19.4"
         version = System.getenv().getOrDefault("VERSION", version)
     }
 
@@ -26,8 +26,8 @@ labyMod {
                 "1.12.2",
                 "1.16.5",
                 "1.17.1",
-                "1.18.2",
-                "1.19.2",*/
+                "1.18.2",*/
+                "1.19.2",
                 "1.19.3",
                 "1.19.4"
         ) { version, provider ->

@@ -29,7 +29,7 @@ public class FoodItemTooltipDebugListener {
         }
 
         ClientPlayer clientPlayer = Laby.labyAPI().minecraft().getClientPlayer();
-        if(clientPlayer == null) return;
+        if (clientPlayer == null) return;
         FoodData foodData = clientPlayer.foodData();
 
         int newFoodLevel = Math.min(foodData.getFoodLevel() + foodData.getFoodLevel(), 20);
