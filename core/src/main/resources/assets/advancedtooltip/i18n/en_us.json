@@ -15,7 +15,12 @@
       },
       "saturationLevel": {
         "name": "Show saturation level",
-        "description": "Displays the saturation of a food item in its tooltip.\n\nHidden: Turns this function off.\nCurrent saturation: Displays the level of saturation reached after eating.\nMax saturation: Displays the maximum possible saturation level of a food."
+        "description": "Displays the saturation of a food item in its tooltip.\n\nCurrent: Displays the level of saturation reached after eating.\nMaximum: Displays the maximum possible saturation level of a food.",
+        "entries": {
+          "hidden": "Off",
+          "currentSaturation": "Current",
+          "maxSaturation": "Maximum"
+        }
       },
       "foodIconSetting": {
         "name": "Food icon settings",
