@@ -45,7 +45,6 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
         }
 
         this.registerListener(new ItemAnvilUsesListener(this));
-        this.logger().info("Enabled the Addon");
     }
 
     @Override
