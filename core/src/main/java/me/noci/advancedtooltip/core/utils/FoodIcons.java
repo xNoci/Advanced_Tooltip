@@ -69,14 +69,14 @@ public enum FoodIcons {
         AdvancedTooltipAddon addon = AdvancedTooltipAddon.getInstance();
         AdvancedTooltipConfiguration configuration = addon.configuration();
         SaturationType saturationType = configuration.saturationLevel().get();
-        FoodInfo foodInfo = addon.getFoodInfo();
+        ItemQuery itemQuery = addon.getItemQuery();
 
         if (saturationType == SaturationType.HIDDEN) {
             return List.of();
         }
 
         List<FoodIcons> icons = Lists.newArrayList();
-        float saturationIncrement = saturationType == SaturationType.MAX_SATURATION ? foodInfo.getSaturationIncrement(itemStack) : foodInfo.getAddedSaturation(itemStack);
+        float saturationIncrement = saturationType == SaturationType.MAX_SATURATION ? itemQuery.getSaturationIncrement(itemStack) : itemQuery.getAddedSaturation(itemStack);
 
         while (saturationIncrement >= 2) {
             saturationIncrement -= 2;
@@ -95,7 +95,7 @@ public enum FoodIcons {
 
         AdvancedTooltipAddon addon = AdvancedTooltipAddon.getInstance();
         AdvancedTooltipConfiguration configuration = addon.configuration();
-        FoodInfo foodInfo = addon.getFoodInfo();
+        ItemQuery itemQuery = addon.getItemQuery();
         boolean showFoodLevel = configuration.foodLevel().get();
 
         if (!showFoodLevel) {
@@ -103,7 +103,7 @@ public enum FoodIcons {
         }
 
         List<FoodIcons> icons = Lists.newArrayList();
-        int foodLevel = foodInfo.getFoodLevel(itemStack);
+        int foodLevel = itemQuery.getFoodLevel(itemStack);
 
         while (foodLevel >= 2) {
             foodLevel -= 2;

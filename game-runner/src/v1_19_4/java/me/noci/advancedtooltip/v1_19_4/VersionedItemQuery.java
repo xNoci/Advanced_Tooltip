@@ -1,7 +1,7 @@
-package me.noci.advancedtooltip.v1_19_2;
+package me.noci.advancedtooltip.v1_19_4;
 
-import me.noci.advancedtooltip.core.utils.FoodInfo;
-import me.noci.advancedtooltip.v1_19_2.utils.ItemCast;
+import me.noci.advancedtooltip.core.utils.ItemQuery;
+import me.noci.advancedtooltip.v1_19_4.util.ItemCast;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
 import net.minecraft.world.food.FoodProperties;
@@ -11,8 +11,8 @@ import org.jetbrains.annotations.Nullable;
 import javax.inject.Singleton;
 
 @Singleton
-@Implements(FoodInfo.class)
-public class VersionedFoodInfo implements FoodInfo {
+@Implements(ItemQuery.class)
+public class VersionedItemQuery implements ItemQuery {
 
     @Override
     public int getFoodLevel(ItemStack itemStack) {

@@ -2,7 +2,7 @@ package me.noci.advancedtooltip.core.utils;
 
 import net.labymod.api.client.world.item.ItemStack;
 
-public class DefaultFoodInfo implements FoodInfo {
+public class DefaultItemQuery implements ItemQuery {
 
     @Override
     public int getFoodLevel(ItemStack itemStack) {

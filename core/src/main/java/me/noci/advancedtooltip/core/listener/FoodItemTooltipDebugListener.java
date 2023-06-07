@@ -1,7 +1,7 @@
 package me.noci.advancedtooltip.core.listener;
 
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
-import me.noci.advancedtooltip.core.utils.FoodInfo;
+import me.noci.advancedtooltip.core.utils.ItemQuery;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.entity.player.ClientPlayer;
@@ -15,12 +15,12 @@ import java.util.List;
 public class FoodItemTooltipDebugListener {
 
     private final AdvancedTooltipAddon addon;
-    private final FoodInfo foodInfo;
+    private final ItemQuery itemQuery;
 
 
-    public FoodItemTooltipDebugListener(AdvancedTooltipAddon addon, FoodInfo foodInfo) {
+    public FoodItemTooltipDebugListener(AdvancedTooltipAddon addon, ItemQuery itemQuery) {
         this.addon = addon;
-        this.foodInfo = foodInfo;
+        this.itemQuery = itemQuery;
     }
 
     @Subscribe
@@ -35,13 +35,13 @@ public class FoodItemTooltipDebugListener {
         FoodData foodData = clientPlayer.foodData();
 
         int newFoodLevel = Math.min(foodData.getFoodLevel() + foodData.getFoodLevel(), 20);
-        float newSaturation = Math.min(foodData.getSaturationLevel() + foodInfo.getSaturationIncrement(itemStack), newFoodLevel);
+        float newSaturation = Math.min(foodData.getSaturationLevel() + itemQuery.getSaturationIncrement(itemStack), newFoodLevel);
 
         List<Component> tooltip = event.getTooltipLines();
         tooltip.add(Component.text(""));
         tooltip.add(Component.text("Food level: " + foodData.getFoodLevel()));
-        tooltip.add(Component.text("Saturation Increment: " + foodInfo.getSaturationIncrement(itemStack)));
-        tooltip.add(Component.text("Added Saturation: " + foodInfo.getAddedSaturation(itemStack)));
+        tooltip.add(Component.text("Saturation Increment: " + itemQuery.getSaturationIncrement(itemStack)));
+        tooltip.add(Component.text("Added Saturation: " + itemQuery.getAddedSaturation(itemStack)));
         tooltip.add(Component.text(""));
         tooltip.add(Component.text("Current Player Saturation: " + foodData.getSaturationLevel()));
         tooltip.add(Component.text("New Saturation: " + newSaturation));

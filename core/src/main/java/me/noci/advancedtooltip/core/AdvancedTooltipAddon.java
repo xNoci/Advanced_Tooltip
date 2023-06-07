@@ -5,8 +5,8 @@ import me.noci.advancedtooltip.core.config.AdvancedTooltipConfiguration;
 import me.noci.advancedtooltip.core.generated.DefaultReferenceStorage;
 import me.noci.advancedtooltip.core.listener.FoodItemTooltipDebugListener;
 import me.noci.advancedtooltip.core.listener.ItemAnvilUsesListener;
-import me.noci.advancedtooltip.core.utils.DefaultFoodInfo;
-import me.noci.advancedtooltip.core.utils.FoodInfo;
+import me.noci.advancedtooltip.core.utils.DefaultItemQuery;
+import me.noci.advancedtooltip.core.utils.ItemQuery;
 import net.labymod.api.Laby;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.models.addon.annotation.AddonMain;
@@ -24,7 +24,7 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
         return getInstance().configuration().enabled().get();
     }
 
-    @Getter private FoodInfo foodInfo = new DefaultFoodInfo();
+    @Getter private ItemQuery itemQuery = new DefaultItemQuery();
 
     public AdvancedTooltipAddon() {
         instance = this;
@@ -33,18 +33,18 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
     @Override
     protected void enable() {
         DefaultReferenceStorage referenceStorage = this.referenceStorageAccessor();
-        FoodInfo foodInfo = referenceStorage.getFoodInfo();
-        if (foodInfo != null) {
-            this.foodInfo = foodInfo;
+        ItemQuery itemQuery = referenceStorage.getItemQuery();
+        if (itemQuery != null) {
+            this.itemQuery = itemQuery;
         }
 
         this.registerSettingCategory();
 
         if (Laby.labyAPI().labyModLoader().isAddonDevelopmentEnvironment()) {
-            this.registerListener(new FoodItemTooltipDebugListener(this, foodInfo));
+            this.registerListener(new FoodItemTooltipDebugListener(this, itemQuery));
         }
 
-        this.registerListener(new ItemAnvilUsesListener(this));
+        this.registerListener(new ItemAnvilUsesListener(this, itemQuery));
     }
 
     @Override
