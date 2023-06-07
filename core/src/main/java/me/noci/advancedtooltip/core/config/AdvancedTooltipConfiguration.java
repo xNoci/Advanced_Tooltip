@@ -4,6 +4,7 @@ import net.labymod.api.addon.AddonConfig;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.dropdown.DropdownWidget.DropdownSetting;
 import net.labymod.api.configuration.loader.annotation.ConfigName;
+import net.labymod.api.configuration.loader.annotation.VersionCompatibility;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.annotation.SettingDevelopment;
 import net.labymod.api.configuration.settings.annotation.SettingSection;
@@ -20,10 +21,13 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     private final ConfigProperty<Boolean> showAnvilUses = new ConfigProperty<>(true);
 
     @SettingSection("food_info")
-    @DropdownSetting
+    @DropdownSetting @VersionCompatibility("1.19<1.19.4")
     private final ConfigProperty<SaturationType> saturationLevel = new ConfigProperty<>(SaturationType.CURRENT_SATURATION);
-    @SwitchSetting
+
+    @SwitchSetting @VersionCompatibility("1.19<1.19.4")
     private final ConfigProperty<Boolean> foodLevel = new ConfigProperty<>(true);
+
+    @VersionCompatibility("1.19<1.19.4")
     private final FoodIconSubSetting foodIconSetting = new FoodIconSubSetting();
 
     @SettingSection("developer")
