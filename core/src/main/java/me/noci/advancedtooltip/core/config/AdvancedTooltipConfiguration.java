@@ -20,6 +20,9 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     @SwitchSetting
     private final ConfigProperty<Boolean> showAnvilUses = new ConfigProperty<>(true);
 
+    @SwitchSetting @VersionCompatibility("1.19<1.20")
+    private final ConfigProperty<Boolean> discSignalStrength = new ConfigProperty<>(true);
+
     @SettingSection("food_info")
     @DropdownSetting @VersionCompatibility("1.19<1.20")
     private final ConfigProperty<SaturationType> saturationLevel = new ConfigProperty<>(SaturationType.CURRENT_SATURATION);
@@ -41,6 +44,10 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
 
     public ConfigProperty<Boolean> showAnvilUses() {
         return this.showAnvilUses;
+    }
+
+    public ConfigProperty<Boolean> discSignalStrength() {
+        return this.discSignalStrength;
     }
 
     public ConfigProperty<SaturationType> saturationLevel() {

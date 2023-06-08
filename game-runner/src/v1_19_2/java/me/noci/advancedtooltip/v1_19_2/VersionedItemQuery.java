@@ -6,6 +6,7 @@ import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.RecordItem;
 import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Singleton;
@@ -17,13 +18,20 @@ public class VersionedItemQuery implements ItemQuery {
     @Override
     public int getFoodLevel(ItemStack itemStack) {
         FoodProperties foodProperties = getFoodProperties(itemStack);
-        return foodProperties != null ? foodProperties.getNutrition() : -1;
+        return foodProperties != null ? foodProperties.getNutrition() : INVALID_ITEM;
     }
 
     @Override
     public float getSaturationModifier(ItemStack itemStack) {
         FoodProperties foodProperties = getFoodProperties(itemStack);
-        return foodProperties != null ? foodProperties.getSaturationModifier() : -1;
+        return foodProperties != null ? foodProperties.getSaturationModifier() : INVALID_ITEM;
+    }
+
+    @Override
+    public int getDiscSignalStrengt(ItemStack itemStack) {
+        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
+        if (!(item instanceof RecordItem recordItem)) return INVALID_ITEM;
+        return recordItem.getAnalogOutput();
     }
 
     @Nullable

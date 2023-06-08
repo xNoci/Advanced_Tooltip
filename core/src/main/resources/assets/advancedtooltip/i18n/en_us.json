@@ -9,6 +9,10 @@
         "name": "Show anvil uses",
         "description": "Displays the amount of anvils uses of an item in its tooltip."
       },
+      "discSignalStrength": {
+        "name": "Disc signal strength",
+        "description": "Displays the redstone strength of the disc"
+      },
       "foodLevel": {
         "name": "Show food level",
         "description": "Displays the nutrition of a food item in its tooltip."
@@ -47,7 +51,8 @@
       }
     },
     "tooltip": {
-      "anvil_usages": "Anvil usages: %s"
+      "anvil_usages": "Anvil usages (%s)",
+      "disc_signal_strength": "Disc signal strength (%s)"
     }
   }
 }
