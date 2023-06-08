@@ -1,6 +1,7 @@
 package me.noci.advancedtooltip.core.listener;
 
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
+import me.noci.advancedtooltip.core.config.AdvancedTooltipConfiguration;
 import me.noci.advancedtooltip.core.utils.ItemQuery;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.world.item.ItemStack;
@@ -13,10 +14,12 @@ import java.util.List;
 public class ItemStackTooltipListener {
 
     private final AdvancedTooltipAddon addon;
+    private final AdvancedTooltipConfiguration config;
     private final ItemQuery itemQuery;
 
     public ItemStackTooltipListener(AdvancedTooltipAddon addon, ItemQuery itemQuery) {
         this.addon = addon;
+        this.config = addon.configuration();
         this.itemQuery = itemQuery;
     }
 
@@ -27,11 +30,11 @@ public class ItemStackTooltipListener {
 
         List<Component> tooltip = event.getTooltipLines();
 
-        if (addon.configuration().showAnvilUses().get()) {
+        if (config.showAnvilUses().get()) {
             handleAnvilUses(itemStack, tooltip);
         }
 
-        if (addon.configuration().discSignalStrength().get()) {
+        if (config.discSignalStrength().get()) {
             handleDiscSignalStrength(itemStack, tooltip);
         }
 

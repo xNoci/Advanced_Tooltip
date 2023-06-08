@@ -20,7 +20,7 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     @SwitchSetting
     private final ConfigProperty<Boolean> showAnvilUses = new ConfigProperty<>(true);
 
-    @SwitchSetting @VersionCompatibility("1.19<1.20")
+    @SwitchSetting
     private final ConfigProperty<Boolean> discSignalStrength = new ConfigProperty<>(true);
 
     @SettingSection("food_info")

@@ -41,10 +41,10 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
         this.registerSettingCategory();
 
         if (Laby.labyAPI().labyModLoader().isAddonDevelopmentEnvironment()) {
-            this.registerListener(new FoodItemTooltipDebugListener(this, itemQuery));
+            this.registerListener(new FoodItemTooltipDebugListener(this, this.itemQuery));
         }
 
-        this.registerListener(new ItemStackTooltipListener(this, itemQuery));
+        this.registerListener(new ItemStackTooltipListener(this, this.itemQuery));
     }
 
     @Override
