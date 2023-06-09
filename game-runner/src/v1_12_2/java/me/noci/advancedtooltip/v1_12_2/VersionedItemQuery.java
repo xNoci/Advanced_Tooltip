@@ -19,15 +19,10 @@ public class VersionedItemQuery implements ItemQuery {
     private static final int ITEM_RECORD_13_ID = Item.getIdFromItem(Items.RECORD_13);
 
     @Override
-    public int getFoodLevel(ItemStack itemStack) {
-        FoodProperties foodProperties = getFoodProperties(itemStack);
-        return foodProperties != null ? foodProperties.nutrition() : INVALID_ITEM;
-    }
-
-    @Override
-    public float getSaturationModifier(ItemStack itemStack) {
-        FoodProperties foodProperties = getFoodProperties(itemStack);
-        return foodProperties != null ? foodProperties.saturationModifier() : INVALID_ITEM;
+    public @Nullable FoodProperties getFoodProperties(ItemStack itemStack) {
+        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
+        if (!(item instanceof ItemFood itemFood)) return null;
+        return new ItemQuery.FoodProperties(itemFood.getHealAmount(null), itemFood.getSaturationModifier(null));
     }
 
     @Override
@@ -41,16 +36,6 @@ public class VersionedItemQuery implements ItemQuery {
     public boolean isMapItem(ItemStack itemStack) {
         Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
         return item.isMap();
-    }
-
-    @Nullable
-    private FoodProperties getFoodProperties(ItemStack itemStack) {
-        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
-        if (!(item instanceof ItemFood itemFood)) return null;
-        return new FoodProperties(itemFood.getHealAmount(null), itemFood.getSaturationModifier(null));
-    }
-
-    private record FoodProperties(int nutrition, float saturationModifier) {
     }
 
 }

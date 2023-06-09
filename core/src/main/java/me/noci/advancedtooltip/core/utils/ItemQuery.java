@@ -17,9 +17,17 @@ public interface ItemQuery {
 
     int INVALID_ITEM = -1;
 
-    int getFoodLevel(ItemStack itemStack);
+    default int getFoodLevel(ItemStack itemStack) {
+        FoodProperties foodProperties = getFoodProperties(itemStack);
+        return foodProperties != null ? foodProperties.nutrition() : INVALID_ITEM;
+    }
 
-    float getSaturationModifier(ItemStack itemStack);
+    default float getSaturationModifier(ItemStack itemStack) {
+        FoodProperties foodProperties = getFoodProperties(itemStack);
+        return foodProperties != null ? foodProperties.saturationModifier() : INVALID_ITEM;
+    }
+
+    @Nullable FoodProperties getFoodProperties(ItemStack itemStack);
 
     int getDiscSignalStrengt(ItemStack itemStack);
 
@@ -91,6 +99,9 @@ public interface ItemQuery {
     //https://stackoverflow.com/a/3305400
     private static int log2(int x) {
         return (int) (Math.log(x) / Math.log(2) + 1e-10);
+    }
+
+    record FoodProperties(int nutrition, float saturationModifier) {
     }
 
 }

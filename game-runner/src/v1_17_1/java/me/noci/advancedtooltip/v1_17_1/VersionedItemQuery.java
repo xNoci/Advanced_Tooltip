@@ -4,7 +4,6 @@ import me.noci.advancedtooltip.core.utils.ItemQuery;
 import me.noci.advancedtooltip.v1_17_1.utils.ItemCast;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.RecordItem;
@@ -17,15 +16,11 @@ import javax.inject.Singleton;
 public class VersionedItemQuery implements ItemQuery {
 
     @Override
-    public int getFoodLevel(ItemStack itemStack) {
-        FoodProperties foodProperties = getFoodProperties(itemStack);
-        return foodProperties != null ? foodProperties.getNutrition() : INVALID_ITEM;
-    }
-
-    @Override
-    public float getSaturationModifier(ItemStack itemStack) {
-        FoodProperties foodProperties = getFoodProperties(itemStack);
-        return foodProperties != null ? foodProperties.getSaturationModifier() : INVALID_ITEM;
+    public @Nullable FoodProperties getFoodProperties(ItemStack itemStack) {
+        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
+        var foodProperties = item.getFoodProperties();
+        if (foodProperties == null) return null;
+        return new FoodProperties(foodProperties.getNutrition(), foodProperties.getSaturationModifier());
     }
 
     @Override
@@ -39,12 +34,6 @@ public class VersionedItemQuery implements ItemQuery {
     public boolean isMapItem(ItemStack itemStack) {
         Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
         return item instanceof MapItem;
-    }
-
-    @Nullable
-    private FoodProperties getFoodProperties(ItemStack itemStack) {
-        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
-        return item.getFoodProperties();
     }
 
 }
