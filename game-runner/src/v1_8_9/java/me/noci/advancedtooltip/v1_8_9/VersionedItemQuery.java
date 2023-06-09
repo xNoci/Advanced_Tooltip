@@ -19,17 +19,17 @@ public class VersionedItemQuery implements ItemQuery {
     private static final int ITEM_RECORD_13_ID = Item.getIdFromItem(Items.record_13);
 
     @Override
-    public @Nullable FoodProperties getFoodProperties(ItemStack itemStack) {
-        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
-        if (!(item instanceof ItemFood itemFood)) return null;
-        return new ItemQuery.FoodProperties(itemFood.getHealAmount(null), itemFood.getSaturationModifier(null));
-    }
-
-    @Override
     public int getDiscSignalStrengt(ItemStack itemStack) {
         Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
         if (!(item instanceof ItemRecord)) return INVALID_ITEM;
         return Item.getIdFromItem(item) + 1 - ITEM_RECORD_13_ID;
+    }
+
+    @Override
+    public @Nullable FoodProperties getFoodProperties(ItemStack itemStack) {
+        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
+        if (!(item instanceof ItemFood itemFood)) return null;
+        return new ItemQuery.FoodProperties(itemFood.getHealAmount(null), itemFood.getSaturationModifier(null));
     }
 
 }

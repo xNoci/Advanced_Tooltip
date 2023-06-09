@@ -103,7 +103,7 @@ public enum FoodIcons {
         }
 
         List<FoodIcons> icons = Lists.newArrayList();
-        int foodLevel = itemQuery.getFoodLevel(itemStack);
+        int foodLevel = itemQuery.getNutrition(itemStack);
 
         while (foodLevel >= 2) {
             foodLevel -= 2;

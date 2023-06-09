@@ -19,10 +19,9 @@ public class VersionedItemQuery implements ItemQuery {
     private static final int ITEM_RECORD_13_ID = Item.getIdFromItem(Items.RECORD_13);
 
     @Override
-    public @Nullable FoodProperties getFoodProperties(ItemStack itemStack) {
+    public boolean isMapItem(ItemStack itemStack) {
         Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
-        if (!(item instanceof ItemFood itemFood)) return null;
-        return new ItemQuery.FoodProperties(itemFood.getHealAmount(null), itemFood.getSaturationModifier(null));
+        return item.isMap();
     }
 
     @Override
@@ -33,9 +32,10 @@ public class VersionedItemQuery implements ItemQuery {
     }
 
     @Override
-    public boolean isMapItem(ItemStack itemStack) {
+    public @Nullable FoodProperties getFoodProperties(ItemStack itemStack) {
         Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
-        return item.isMap();
+        if (!(item instanceof ItemFood itemFood)) return null;
+        return new ItemQuery.FoodProperties(itemFood.getHealAmount(null), itemFood.getSaturationModifier(null));
     }
 
 }

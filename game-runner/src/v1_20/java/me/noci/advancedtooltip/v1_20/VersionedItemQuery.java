@@ -16,11 +16,9 @@ import javax.inject.Singleton;
 public class VersionedItemQuery implements ItemQuery {
 
     @Override
-    public @Nullable FoodProperties getFoodProperties(ItemStack itemStack) {
+    public boolean isMapItem(ItemStack itemStack) {
         Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
-        var foodProperties = item.getFoodProperties();
-        if (foodProperties == null) return null;
-        return new FoodProperties(foodProperties.getNutrition(), foodProperties.getSaturationModifier());
+        return item instanceof MapItem;
     }
 
     @Override
@@ -31,9 +29,11 @@ public class VersionedItemQuery implements ItemQuery {
     }
 
     @Override
-    public boolean isMapItem(ItemStack itemStack) {
+    public @Nullable FoodProperties getFoodProperties(ItemStack itemStack) {
         Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
-        return item instanceof MapItem;
+        var foodProperties = item.getFoodProperties();
+        if (foodProperties == null) return null;
+        return new FoodProperties(foodProperties.getNutrition(), foodProperties.getSaturationModifier());
     }
 
 }

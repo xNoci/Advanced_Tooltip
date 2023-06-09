@@ -15,28 +15,11 @@ import org.jetbrains.annotations.Nullable;
 @Referenceable
 public interface ItemQuery {
 
-    int INVALID_ITEM = -1;
-
-    default int getFoodLevel(ItemStack itemStack) {
-        FoodProperties foodProperties = getFoodProperties(itemStack);
-        return foodProperties != null ? foodProperties.nutrition() : INVALID_ITEM;
-    }
-
-    default float getSaturationModifier(ItemStack itemStack) {
-        FoodProperties foodProperties = getFoodProperties(itemStack);
-        return foodProperties != null ? foodProperties.saturationModifier() : INVALID_ITEM;
-    }
-
-    @Nullable FoodProperties getFoodProperties(ItemStack itemStack);
-
-    int getDiscSignalStrengt(ItemStack itemStack);
-
     default boolean isMapItem(ItemStack itemStack) {
         return false;
     }
 
-    @Nullable
-    default MapLocation getExplorerMapLocation(ItemStack itemStack) {
+    default @Nullable MapLocation getExplorerMapLocation(ItemStack itemStack) {
         if (!isMapItem(itemStack) || !itemStack.hasNBTTag()) return null;
 
         NBTTagCompound tagCompound = itemStack.getNBTTag();
@@ -55,6 +38,8 @@ public interface ItemQuery {
         return new MapLocation(type, x, z);
     }
 
+    int getDiscSignalStrengt(ItemStack itemStack);
+
     default int getRepairCost(ItemStack itemStack) {
         if (!itemStack.hasNBTTag()) return INVALID_ITEM;
         NBTTagCompound tag = itemStack.getNBTTag();
@@ -62,18 +47,29 @@ public interface ItemQuery {
         return tag.getInt("RepairCost");
     }
 
-    default int getUsages(ItemStack itemStack) {
+    default int getAnvilUsages(ItemStack itemStack) {
         int repairCost = getRepairCost(itemStack);
         if (repairCost == INVALID_ITEM) return INVALID_ITEM;
         return log2(repairCost + 1);
     }
 
+    @Nullable FoodProperties getFoodProperties(ItemStack itemStack);
+
+    default int getNutrition(ItemStack itemStack) {
+        FoodProperties foodProperties = getFoodProperties(itemStack);
+        return foodProperties != null ? foodProperties.nutrition() : INVALID_ITEM;
+    }
+
+    default float getSaturationModifier(ItemStack itemStack) {
+        FoodProperties foodProperties = getFoodProperties(itemStack);
+        return foodProperties != null ? foodProperties.saturationModifier() : INVALID_ITEM;
+    }
+
     default float getSaturationIncrement(ItemStack itemStack) {
-        int foodLevel = getFoodLevel(itemStack);
+        int foodLevel = getNutrition(itemStack);
         float saturationModifier = getSaturationModifier(itemStack);
 
         if (foodLevel == INVALID_ITEM || saturationModifier == INVALID_ITEM) return INVALID_ITEM;
-
         return foodLevel * saturationModifier * 2f;
     }
 
@@ -81,20 +77,21 @@ public interface ItemQuery {
         ClientPlayer clientPlayer = Laby.labyAPI().minecraft().getClientPlayer();
         if (clientPlayer == null) return INVALID_ITEM;
 
-        int foodLevel = getFoodLevel(itemStack);
+        int foodLevel = getNutrition(itemStack);
         float saturationModifier = getSaturationModifier(itemStack);
-
         if (foodLevel == INVALID_ITEM || saturationModifier == INVALID_ITEM) return INVALID_ITEM;
 
         FoodData foodData = clientPlayer.foodData();
-
         float currentPlayerSaturation = foodData.getSaturationLevel();
-
         int newFoodLevel = Math.min(foodData.getFoodLevel() + foodLevel, 20);
         float newSaturation = Math.min(foodData.getSaturationLevel() + saturationModifier, newFoodLevel);
 
         return newSaturation - currentPlayerSaturation;
     }
+
+    //-------- Utilities --------
+
+    int INVALID_ITEM = -1;
 
     //https://stackoverflow.com/a/3305400
     private static int log2(int x) {

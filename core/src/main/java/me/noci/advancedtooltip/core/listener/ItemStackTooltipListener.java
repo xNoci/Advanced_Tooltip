@@ -46,7 +46,7 @@ public class ItemStackTooltipListener {
     }
 
     private void handleAnvilUses(ItemStack itemStack, List<Component> tooltip) {
-        int usages = itemQuery.getUsages(itemStack);
+        int usages = itemQuery.getAnvilUsages(itemStack);
         if (usages == ItemQuery.INVALID_ITEM) return;
 
         tooltip(tooltip, "anvil_usages", usages);
