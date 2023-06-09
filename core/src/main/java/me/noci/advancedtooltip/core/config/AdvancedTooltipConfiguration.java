@@ -23,6 +23,8 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     @SwitchSetting
     private final ConfigProperty<Boolean> discSignalStrength = new ConfigProperty<>(true);
 
+    @SwitchSetting @VersionCompatibility("1.12<1.20")
+    private final ConfigProperty<Boolean> explorerMapCoordinates = new ConfigProperty<>(true);
     @SettingSection("food_info")
     @DropdownSetting @VersionCompatibility("1.19<1.20")
     private final ConfigProperty<SaturationType> saturationLevel = new ConfigProperty<>(SaturationType.CURRENT_SATURATION);
@@ -50,6 +52,9 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
         return this.discSignalStrength;
     }
 
+    public ConfigProperty<Boolean> explorerMapCoordinates() {
+        return this.explorerMapCoordinates;
+    }
     public ConfigProperty<SaturationType> saturationLevel() {
         return this.saturationLevel;
     }

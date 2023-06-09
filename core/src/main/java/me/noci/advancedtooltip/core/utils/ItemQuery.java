@@ -4,8 +4,10 @@ import net.labymod.api.Laby;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.world.food.FoodData;
 import net.labymod.api.client.world.item.ItemStack;
+import net.labymod.api.nbt.NBTTag;
 import net.labymod.api.nbt.NBTTagType;
 import net.labymod.api.nbt.tags.NBTTagCompound;
+import net.labymod.api.nbt.tags.NBTTagList;
 import net.labymod.api.reference.annotation.Referenceable;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,6 +22,30 @@ public interface ItemQuery {
     float getSaturationModifier(ItemStack itemStack);
 
     int getDiscSignalStrengt(ItemStack itemStack);
+
+    default boolean isMapItem(ItemStack itemStack) {
+        return false;
+    }
+
+    @Nullable
+    default MapLocation getExplorerMapLocation(ItemStack itemStack) {
+        if (!isMapItem(itemStack) || !itemStack.hasNBTTag()) return null;
+
+        NBTTagCompound tagCompound = itemStack.getNBTTag();
+        if (!tagCompound.contains("Decorations", NBTTagType.LIST)) return null;
+        NBTTagList<Object, NBTTag<Object>> decorations = tagCompound.getList("Decorations", NBTTagType.COMPOUND);
+        if (decorations.isEmpty()) return null;
+
+        NBTTag<?> decorationTag = decorations.get(0);
+        if (decorationTag.type() != NBTTagType.COMPOUND) return null;
+
+        NBTTagCompound mapData = (NBTTagCompound) decorationTag;
+        byte type = mapData.getByte("type");
+        double x = mapData.getDouble("x");
+        double z = mapData.getDouble("z");
+
+        return new MapLocation(type, x, z);
+    }
 
     default int getRepairCost(ItemStack itemStack) {
         if (!itemStack.hasNBTTag()) return INVALID_ITEM;

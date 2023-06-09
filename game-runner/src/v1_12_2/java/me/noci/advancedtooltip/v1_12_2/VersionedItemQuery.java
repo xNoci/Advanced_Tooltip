@@ -37,13 +37,20 @@ public class VersionedItemQuery implements ItemQuery {
         return Item.getIdFromItem(item) + 1 - ITEM_RECORD_13_ID;
     }
 
+    @Override
+    public boolean isMapItem(ItemStack itemStack) {
+        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
+        return item.isMap();
+    }
+
     @Nullable
     private FoodProperties getFoodProperties(ItemStack itemStack) {
         Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
-        if(!(item instanceof ItemFood itemFood)) return null;
+        if (!(item instanceof ItemFood itemFood)) return null;
         return new FoodProperties(itemFood.getHealAmount(null), itemFood.getSaturationModifier(null));
     }
 
-    private record FoodProperties(int nutrition, float saturationModifier) {}
+    private record FoodProperties(int nutrition, float saturationModifier) {
+    }
 
 }

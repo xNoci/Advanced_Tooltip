@@ -11,7 +11,11 @@
       },
       "discSignalStrength": {
         "name": "Disc signal strength",
-        "description": "Displays the redstone strength of the disc"
+        "description": "Displays the redstone strength of the disc."
+      },
+      "explorerMapCoordinates": {
+        "name": "Show explorer map coordinates",
+        "description": "Displays the coordinates of a explorer map."
       },
       "foodLevel": {
         "name": "Show food level",
@@ -52,7 +56,13 @@
     },
     "tooltip": {
       "anvil_usages": "Anvil usages (%s)",
-      "disc_signal_strength": "Disc signal strength (%s)"
+      "disc_signal_strength": "Disc signal strength (%s)",
+      "explorer_map": {
+        "woodland": "Woodland mansion (X: %s, Z: %s)",
+        "ocean": "Ocean monument (X: %s, Z: %s)",
+        "buried_treasure": "Buried treasure (X: %s, Z: %s)",
+        "unknown": "Unknown map type (X: %s, Z: %s)"
+      }
     }
   }
 }

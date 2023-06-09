@@ -6,6 +6,7 @@ import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.RecordItem;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,6 +33,12 @@ public class VersionedItemQuery implements ItemQuery {
         Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
         if (!(item instanceof RecordItem recordItem)) return INVALID_ITEM;
         return recordItem.getAnalogOutput();
+    }
+
+    @Override
+    public boolean isMapItem(ItemStack itemStack) {
+        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
+        return item instanceof MapItem;
     }
 
     @Nullable
