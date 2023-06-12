@@ -1,7 +1,7 @@
-package me.noci.advancedtooltip.v1_20.mixins;
+package me.noci.advancedtooltip.v1_20_1.mixins;
 
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
-import me.noci.advancedtooltip.v1_20.util.VersionedClientIconComponent;
+import me.noci.advancedtooltip.v1_20_1.util.VersionedClientIconComponent;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTextTooltip;

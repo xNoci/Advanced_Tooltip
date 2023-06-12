@@ -1,9 +1,9 @@
-package me.noci.advancedtooltip.v1_20.util;
+package me.noci.advancedtooltip.v1_20_1.util;
 
 import me.noci.advancedtooltip.core.utils.ClientIconComponent;
 import me.noci.advancedtooltip.core.utils.FoodIcons;
 import net.labymod.api.client.render.matrix.Stack;
-import net.labymod.v1_20.client.render.matrix.StackAccessor;
+import net.labymod.v1_20_1.client.render.matrix.StackAccessor;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;

@@ -1,9 +1,11 @@
-package me.noci.advancedtooltip.v1_20;
+package me.noci.advancedtooltip.v1_20_1;
 
 import me.noci.advancedtooltip.core.utils.ItemQuery;
-import me.noci.advancedtooltip.v1_20.util.ItemCast;
+import me.noci.advancedtooltip.v1_20_1.util.ItemCast;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.RecordItem;
@@ -35,5 +37,4 @@ public class VersionedItemQuery implements ItemQuery {
         if (foodProperties == null) return null;
         return new FoodProperties(foodProperties.getNutrition(), foodProperties.getSaturationModifier());
     }
-
 }
