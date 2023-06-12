@@ -5,6 +5,7 @@ import me.noci.advancedtooltip.core.config.AdvancedTooltipConfiguration;
 import me.noci.advancedtooltip.core.utils.ItemQuery;
 import me.noci.advancedtooltip.core.utils.MapLocation;
 import net.labymod.api.client.component.Component;
+import net.labymod.api.client.component.format.TextColor;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.world.ItemStackTooltipEvent;
@@ -30,7 +31,6 @@ public class ItemStackTooltipListener {
         if (!AdvancedTooltipAddon.enabled()) return;
 
         List<Component> tooltip = event.getTooltipLines();
-
         if (config.showAnvilUses().get()) {
             handleAnvilUses(itemStack, tooltip);
         }
@@ -42,33 +42,30 @@ public class ItemStackTooltipListener {
         if (config.explorerMapCoordinates().get()) {
             handleExplorerMap(itemStack, tooltip);
         }
-
     }
 
     private void handleAnvilUses(ItemStack itemStack, List<Component> tooltip) {
         int usages = itemQuery.getAnvilUsages(itemStack);
         if (usages == ItemQuery.INVALID_ITEM) return;
-
         tooltip(tooltip, "anvil_usages", usages);
     }
 
     private void handleDiscSignalStrength(ItemStack itemStack, List<Component> tooltip) {
         int strength = itemQuery.getDiscSignalStrengt(itemStack);
         if (strength == ItemQuery.INVALID_ITEM) return;
-
         tooltip(tooltip, "disc_signal_strength", strength);
     }
 
     private void handleExplorerMap(ItemStack itemStack, List<Component> tooltip) {
         MapLocation mapLocation = itemQuery.getExplorerMapLocation(itemStack);
         if (mapLocation == null) return;
-
         tooltip(tooltip, "explorer_map." + mapLocation.getType().name().toLowerCase(), mapLocation.getX(), mapLocation.getZ());
     }
 
     private void tooltip(List<Component> tooltip, String key, Object... value) {
+        TextColor color = TextColor.color(config.tooltipColor().get().get());
         String text = I18n.translate("advancedtooltip.tooltip." + key, value);
-        tooltip.add(Component.text(text));
+        tooltip.add(Component.text(text, color));
     }
 
 }

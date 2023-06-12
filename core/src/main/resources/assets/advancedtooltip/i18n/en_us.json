@@ -17,6 +17,10 @@
         "name": "Show explorer map coordinates",
         "description": "Displays the coordinates of a explorer map."
       },
+      "tooltipTextColor": {
+        "name": "Text color",
+        "description": "Set the color of the tooltip text."
+      },
       "foodLevel": {
         "name": "Show food level",
         "description": "Displays the nutrition of a food item in its tooltip."

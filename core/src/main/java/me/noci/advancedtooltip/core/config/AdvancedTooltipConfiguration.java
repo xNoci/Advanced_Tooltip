@@ -2,12 +2,14 @@ package me.noci.advancedtooltip.core.config;
 
 import net.labymod.api.addon.AddonConfig;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
+import net.labymod.api.client.gui.screen.widget.widgets.input.color.ColorPickerWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.input.dropdown.DropdownWidget.DropdownSetting;
 import net.labymod.api.configuration.loader.annotation.ConfigName;
 import net.labymod.api.configuration.loader.annotation.VersionCompatibility;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.annotation.SettingDevelopment;
 import net.labymod.api.configuration.settings.annotation.SettingSection;
+import net.labymod.api.util.Color;
 
 @SuppressWarnings("FieldMayBeFinal")
 @ConfigName("settings")
@@ -25,6 +27,10 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
 
     @SwitchSetting @VersionCompatibility("1.12<1.20")
     private final ConfigProperty<Boolean> explorerMapCoordinates = new ConfigProperty<>(true);
+
+    @ColorPickerWidget.ColorPickerSetting(chroma = true)
+    private final ConfigProperty<Color> tooltipTextColor = new ConfigProperty<>(Color.WHITE);
+
     @SettingSection("food_info")
     @DropdownSetting @VersionCompatibility("1.19<1.20")
     private final ConfigProperty<SaturationType> saturationLevel = new ConfigProperty<>(SaturationType.CURRENT_SATURATION);
@@ -55,6 +61,11 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     public ConfigProperty<Boolean> explorerMapCoordinates() {
         return this.explorerMapCoordinates;
     }
+
+    public ConfigProperty<Color> tooltipColor() {
+        return this.tooltipTextColor;
+    }
+
     public ConfigProperty<SaturationType> saturationLevel() {
         return this.saturationLevel;
     }
