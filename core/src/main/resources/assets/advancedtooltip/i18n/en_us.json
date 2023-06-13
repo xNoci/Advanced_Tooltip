@@ -34,7 +34,7 @@
           "maxSaturation": "Maximum"
         }
       },
-      "foodIconSetting": {
+      "foodIconSettings": {
         "name": "Food icon settings",
         "iconSize": {
           "name": "Icon size"

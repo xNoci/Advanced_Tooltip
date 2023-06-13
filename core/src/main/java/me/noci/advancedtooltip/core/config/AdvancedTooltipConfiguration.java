@@ -39,7 +39,7 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     private final ConfigProperty<Boolean> foodLevel = new ConfigProperty<>(true);
 
     @VersionCompatibility("1.19<1.20.1")
-    private final FoodIconSubSetting foodIconSetting = new FoodIconSubSetting();
+    private final FoodIconSubSetting foodIconSettings = new FoodIconSubSetting();
 
     @SettingSection("developer")
     @SwitchSetting @SettingDevelopment
@@ -75,11 +75,11 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     }
 
     public ConfigProperty<Integer> iconSize() {
-        return this.foodIconSetting.iconSize;
+        return this.foodIconSettings.iconSize;
     }
 
     public ConfigProperty<Integer> iconSpacing() {
-        return this.foodIconSetting.iconSpacing;
+        return this.foodIconSettings.iconSpacing;
     }
 
     public ConfigProperty<Boolean> debugMode() {
