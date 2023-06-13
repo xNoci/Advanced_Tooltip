@@ -48,6 +48,9 @@ public enum FoodIcons {
     }
 
     public static <T> List<T> getIcons(ItemStack itemStack, Function<List<FoodIcons>, T> convert, Class<T> type) {
+        if (AdvancedTooltipAddon.getInstance().configuration().developerSettings().prettyPrintNBT().get().isPressed())
+            return List.of();
+
         List<FoodIcons> saturationIcons = getSaturationIcons(itemStack);
         List<FoodIcons> foodLevelIcons = getFoodLevelIcons(itemStack);
 

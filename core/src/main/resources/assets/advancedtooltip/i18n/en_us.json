@@ -43,8 +43,17 @@
           "name": "Icon spacing"
         }
       },
-      "debugMode": {
-        "name": "Debug Mode"
+      "developerSettings": {
+        "name": "Developer settings",
+        "prettyPrintNBT": {
+          "name": "Show item nbt data"
+        },
+        "printWithArrayData": {
+          "name": "Show nbt array data"
+        },
+        "debugMode": {
+          "name": "Debug Mode"
+        }
       },
       "header": {
         "items": {
@@ -59,6 +68,7 @@
       }
     },
     "tooltip": {
+      "no_nbt_data": "No nbt data found.",
       "anvil_usages": "Anvil usages (%s)",
       "disc_signal_strength": "Disc signal strength (%s)",
       "explorer_map": {

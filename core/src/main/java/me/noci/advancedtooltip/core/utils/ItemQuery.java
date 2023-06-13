@@ -89,6 +89,10 @@ public interface ItemQuery {
         return newSaturation - currentPlayerSaturation;
     }
 
+    default @Nullable String getItemNBTData(ItemStack itemStack, boolean withArrayContent) {
+        return null;
+    }
+
     //-------- Utilities --------
 
     int INVALID_ITEM = -1;

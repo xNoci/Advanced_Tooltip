@@ -4,6 +4,8 @@ import me.noci.advancedtooltip.core.utils.ItemQuery;
 import me.noci.advancedtooltip.v1_18_2.utils.ItemCast;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.RecordItem;
@@ -34,6 +36,12 @@ public class VersionedItemQuery implements ItemQuery {
         var foodProperties = item.getFoodProperties();
         if (foodProperties == null) return null;
         return new FoodProperties(foodProperties.getNutrition(), foodProperties.getSaturationModifier());
+    }
+
+    @Override
+    public @Nullable String getItemNBTData(ItemStack itemStack, boolean withArrayContent) {
+        if (!itemStack.hasNBTTag()) return null;
+        return NbtUtils.prettyPrint((Tag) itemStack.getNBTTag(), withArrayContent);
     }
 
 }

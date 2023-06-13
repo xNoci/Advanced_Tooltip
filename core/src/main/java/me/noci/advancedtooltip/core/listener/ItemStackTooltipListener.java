@@ -31,6 +31,21 @@ public class ItemStackTooltipListener {
         if (!AdvancedTooltipAddon.enabled()) return;
 
         List<Component> tooltip = event.getTooltipLines();
+
+        if (config.developerSettings().prettyPrintNBT().get().isPressed()) {
+            String nbt = itemQuery.getItemNBTData(itemStack, config.developerSettings().printWithArrayData().get().isPressed());
+            if (nbt == null) {
+                tooltip(tooltip, "no_nbt_data");
+                return;
+            }
+
+            tooltip(tooltip, false, "");
+            for (String s : nbt.split("\n")) {
+                tooltip(tooltip, false, s);
+            }
+            return;
+        }
+
         if (config.showAnvilUses().get()) {
             handleAnvilUses(itemStack, tooltip);
         }
@@ -63,9 +78,14 @@ public class ItemStackTooltipListener {
     }
 
     private void tooltip(List<Component> tooltip, String key, Object... value) {
+        tooltip(tooltip, true, key, value);
+    }
+
+    private void tooltip(List<Component> tooltip, boolean useTranslation, String key, Object... value) {
         TextColor color = TextColor.color(config.tooltipColor().get().get());
-        String text = I18n.translate("advancedtooltip.tooltip." + key, value);
+        String text = useTranslation ? I18n.translate("advancedtooltip.tooltip." + key, value) : key;
         tooltip.add(Component.text(text, color));
     }
+
 
 }

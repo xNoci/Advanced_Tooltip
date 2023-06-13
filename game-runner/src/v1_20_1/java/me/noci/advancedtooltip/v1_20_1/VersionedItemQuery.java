@@ -37,4 +37,11 @@ public class VersionedItemQuery implements ItemQuery {
         if (foodProperties == null) return null;
         return new FoodProperties(foodProperties.getNutrition(), foodProperties.getSaturationModifier());
     }
+
+    @Override
+    public @Nullable String getItemNBTData(ItemStack itemStack, boolean withArrayContent) {
+        if (!itemStack.hasNBTTag()) return null;
+        return NbtUtils.prettyPrint((Tag) itemStack.getNBTTag(), withArrayContent);
+    }
+
 }

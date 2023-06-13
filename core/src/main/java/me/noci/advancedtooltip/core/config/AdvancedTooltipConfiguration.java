@@ -7,7 +7,7 @@ import net.labymod.api.client.gui.screen.widget.widgets.input.dropdown.DropdownW
 import net.labymod.api.configuration.loader.annotation.ConfigName;
 import net.labymod.api.configuration.loader.annotation.VersionCompatibility;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
-import net.labymod.api.configuration.settings.annotation.SettingDevelopment;
+import net.labymod.api.configuration.settings.annotation.SettingExperimental;
 import net.labymod.api.configuration.settings.annotation.SettingSection;
 import net.labymod.api.util.Color;
 
@@ -41,9 +41,8 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     @VersionCompatibility("1.19<1.20.1")
     private final FoodIconSubSetting foodIconSettings = new FoodIconSubSetting();
 
-    @SettingSection("developer")
-    @SwitchSetting @SettingDevelopment
-    private final ConfigProperty<Boolean> debugMode = new ConfigProperty<>(false);
+    @SettingSection("developer") @SettingExperimental
+    private final DeveloperSubSetting developerSettings = new DeveloperSubSetting();
 
     @Override
     public ConfigProperty<Boolean> enabled() {
@@ -82,7 +81,7 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
         return this.foodIconSettings.iconSpacing;
     }
 
-    public ConfigProperty<Boolean> debugMode() {
-        return this.debugMode;
+    public DeveloperSubSetting developerSettings() {
+        return this.developerSettings;
     }
 }
