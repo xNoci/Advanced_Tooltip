@@ -17,6 +17,10 @@
         "name": "Show explorer map coordinates",
         "description": "Displays the coordinates of a explorer map."
       },
+      "showSuspiciousStewEffect": {
+        "name": "Show suspicious stew effect",
+        "description": "Displays the effect type and duration of a suspicious stew."
+      },
       "tooltipTextColor": {
         "name": "Text color",
         "description": "Set the color of the tooltip text."
@@ -71,6 +75,10 @@
       "no_nbt_data": "No nbt data found.",
       "anvil_usages": "Anvil usages (%s)",
       "disc_signal_strength": "Disc signal strength (%s)",
+      "potion_effect": {
+        "display": "%s (%s)",
+        "duration_infinity": "∞"
+      },
       "explorer_map": {
         "woodland": "Woodland mansion (X: %s, Z: %s)",
         "ocean": "Ocean monument (X: %s, Z: %s)",

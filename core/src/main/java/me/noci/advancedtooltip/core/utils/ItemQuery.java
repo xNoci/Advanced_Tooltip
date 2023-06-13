@@ -2,6 +2,7 @@ package me.noci.advancedtooltip.core.utils;
 
 import net.labymod.api.Laby;
 import net.labymod.api.client.entity.player.ClientPlayer;
+import net.labymod.api.client.world.effect.PotionEffect;
 import net.labymod.api.client.world.food.FoodData;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.nbt.NBTTag;
@@ -10,6 +11,8 @@ import net.labymod.api.nbt.tags.NBTTagCompound;
 import net.labymod.api.nbt.tags.NBTTagList;
 import net.labymod.api.reference.annotation.Referenceable;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 @Nullable
 @Referenceable
@@ -51,6 +54,10 @@ public interface ItemQuery {
         int repairCost = getRepairCost(itemStack);
         if (repairCost == INVALID_ITEM) return INVALID_ITEM;
         return log2(repairCost + 1);
+    }
+
+    default List<PotionEffect> getStewEffect(ItemStack itemStack) {
+        return List.of();
     }
 
     @Nullable FoodProperties getFoodProperties(ItemStack itemStack);

@@ -28,6 +28,9 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     @SwitchSetting @VersionCompatibility("1.12<1.20.1")
     private final ConfigProperty<Boolean> explorerMapCoordinates = new ConfigProperty<>(true);
 
+    @SwitchSetting @VersionCompatibility("1.16<1.20.1")
+    private final ConfigProperty<Boolean> showSuspiciousStewEffect = new ConfigProperty<>(true);
+
     @ColorPickerWidget.ColorPickerSetting(chroma = true)
     private final ConfigProperty<Color> tooltipTextColor = new ConfigProperty<>(Color.WHITE);
 
@@ -59,6 +62,10 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
 
     public ConfigProperty<Boolean> explorerMapCoordinates() {
         return this.explorerMapCoordinates;
+    }
+
+    public ConfigProperty<Boolean> showSuspiciousStewEffect() {
+        return this.showSuspiciousStewEffect;
     }
 
     public ConfigProperty<Color> tooltipColor() {

@@ -4,23 +4,24 @@ import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
 import me.noci.advancedtooltip.core.config.AdvancedTooltipConfiguration;
 import me.noci.advancedtooltip.core.utils.ItemQuery;
 import me.noci.advancedtooltip.core.utils.MapLocation;
+import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.TextColor;
+import net.labymod.api.client.world.effect.PotionEffect;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.world.ItemStackTooltipEvent;
 import net.labymod.api.util.I18n;
+import net.labymod.api.util.time.TimeUtil;
 
 import java.util.List;
 
 public class ItemStackTooltipListener {
 
-    private final AdvancedTooltipAddon addon;
     private final AdvancedTooltipConfiguration config;
     private final ItemQuery itemQuery;
 
     public ItemStackTooltipListener(AdvancedTooltipAddon addon, ItemQuery itemQuery) {
-        this.addon = addon;
         this.config = addon.configuration();
         this.itemQuery = itemQuery;
     }
@@ -57,6 +58,11 @@ public class ItemStackTooltipListener {
         if (config.explorerMapCoordinates().get()) {
             handleExplorerMap(itemStack, tooltip);
         }
+
+        if (config.showSuspiciousStewEffect().get()) {
+            handleSuspiciousStewEffect(itemStack, tooltip);
+        }
+
     }
 
     private void handleAnvilUses(ItemStack itemStack, List<Component> tooltip) {
@@ -75,6 +81,21 @@ public class ItemStackTooltipListener {
         MapLocation mapLocation = itemQuery.getExplorerMapLocation(itemStack);
         if (mapLocation == null) return;
         tooltip(tooltip, "explorer_map." + mapLocation.getType().name().toLowerCase(), mapLocation.getX(), mapLocation.getZ());
+    }
+
+    private void handleSuspiciousStewEffect(ItemStack itemStack, List<Component> tooltip) {
+        List<PotionEffect> stewEffects = itemQuery.getStewEffect(itemStack);
+        if (stewEffects.isEmpty()) return;
+
+        for (PotionEffect stewEffect : stewEffects) {
+            String name = Laby.labyAPI().minecraft().getTranslation(stewEffect.getTranslationKey());
+            String duration = TimeUtil.formatTickDuration(stewEffect.getDuration());
+            if (stewEffect.isInfiniteDuration()) {
+                duration = I18n.translate("advancedtooltip.tooltip.potion_effect.duration_infinity");
+            }
+
+            tooltip(tooltip, false, I18n.translate("advancedtooltip.tooltip.potion_effect.display", name, duration));
+        }
     }
 
     private void tooltip(List<Component> tooltip, String key, Object... value) {
