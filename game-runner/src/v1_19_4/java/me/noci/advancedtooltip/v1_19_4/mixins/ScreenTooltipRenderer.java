@@ -32,7 +32,7 @@ public abstract class ScreenTooltipRenderer {
         net.labymod.api.client.world.item.ItemStack labyItemStack = ItemCast.toLabyItemStack(itemStack);
         List<VersionedClientIconComponent> icons = FoodIcons.getIcons(labyItemStack, VersionedClientIconComponent::new, VersionedClientIconComponent.class);
 
-        ((List<Component>) args.get(0)).addAll(icons);
+        ((List<Component>) args.get(1)).addAll(icons);
     }
 
     @ModifyVariable(method = "renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/util/List;Ljava/util/Optional;II)V", at = @At(value = "STORE"), index = 6)
