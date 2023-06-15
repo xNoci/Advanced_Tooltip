@@ -35,13 +35,13 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     private final ConfigProperty<Color> tooltipTextColor = new ConfigProperty<>(Color.WHITE);
 
     @SettingSection("food_info")
-    @DropdownSetting @VersionCompatibility("1.19<1.20.1")
+    @DropdownSetting @VersionCompatibility("1.19.4<1.20.1")
     private final ConfigProperty<SaturationType> saturationLevel = new ConfigProperty<>(SaturationType.CURRENT_SATURATION);
 
-    @SwitchSetting @VersionCompatibility("1.19<1.20.1")
+    @SwitchSetting @VersionCompatibility("1.19.4<1.20.1")
     private final ConfigProperty<Boolean> foodLevel = new ConfigProperty<>(true);
 
-    @VersionCompatibility("1.19<1.20.1")
+    @VersionCompatibility("1.19.4<1.20.1")
     private final FoodIconSubSetting foodIconSettings = new FoodIconSubSetting();
 
     @SettingSection("developer") @SettingExperimental
