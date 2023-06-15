@@ -1,28 +1,29 @@
 package me.noci.advancedtooltip.core.utils;
 
 import net.labymod.api.client.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class DefaultItemQuery implements ItemQuery {
 
     @Override
-    public int getDiscSignalStrengt(ItemStack itemStack) {
-        return INVALID_ITEM;
+    public Optional<Integer> getDiscSignalStrengt(ItemStack itemStack) {
+        return Optional.empty();
     }
 
     @Override
-    public @Nullable FoodProperties getFoodProperties(ItemStack itemStack) {
-        return null;
+    public Optional<FoodProperties> getFoodProperties(ItemStack itemStack) {
+        return Optional.empty();
     }
 
     @Override
-    public int getNutrition(ItemStack itemStack) {
-        return itemStack.isFood() ? 0 : INVALID_ITEM;
+    public Optional<Integer> getNutrition(ItemStack itemStack) {
+        return Optional.empty();
     }
 
     @Override
-    public float getSaturationModifier(ItemStack itemStack) {
-        return itemStack.isFood() ? 0 : INVALID_ITEM;
+    public Optional<Float> getSaturationModifier(ItemStack itemStack) {
+        return Optional.empty();
     }
 
 }

@@ -79,7 +79,8 @@ public enum FoodIcons {
         }
 
         List<FoodIcons> icons = Lists.newArrayList();
-        float saturationIncrement = saturationType == SaturationType.MAX_SATURATION ? itemQuery.getSaturationIncrement(itemStack) : itemQuery.getAddedSaturation(itemStack);
+        float saturationIncrement = (saturationType == SaturationType.MAX_SATURATION) ?
+                itemQuery.getSaturationIncrement(itemStack).orElse((float) 0) : itemQuery.getAddedSaturation(itemStack).orElse((float) 0);
 
         while (saturationIncrement >= 2) {
             saturationIncrement -= 2;
@@ -106,7 +107,7 @@ public enum FoodIcons {
         }
 
         List<FoodIcons> icons = Lists.newArrayList();
-        int foodLevel = itemQuery.getNutrition(itemStack);
+        int foodLevel = itemQuery.getNutrition(itemStack).orElse(0);
 
         while (foodLevel >= 2) {
             foodLevel -= 2;

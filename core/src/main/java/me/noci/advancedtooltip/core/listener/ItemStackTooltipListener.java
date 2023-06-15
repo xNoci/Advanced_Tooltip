@@ -15,6 +15,7 @@ import net.labymod.api.util.I18n;
 import net.labymod.api.util.time.TimeUtil;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ItemStackTooltipListener {
 
@@ -34,14 +35,14 @@ public class ItemStackTooltipListener {
         List<Component> tooltip = event.getTooltipLines();
 
         if (config.developerSettings().prettyPrintNBT().get().isPressed()) {
-            String nbt = itemQuery.getItemNBTData(itemStack, config.developerSettings().printWithArrayData().get().isPressed());
-            if (nbt == null) {
+            Optional<String> nbt = itemQuery.getItemNBTData(itemStack, config.developerSettings().printWithArrayData().get().isPressed());
+            if (nbt.isEmpty()) {
                 tooltip(tooltip, "no_nbt_data");
                 return;
             }
 
             tooltip(tooltip, false, "");
-            for (String s : nbt.split("\n")) {
+            for (String s : nbt.get().split("\n")) {
                 tooltip(tooltip, false, s);
             }
             return;
@@ -66,28 +67,28 @@ public class ItemStackTooltipListener {
     }
 
     private void handleAnvilUses(ItemStack itemStack, List<Component> tooltip) {
-        int usages = itemQuery.getAnvilUsages(itemStack);
-        if (usages == ItemQuery.INVALID_ITEM) return;
-        tooltip(tooltip, "anvil_usages", usages);
+        Optional<Integer> usages = itemQuery.getAnvilUsages(itemStack);
+        if (usages.isEmpty()) return;
+        tooltip(tooltip, "anvil_usages", usages.get());
     }
 
     private void handleDiscSignalStrength(ItemStack itemStack, List<Component> tooltip) {
-        int strength = itemQuery.getDiscSignalStrengt(itemStack);
-        if (strength == ItemQuery.INVALID_ITEM) return;
-        tooltip(tooltip, "disc_signal_strength", strength);
+        Optional<Integer> strength = itemQuery.getDiscSignalStrengt(itemStack);
+        if (strength.isEmpty()) return;
+        tooltip(tooltip, "disc_signal_strength", strength.get());
     }
 
     private void handleExplorerMap(ItemStack itemStack, List<Component> tooltip) {
-        MapLocation mapLocation = itemQuery.getExplorerMapLocation(itemStack);
-        if (mapLocation == null) return;
-        tooltip(tooltip, "explorer_map." + mapLocation.getType().name().toLowerCase(), mapLocation.getX(), mapLocation.getZ());
+        Optional<MapLocation> mapLocation = itemQuery.getExplorerMapLocation(itemStack);
+        if (mapLocation.isEmpty()) return;
+        tooltip(tooltip, "explorer_map." + mapLocation.get().getType().name().toLowerCase(), mapLocation.get().getX(), mapLocation.get().getZ());
     }
 
     private void handleSuspiciousStewEffect(ItemStack itemStack, List<Component> tooltip) {
-        List<PotionEffect> stewEffects = itemQuery.getStewEffect(itemStack);
+        Optional<List<PotionEffect>> stewEffects = itemQuery.getStewEffect(itemStack);
         if (stewEffects.isEmpty()) return;
 
-        for (PotionEffect stewEffect : stewEffects) {
+        for (PotionEffect stewEffect : stewEffects.get()) {
             String name = Laby.labyAPI().minecraft().getTranslation(stewEffect.getTranslationKey());
             String duration = TimeUtil.formatTickDuration(stewEffect.getDuration());
             if (stewEffect.isInfiniteDuration()) {

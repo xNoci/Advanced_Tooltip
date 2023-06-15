@@ -11,6 +11,7 @@ import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.world.ItemStackTooltipEvent;
 
 import java.util.List;
+import java.util.Optional;
 
 public class FoodItemTooltipDebugListener {
 
@@ -30,18 +31,22 @@ public class FoodItemTooltipDebugListener {
             return;
         }
 
+        Optional<Float> saturationIncrement = itemQuery.getSaturationIncrement(itemStack);
+        Optional<Float> addedSaturation = itemQuery.getAddedSaturation(itemStack);
+        if (saturationIncrement.isEmpty() || addedSaturation.isEmpty()) return;
+
         ClientPlayer clientPlayer = Laby.labyAPI().minecraft().getClientPlayer();
         if (clientPlayer == null) return;
-        FoodData foodData = clientPlayer.foodData();
 
+        FoodData foodData = clientPlayer.foodData();
         int newFoodLevel = Math.min(foodData.getFoodLevel() + foodData.getFoodLevel(), 20);
-        float newSaturation = Math.min(foodData.getSaturationLevel() + itemQuery.getSaturationIncrement(itemStack), newFoodLevel);
+        float newSaturation = Math.min(foodData.getSaturationLevel() + saturationIncrement.get(), newFoodLevel);
 
         List<Component> tooltip = event.getTooltipLines();
         tooltip.add(Component.text(""));
         tooltip.add(Component.text("Food level: " + foodData.getFoodLevel()));
-        tooltip.add(Component.text("Saturation Increment: " + itemQuery.getSaturationIncrement(itemStack)));
-        tooltip.add(Component.text("Added Saturation: " + itemQuery.getAddedSaturation(itemStack)));
+        tooltip.add(Component.text("Saturation Increment: " + saturationIncrement.get()));
+        tooltip.add(Component.text("Added Saturation: " + addedSaturation.get()));
         tooltip.add(Component.text(""));
         tooltip.add(Component.text("Current Player Saturation: " + foodData.getSaturationLevel()));
         tooltip.add(Component.text("New Saturation: " + newSaturation));
