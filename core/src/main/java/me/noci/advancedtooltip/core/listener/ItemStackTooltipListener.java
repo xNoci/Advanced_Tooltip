@@ -34,17 +34,8 @@ public class ItemStackTooltipListener {
 
         List<Component> tooltip = event.getTooltipLines();
 
-        if (config.developerSettings().prettyPrintNBT().get().isPressed()) {
-            Optional<String> nbt = itemQuery.getItemNBTData(itemStack, config.developerSettings().printWithArrayData().get().isPressed());
-            if (nbt.isEmpty()) {
-                tooltip(tooltip, "no_nbt_data");
-                return;
-            }
-
-            tooltip(tooltip, false, "");
-            for (String s : nbt.get().split("\n")) {
-                tooltip(tooltip, false, s);
-            }
+        if (config.developerSettings().showNBTData()) {
+            handleShowNbtData(itemStack, tooltip);
             return;
         }
 
@@ -64,6 +55,19 @@ public class ItemStackTooltipListener {
             handleSuspiciousStewEffect(itemStack, tooltip);
         }
 
+    }
+
+    private void handleShowNbtData(ItemStack itemStack, List<Component> tooltip) {
+        Optional<String> nbt = itemQuery.getItemNBTData(itemStack, config.developerSettings().printWithArrayData().get().isPressed());
+        if (nbt.isEmpty()) {
+            tooltip(tooltip, "no_nbt_data");
+            return;
+        }
+
+        tooltip(tooltip, false, "");
+        for (String s : nbt.get().split("\n")) {
+            tooltip(tooltip, false, s);
+        }
     }
 
     private void handleAnvilUses(ItemStack itemStack, List<Component> tooltip) {

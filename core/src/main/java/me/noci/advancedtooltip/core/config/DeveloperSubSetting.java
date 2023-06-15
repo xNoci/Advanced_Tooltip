@@ -5,11 +5,15 @@ import net.labymod.api.client.gui.screen.widget.widgets.input.KeybindWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget;
 import net.labymod.api.configuration.loader.Config;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
+import net.labymod.api.configuration.settings.annotation.SettingExperimental;
 
 public class DeveloperSubSetting extends Config {
 
     @SwitchWidget.SwitchSetting
     private final ConfigProperty<Boolean> debugMode = new ConfigProperty<>(false);
+
+    @SwitchWidget.SwitchSetting @SettingExperimental
+    private final ConfigProperty<Boolean> togglePrettyPrintNBT = new ConfigProperty<>(false);
 
     @KeybindWidget.KeyBindSetting
     private final ConfigProperty<Key> prettyPrintNBT = new ConfigProperty<>(Key.Y);
@@ -28,5 +32,23 @@ public class DeveloperSubSetting extends Config {
     public ConfigProperty<Key> printWithArrayData() {
         return this.printWithArrayData;
     }
+
+    private boolean nbtDataShownToggled = false;
+
+    public void togglePrintNBT() {
+        if (!togglePrettyPrintNBT.get()) return;
+        nbtDataShownToggled = !nbtDataShownToggled;
+    }
+
+    public boolean showNBTData() {
+        if (!togglePrettyPrintNBT.get() && prettyPrintNBT.get().isPressed()) return true;
+
+        if (togglePrettyPrintNBT.get()) {
+            return nbtDataShownToggled;
+        }
+
+        return false;
+    }
+
 
 }

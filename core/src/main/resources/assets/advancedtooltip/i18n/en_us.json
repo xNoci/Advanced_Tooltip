@@ -49,14 +49,17 @@
       },
       "developerSettings": {
         "name": "Developer settings",
+        "debugMode": {
+          "name": "Debug Mode"
+        },
+        "togglePrettyPrintNBT": {
+          "name": "Toggle show item nbt data"
+        },
         "prettyPrintNBT": {
           "name": "Show item nbt data"
         },
         "printWithArrayData": {
           "name": "Show nbt array data"
-        },
-        "debugMode": {
-          "name": "Debug Mode"
         }
       },
       "header": {
