@@ -5,7 +5,9 @@ import me.noci.advancedtooltip.core.config.AdvancedTooltipConfiguration;
 import me.noci.advancedtooltip.core.generated.DefaultReferenceStorage;
 import me.noci.advancedtooltip.core.listener.FoodItemTooltipDebugListener;
 import me.noci.advancedtooltip.core.listener.ItemStackTooltipListener;
+import me.noci.advancedtooltip.core.referenceable.DefaultInventoryManager;
 import me.noci.advancedtooltip.core.referenceable.DefaultItemQuery;
+import me.noci.advancedtooltip.core.referenceable.InventoryManager;
 import me.noci.advancedtooltip.core.referenceable.ItemQuery;
 import net.labymod.api.Laby;
 import net.labymod.api.addon.LabyAddon;
@@ -25,6 +27,7 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
     }
 
     @Getter private ItemQuery itemQuery = new DefaultItemQuery();
+    @Getter private InventoryManager inventoryManager = new DefaultInventoryManager();
 
     public AdvancedTooltipAddon() {
         instance = this;
@@ -32,14 +35,26 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
 
     @Override
     protected void enable() {
+        initialiseReferences();
+        registerSettingCategory();
+        registerListener();
+    }
+
+    private void initialiseReferences() {
         DefaultReferenceStorage referenceStorage = this.referenceStorageAccessor();
+
         ItemQuery itemQuery = referenceStorage.getItemQuery();
         if (itemQuery != null) {
             this.itemQuery = itemQuery;
         }
 
-        this.registerSettingCategory();
+        InventoryManager inventoryManager = referenceStorage.getInventoryManager();
+        if (inventoryManager != null) {
+            this.inventoryManager = inventoryManager;
+        }
+    }
 
+    private void registerListener() {
         if (Laby.labyAPI().labyModLoader().isAddonDevelopmentEnvironment()) {
             this.registerListener(new FoodItemTooltipDebugListener(this, this.itemQuery));
         }
