@@ -3,6 +3,7 @@ package me.noci.advancedtooltip.core.utils;
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
 import me.noci.advancedtooltip.core.config.AdvancedTooltipConfiguration;
 import me.noci.advancedtooltip.core.config.SaturationType;
+import me.noci.advancedtooltip.core.referenceable.ItemQuery;
 import net.labymod.api.Laby;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.render.matrix.Stack;

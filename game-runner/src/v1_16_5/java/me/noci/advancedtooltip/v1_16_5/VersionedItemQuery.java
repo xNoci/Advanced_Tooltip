@@ -1,6 +1,6 @@
 package me.noci.advancedtooltip.v1_16_5;
 
-import me.noci.advancedtooltip.core.utils.ItemQuery;
+import me.noci.advancedtooltip.core.referenceable.ItemQuery;
 import me.noci.advancedtooltip.v1_16_5.utils.ItemCast;
 import me.noci.advancedtooltip.v1_16_5.utils.NBTPrinter;
 import net.labymod.api.client.world.effect.PotionEffect;

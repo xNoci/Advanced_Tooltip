@@ -1,6 +1,6 @@
 package me.noci.advancedtooltip.v1_8_9;
 
-import me.noci.advancedtooltip.core.utils.ItemQuery;
+import me.noci.advancedtooltip.core.referenceable.ItemQuery;
 import me.noci.advancedtooltip.v1_8_9.utils.ItemCast;
 import me.noci.advancedtooltip.v1_8_9.utils.NBTPrinter;
 import net.labymod.api.client.world.item.ItemStack;

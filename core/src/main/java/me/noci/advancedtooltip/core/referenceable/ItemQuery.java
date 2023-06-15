@@ -1,5 +1,6 @@
-package me.noci.advancedtooltip.core.utils;
+package me.noci.advancedtooltip.core.referenceable;
 
+import me.noci.advancedtooltip.core.utils.MapLocation;
 import net.labymod.api.Laby;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.world.effect.PotionEffect;

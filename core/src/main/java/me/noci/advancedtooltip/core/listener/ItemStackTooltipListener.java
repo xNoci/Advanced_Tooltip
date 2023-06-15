@@ -2,7 +2,7 @@ package me.noci.advancedtooltip.core.listener;
 
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
 import me.noci.advancedtooltip.core.config.AdvancedTooltipConfiguration;
-import me.noci.advancedtooltip.core.utils.ItemQuery;
+import me.noci.advancedtooltip.core.referenceable.ItemQuery;
 import me.noci.advancedtooltip.core.utils.MapLocation;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;

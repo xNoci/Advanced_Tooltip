@@ -1,4 +1,4 @@
-package me.noci.advancedtooltip.core.utils;
+package me.noci.advancedtooltip.core.referenceable;
 
 import net.labymod.api.client.world.item.ItemStack;
 
