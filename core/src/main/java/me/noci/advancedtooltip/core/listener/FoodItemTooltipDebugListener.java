@@ -26,8 +26,6 @@ public class FoodItemTooltipDebugListener {
 
     @Subscribe
     public void onToolTip(ItemStackTooltipEvent event) {
-        if (!AdvancedTooltipAddon.enabled()) return;
-
         ItemStack itemStack = event.itemStack();
         if (!itemStack.isFood() || !addon.configuration().developerSettings().debugMode().get()) {
             return;
