@@ -18,6 +18,8 @@ public class KeyPressListener {
 
     @Subscribe
     public void keyPress(KeyEvent event) {
+        if (!AdvancedTooltipAddon.enabled()) return;
+
         if (!inventoryManager.isInventoryOpen()) return;
         if (event.key() != config.developerSettings().prettyPrintNBT().get()) return;
         if (event.state() != KeyEvent.State.PRESS) return;

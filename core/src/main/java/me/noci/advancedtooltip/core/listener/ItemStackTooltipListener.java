@@ -29,9 +29,9 @@ public class ItemStackTooltipListener {
 
     @Subscribe
     public void onToolTip(ItemStackTooltipEvent event) {
-        ItemStack itemStack = event.itemStack();
         if (!AdvancedTooltipAddon.enabled()) return;
 
+        ItemStack itemStack = event.itemStack();
         List<Component> tooltip = event.getTooltipLines();
 
         if (config.developerSettings().showNBTData()) {
