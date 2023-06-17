@@ -54,8 +54,8 @@ public enum FoodIcons {
 
         List<FoodIcons> saturationIcons = getSaturationIcons(itemStack);
         List<FoodIcons> foodLevelIcons = getFoodLevelIcons(itemStack);
-
         List<T> icons = Lists.newArrayList();
+
         if (!saturationIcons.isEmpty()) {
             icons.add(convert.apply(saturationIcons));
         }
