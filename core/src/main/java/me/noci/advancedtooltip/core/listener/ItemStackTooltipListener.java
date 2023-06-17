@@ -11,6 +11,8 @@ import net.labymod.api.client.world.effect.PotionEffect;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.world.ItemStackTooltipEvent;
+import net.labymod.api.nbt.NBTTagType;
+import net.labymod.api.nbt.tags.NBTTagCompound;
 import net.labymod.api.util.I18n;
 import net.labymod.api.util.time.TimeUtil;
 
@@ -35,6 +37,10 @@ public class ItemStackTooltipListener {
         if (config.developerSettings().showNBTData()) {
             handleShowNbtData(itemStack, tooltip);
             return;
+        }
+
+        if (config.showDurability().get() && event.type() != ItemStackTooltipEvent.TooltipType.ADVANCED) {
+            handleShowDurability(itemStack, tooltip);
         }
 
         if (config.showAnvilUses().get()) {
@@ -66,6 +72,13 @@ public class ItemStackTooltipListener {
         for (String s : nbt.get().split("\n")) {
             tooltip(tooltip, false, s);
         }
+    }
+
+    private void handleShowDurability(ItemStack itemStack, List<Component> tooltip) {
+        if (itemStack.getMaximumDamage() <= 0) return;
+        NBTTagCompound tag = itemStack.getNBTTag();
+        if(tag != null && tag.contains("Unbreakable")) return;
+        tooltip(tooltip, "durability", itemStack.getMaximumDamage() - itemStack.getCurrentDamageValue(), itemStack.getMaximumDamage());
     }
 
     private void handleAnvilUses(ItemStack itemStack, List<Component> tooltip) {

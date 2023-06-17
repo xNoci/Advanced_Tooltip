@@ -31,6 +31,9 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     @SwitchSetting @VersionCompatibility("1.16<1.20.1")
     private final ConfigProperty<Boolean> showSuspiciousStewEffect = new ConfigProperty<>(true);
 
+    @SwitchSetting
+    private final ConfigProperty<Boolean> showDurability = new ConfigProperty<>(false);
+
     @ColorPickerWidget.ColorPickerSetting(chroma = true)
     private final ConfigProperty<Color> tooltipTextColor = new ConfigProperty<>(Color.WHITE);
 
@@ -66,6 +69,10 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
 
     public ConfigProperty<Boolean> showSuspiciousStewEffect() {
         return this.showSuspiciousStewEffect;
+    }
+
+    public ConfigProperty<Boolean> showDurability() {
+        return this.showDurability;
     }
 
     public ConfigProperty<Color> tooltipColor() {

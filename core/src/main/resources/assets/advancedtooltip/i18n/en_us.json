@@ -21,6 +21,10 @@
         "name": "Show suspicious stew effect",
         "description": "Displays the effect type and duration of a suspicious stew."
       },
+      "showDurability": {
+        "name": "Show durability",
+        "description": "Shows the durability of an item when advanced tooltip is turned off."
+      },
       "tooltipTextColor": {
         "name": "Text color",
         "description": "Set the color of the tooltip text."
@@ -78,6 +82,7 @@
       "no_nbt_data": "No nbt data found.",
       "anvil_usages": "Anvil usages (%s)",
       "disc_signal_strength": "Disc signal strength (%s)",
+      "durability": "Durability: %s/%s",
       "potion_effect": {
         "display": "%s (%s)",
         "duration_infinity": "∞"
