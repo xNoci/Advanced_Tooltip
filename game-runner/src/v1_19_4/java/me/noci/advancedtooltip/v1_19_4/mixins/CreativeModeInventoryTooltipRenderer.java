@@ -27,7 +27,7 @@ public class CreativeModeInventoryTooltipRenderer {
         }
 
         net.labymod.api.client.world.item.ItemStack labyItemStack = ItemCast.toLabyItemStack(itemStack);
-        List<VersionedClientIconComponent> icons = IconQuery.getIcons(labyItemStack, VersionedClientIconComponent::new, VersionedClientIconComponent.class);
+        List<VersionedClientIconComponent> icons = IconQuery.getIcons(labyItemStack, VersionedClientIconComponent::new);
 
         finalComponents.addAll(icons);
     }

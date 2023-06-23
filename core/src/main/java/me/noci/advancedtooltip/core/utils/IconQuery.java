@@ -23,7 +23,7 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ValidItemI
         iconQueries.add(new IconQuery(TooltipIcon.FULL_ARMOR, TooltipIcon.HALF_ARMOR, ItemQuery::isArmor, AdvancedTooltipConfiguration::showArmorBarIcons, (c, iq, is) -> iq.getArmorBars(is)));
     }
 
-    public static <T extends ClientIconComponent> List<T> getIcons(ItemStack itemStack, Function<List<TooltipIcon>, T> convert, Class<T> type) {
+    public static <T extends ClientIconComponent> List<T> getIcons(ItemStack itemStack, Function<List<TooltipIcon>, T> convert) {
         AdvancedTooltipAddon addon = AdvancedTooltipAddon.getInstance();
         AdvancedTooltipConfiguration configuration = addon.configuration();
         if (configuration.developerSettings().showNBTData()) return List.of();
@@ -31,7 +31,7 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ValidItemI
         List<T> icons = Lists.newArrayList();
 
         for (IconQuery iconQuery : iconQueries) {
-            iconQuery.apply(itemStack, icons, convert, type);
+            iconQuery.apply(itemStack, icons, convert);
         }
 
         if (icons.size() > 0) {
@@ -50,12 +50,16 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ValidItemI
         return levelFunction.apply(configuration, itemQuery, itemStack).map(Number::floatValue).orElse(0F);
     }
 
-    private <T> void apply(ItemStack itemStack, List<T> icons, Function<List<TooltipIcon>, T> convert, Class<T> type) {
+    private boolean isItemValid(ItemStack itemStack, ItemQuery itemQuery) {
+        return validItemInterface.isValid(itemQuery, itemStack);
+    }
+
+    private <T> void apply(ItemStack itemStack, List<T> icons, Function<List<TooltipIcon>, T> convert) {
         AdvancedTooltipAddon addon = AdvancedTooltipAddon.getInstance();
         AdvancedTooltipConfiguration configuration = addon.configuration();
         ItemQuery itemQuery = addon.getItemQuery();
 
-        if (!validItemInterface.isValid(itemQuery, itemStack)) return;
+        if (!isItemValid(itemStack, itemQuery)) return;
         if (!shouldShow(configuration)) return;
         List<TooltipIcon> temp = Lists.newArrayList();
 
