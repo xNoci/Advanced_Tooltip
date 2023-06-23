@@ -98,6 +98,10 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
         return this.showArmorBarIcons.get();
     }
 
+    public IconSubSetting iconSubSetting() {
+        return this.iconSubSetting;
+    }
+
     public ConfigProperty<Integer> iconSize() {
         return this.iconSubSetting.iconSize;
     }

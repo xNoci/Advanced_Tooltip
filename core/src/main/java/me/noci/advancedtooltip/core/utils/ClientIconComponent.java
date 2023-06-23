@@ -12,23 +12,50 @@ public abstract class ClientIconComponent {
     private final int iconSpacing;
     private final int width;
 
+    private final int iconPaddingTop;
+    private final int iconPaddingBottom;
+    private final int iconPaddingLeft;
+
+    private boolean firstIconComponent = false;
+    private boolean lastIconComponent = false;
+
     public ClientIconComponent(List<TooltipIcon> icons) {
         this.icons = icons;
         this.iconSize = AdvancedTooltipAddon.getInstance().configuration().iconSize().get();
         this.iconSpacing = AdvancedTooltipAddon.getInstance().configuration().iconSpacing().get();
         this.width = TooltipIcon.getWidth(icons, iconSize, iconSpacing);
+
+        this.iconPaddingTop = AdvancedTooltipAddon.getInstance().configuration().iconSubSetting().paddingTop();
+        this.iconPaddingBottom = AdvancedTooltipAddon.getInstance().configuration().iconSubSetting().pattingBottom();
+        this.iconPaddingLeft = AdvancedTooltipAddon.getInstance().configuration().iconSubSetting().pattingLeft();
     }
 
     public int getHeight() {
-        return this.iconSize + 2;
+        return this.iconSize + paddingBottom() + paddingTop() + 2;
     }
 
     public int getWidth() {
-        return this.width;
+        return this.width + iconPaddingLeft;
     }
 
     public void renderIcons(Stack stack, int x, int y) {
-        TooltipIcon.drawRow(icons, stack, x, y, iconSize, iconSpacing);
+        TooltipIcon.drawRow(icons, stack, x + iconPaddingLeft, y + paddingTop(), iconSize, iconSpacing);
+    }
+
+    public void setFirstComponent() {
+        this.firstIconComponent = true;
+    }
+
+    public void setLastComponent() {
+        this.lastIconComponent = true;
+    }
+
+    private int paddingTop() {
+        return firstIconComponent ? iconPaddingTop : 0;
+    }
+
+    private int paddingBottom() {
+        return lastIconComponent ? iconPaddingBottom : 0;
     }
 
 }

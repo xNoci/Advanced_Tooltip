@@ -53,6 +53,20 @@
         },
         "iconSpacing": {
           "name": "Icon spacing"
+        },
+        "paddingTop": {
+          "name": "Top padding"
+        },
+        "paddingBottom": {
+          "name": "Bottom padding"
+        },
+        "paddingLeft": {
+          "name": "Left padding"
+        },
+        "header": {
+          "padding": {
+            "name": "Icon padding"
+          }
         }
       },
       "developerSettings": {

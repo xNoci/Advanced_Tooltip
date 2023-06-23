@@ -15,21 +15,29 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ValidItemI
                         ShowFunction showFunction,
                         LevelFunction levelFunction) {
 
-    private static final IconQuery FOOD_QUERY = new IconQuery(TooltipIcon.FULL_FOOD, TooltipIcon.HALF_FOOD, (iq, is) -> is.isFood(), AdvancedTooltipConfiguration::showFoodLevel, (c, iq, is) -> iq.getNutrition(is));
-    private static final IconQuery SATURATION_QUERY = new IconQuery(TooltipIcon.FULL_SATURATION, TooltipIcon.HALF_SATURATION, (iq, is) -> is.isFood(), AdvancedTooltipConfiguration::showSaturationLevel, (c, iq, is) -> (c.saturationType() == SaturationType.MAX_SATURATION) ? iq.getSaturationIncrement(is) : iq.getAddedSaturation(is));
-    private static final IconQuery ARMOR_QUERY = new IconQuery(TooltipIcon.FULL_ARMOR, TooltipIcon.HALF_ARMOR, ItemQuery::isArmor, AdvancedTooltipConfiguration::showArmorBarIcons, (c, iq, is) -> iq.getArmorBars(is));
+    private static final List<IconQuery> iconQueries = Lists.newArrayList();
 
-    public static <T> List<T> getIcons(ItemStack itemStack, Function<List<TooltipIcon>, T> convert, Class<T> type) {
+    static {
+        iconQueries.add(new IconQuery(TooltipIcon.FULL_FOOD, TooltipIcon.HALF_FOOD, (iq, is) -> is.isFood(), AdvancedTooltipConfiguration::showFoodLevel, (c, iq, is) -> iq.getNutrition(is)));
+        iconQueries.add(new IconQuery(TooltipIcon.FULL_SATURATION, TooltipIcon.HALF_SATURATION, (iq, is) -> is.isFood(), AdvancedTooltipConfiguration::showSaturationLevel, (c, iq, is) -> (c.saturationType() == SaturationType.MAX_SATURATION) ? iq.getSaturationIncrement(is) : iq.getAddedSaturation(is)));
+        iconQueries.add(new IconQuery(TooltipIcon.FULL_ARMOR, TooltipIcon.HALF_ARMOR, ItemQuery::isArmor, AdvancedTooltipConfiguration::showArmorBarIcons, (c, iq, is) -> iq.getArmorBars(is)));
+    }
+
+    public static <T extends ClientIconComponent> List<T> getIcons(ItemStack itemStack, Function<List<TooltipIcon>, T> convert, Class<T> type) {
         AdvancedTooltipAddon addon = AdvancedTooltipAddon.getInstance();
         AdvancedTooltipConfiguration configuration = addon.configuration();
-        if (configuration.developerSettings().showNBTData())
-            return List.of();
+        if (configuration.developerSettings().showNBTData()) return List.of();
 
         List<T> icons = Lists.newArrayList();
 
-        SATURATION_QUERY.apply(itemStack, icons, convert, type);
-        FOOD_QUERY.apply(itemStack, icons, convert, type);
-        ARMOR_QUERY.apply(itemStack, icons, convert, type);
+        for (IconQuery iconQuery : iconQueries) {
+            iconQuery.apply(itemStack, icons, convert, type);
+        }
+
+        if (icons.size() > 0) {
+            icons.get(0).setFirstComponent();
+            icons.get(icons.size() - 1).setLastComponent();
+        }
 
         return icons;
     }
