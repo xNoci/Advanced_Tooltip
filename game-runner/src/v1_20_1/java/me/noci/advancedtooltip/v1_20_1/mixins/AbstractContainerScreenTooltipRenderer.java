@@ -1,7 +1,7 @@
 package me.noci.advancedtooltip.v1_20_1.mixins;
 
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
-import me.noci.advancedtooltip.core.utils.FoodIcons;
+import me.noci.advancedtooltip.core.utils.IconQuery;
 import me.noci.advancedtooltip.v1_20_1.util.ItemCast;
 import me.noci.advancedtooltip.v1_20_1.util.VersionedClientIconComponent;
 import net.minecraft.client.gui.GuiGraphics;
@@ -44,7 +44,7 @@ public abstract class AbstractContainerScreenTooltipRenderer extends Screen {
 
         List<Component> tooltip = getTooltipFromContainerItem(itemStack);
         net.labymod.api.client.world.item.ItemStack labyItemStack = ItemCast.toLabyItemStack(itemStack);
-        List<VersionedClientIconComponent> icons = FoodIcons.getIcons(labyItemStack, VersionedClientIconComponent::new, VersionedClientIconComponent.class);
+        List<VersionedClientIconComponent> icons = IconQuery.getIcons(labyItemStack, VersionedClientIconComponent::new, VersionedClientIconComponent.class);
 
         tooltip.addAll(icons);
 

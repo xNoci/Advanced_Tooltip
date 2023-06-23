@@ -2,7 +2,7 @@ package me.noci.advancedtooltip.v1_19_4.mixins;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
-import me.noci.advancedtooltip.core.utils.FoodIcons;
+import me.noci.advancedtooltip.core.utils.FoodIcon;
 import me.noci.advancedtooltip.v1_19_4.util.ItemCast;
 import me.noci.advancedtooltip.v1_19_4.util.VersionedClientIconComponent;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
@@ -27,7 +27,7 @@ public class CreativeModeInventoryTooltipRenderer {
         }
 
         net.labymod.api.client.world.item.ItemStack labyItemStack = ItemCast.toLabyItemStack(itemStack);
-        List<VersionedClientIconComponent> icons = FoodIcons.getIcons(labyItemStack, VersionedClientIconComponent::new, VersionedClientIconComponent.class);
+        List<VersionedClientIconComponent> icons = FoodIcon.getIcons(labyItemStack, VersionedClientIconComponent::new, VersionedClientIconComponent.class);
 
         finalComponents.addAll(icons);
     }

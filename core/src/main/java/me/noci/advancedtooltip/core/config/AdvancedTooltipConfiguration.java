@@ -79,12 +79,16 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
         return this.tooltipTextColor;
     }
 
-    public ConfigProperty<SaturationType> saturationLevel() {
-        return this.saturationLevel;
+    public SaturationType saturationType() {
+        return this.saturationLevel.get();
     }
 
-    public ConfigProperty<Boolean> foodLevel() {
-        return this.foodLevel;
+    public boolean showSaturationLevel() {
+        return saturationType() != SaturationType.HIDDEN;
+    }
+
+    public boolean showFoodLevel() {
+        return this.foodLevel.get();
     }
 
     public ConfigProperty<Integer> iconSize() {

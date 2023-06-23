@@ -2,7 +2,7 @@ package me.noci.advancedtooltip.v1_19_4.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import me.noci.advancedtooltip.core.utils.ClientIconComponent;
-import me.noci.advancedtooltip.core.utils.FoodIcons;
+import me.noci.advancedtooltip.core.utils.FoodIcon;
 import net.labymod.api.client.render.matrix.Stack;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class VersionedClientIconComponent extends ClientIconComponent implements ClientTooltipComponent, Component {
 
-    public VersionedClientIconComponent(List<FoodIcons> icons) {
+    public VersionedClientIconComponent(List<FoodIcon> icons) {
         super(icons);
     }
 
