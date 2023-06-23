@@ -46,8 +46,8 @@
           "maxSaturation": "Maximum"
         }
       },
-      "foodIconSettings": {
-        "name": "Food icon settings",
+      "iconSubSetting": {
+        "name": "Icon settings",
         "iconSize": {
           "name": "Icon size"
         },
@@ -71,11 +71,11 @@
         }
       },
       "header": {
-        "items": {
-          "name": "Items"
+        "tooltip_text": {
+          "name": "Tooltip text"
         },
-        "food_info": {
-          "name": "Food information"
+        "tooltip_icon": {
+          "name": "Tooltip icons"
         },
         "developer": {
           "name": "Developer Section"

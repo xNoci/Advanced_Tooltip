@@ -4,7 +4,7 @@ import net.labymod.api.client.gui.screen.widget.widgets.input.SliderWidget;
 import net.labymod.api.configuration.loader.Config;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 
-public class FoodIconSubSetting extends Config {
+public class IconSubSetting extends Config {
 
     @SliderWidget.SliderSetting(min = 4.0f, max = 16.0f)
     protected final ConfigProperty<Integer> iconSize = new ConfigProperty<>(8);
