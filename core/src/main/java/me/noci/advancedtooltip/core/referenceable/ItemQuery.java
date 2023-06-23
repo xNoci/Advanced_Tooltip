@@ -20,6 +20,14 @@ import java.util.Optional;
 @Referenceable
 public interface ItemQuery {
 
+    default boolean isArmor(ItemStack itemStack) {
+        return false;
+    }
+
+    default Optional<Integer> getArmorBars(ItemStack itemStack) {
+        return Optional.empty();
+    }
+
     default boolean isMapItem(ItemStack itemStack) {
         return false;
     }

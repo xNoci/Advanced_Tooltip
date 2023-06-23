@@ -12,10 +12,7 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.MapItem;
-import net.minecraft.world.item.RecordItem;
-import net.minecraft.world.item.SuspiciousStewItem;
+import net.minecraft.world.item.*;
 import org.apache.commons.compress.utils.Lists;
 
 import javax.inject.Singleton;
@@ -26,6 +23,18 @@ import java.util.Optional;
 @Singleton
 @Implements(ItemQuery.class)
 public class VersionedItemQuery implements ItemQuery {
+
+    @Override
+    public boolean isArmor(ItemStack itemStack) {
+        return ItemCast.toMinecraftItemStack(itemStack).getItem() instanceof ArmorItem;
+    }
+
+    @Override
+    public Optional<Integer> getArmorBars(ItemStack itemStack) {
+        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
+        if (!(item instanceof ArmorItem armorItem)) return Optional.empty();
+        return Optional.of(armorItem.getDefense());
+    }
 
     @Override
     public boolean isMapItem(ItemStack itemStack) {

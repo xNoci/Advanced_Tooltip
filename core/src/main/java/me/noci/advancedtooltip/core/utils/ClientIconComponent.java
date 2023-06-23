@@ -7,16 +7,16 @@ import java.util.List;
 
 public abstract class ClientIconComponent {
 
-    private final List<FoodIcon> icons;
+    private final List<TooltipIcon> icons;
     private final int iconSize;
     private final int iconSpacing;
     private final int width;
 
-    public ClientIconComponent(List<FoodIcon> icons) {
+    public ClientIconComponent(List<TooltipIcon> icons) {
         this.icons = icons;
         this.iconSize = AdvancedTooltipAddon.getInstance().configuration().iconSize().get();
         this.iconSpacing = AdvancedTooltipAddon.getInstance().configuration().iconSpacing().get();
-        this.width = FoodIcon.getWidth(icons, iconSize, iconSpacing);
+        this.width = TooltipIcon.getWidth(icons, iconSize, iconSpacing);
     }
 
     public int getHeight() {
@@ -28,7 +28,7 @@ public abstract class ClientIconComponent {
     }
 
     public void renderIcons(Stack stack, int x, int y) {
-        FoodIcon.drawRow(icons, stack, x, y, iconSize, iconSpacing);
+        TooltipIcon.drawRow(icons, stack, x, y, iconSize, iconSpacing);
     }
 
 }

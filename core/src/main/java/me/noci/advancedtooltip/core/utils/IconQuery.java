@@ -11,13 +11,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-public record IconQuery(FoodIcon full_icon, FoodIcon half_icon, ShowFunction showFunction,
+public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ValidItemInterface validItemInterface,
+                        ShowFunction showFunction,
                         LevelFunction levelFunction) {
 
-    private static final IconQuery FOOD_QUERY = new IconQuery(FoodIcon.FULL_FOOD, FoodIcon.HALF_FOOD, AdvancedTooltipConfiguration::showFoodLevel, (c, iq, is) -> iq.getNutrition(is));
-    private static final IconQuery SATURATION_QUERY = new IconQuery(FoodIcon.FULL_SATURATION, FoodIcon.HALF_SATURATION, AdvancedTooltipConfiguration::showSaturationLevel, (c, iq, is) -> (c.saturationType() == SaturationType.MAX_SATURATION) ? iq.getSaturationIncrement(is) : iq.getAddedSaturation(is));
+    private static final IconQuery FOOD_QUERY = new IconQuery(TooltipIcon.FULL_FOOD, TooltipIcon.HALF_FOOD, (iq, is) -> is.isFood(), AdvancedTooltipConfiguration::showFoodLevel, (c, iq, is) -> iq.getNutrition(is));
+    private static final IconQuery SATURATION_QUERY = new IconQuery(TooltipIcon.FULL_SATURATION, TooltipIcon.HALF_SATURATION, (iq, is) -> is.isFood(), AdvancedTooltipConfiguration::showSaturationLevel, (c, iq, is) -> (c.saturationType() == SaturationType.MAX_SATURATION) ? iq.getSaturationIncrement(is) : iq.getAddedSaturation(is));
+    private static final IconQuery ARMOR_QUERY = new IconQuery(TooltipIcon.FULL_ARMOR, TooltipIcon.HALF_ARMOR, ItemQuery::isArmor, AdvancedTooltipConfiguration::showArmorBarIcons, (c, iq, is) -> iq.getArmorBars(is));
 
-    public static <T> List<T> getIcons(ItemStack itemStack, Function<List<FoodIcon>, T> convert, Class<T> type) {
+    public static <T> List<T> getIcons(ItemStack itemStack, Function<List<TooltipIcon>, T> convert, Class<T> type) {
         AdvancedTooltipAddon addon = AdvancedTooltipAddon.getInstance();
         AdvancedTooltipConfiguration configuration = addon.configuration();
         if (configuration.developerSettings().showNBTData())
@@ -27,6 +29,7 @@ public record IconQuery(FoodIcon full_icon, FoodIcon half_icon, ShowFunction sho
 
         SATURATION_QUERY.apply(itemStack, icons, convert, type);
         FOOD_QUERY.apply(itemStack, icons, convert, type);
+        ARMOR_QUERY.apply(itemStack, icons, convert, type);
 
         return icons;
     }
@@ -39,14 +42,14 @@ public record IconQuery(FoodIcon full_icon, FoodIcon half_icon, ShowFunction sho
         return levelFunction.apply(configuration, itemQuery, itemStack).map(Number::floatValue).orElse(0F);
     }
 
-    private <T> void apply(ItemStack itemStack, List<T> icons, Function<List<FoodIcon>, T> convert, Class<T> type) {
-        if (!itemStack.isFood()) return;
+    private <T> void apply(ItemStack itemStack, List<T> icons, Function<List<TooltipIcon>, T> convert, Class<T> type) {
         AdvancedTooltipAddon addon = AdvancedTooltipAddon.getInstance();
         AdvancedTooltipConfiguration configuration = addon.configuration();
         ItemQuery itemQuery = addon.getItemQuery();
 
+        if (!validItemInterface.isValid(itemQuery, itemStack)) return;
         if (!shouldShow(configuration)) return;
-        List<FoodIcon> temp = Lists.newArrayList();
+        List<TooltipIcon> temp = Lists.newArrayList();
 
         float level = getLevel(configuration, itemQuery, itemStack);
         while (level >= 2) {
@@ -60,6 +63,11 @@ public record IconQuery(FoodIcon full_icon, FoodIcon half_icon, ShowFunction sho
 
         if (temp.isEmpty()) return;
         icons.add(convert.apply(temp));
+    }
+
+    @FunctionalInterface
+    private interface ValidItemInterface {
+        boolean isValid(ItemQuery itemQuery, ItemStack itemStack);
     }
 
     @FunctionalInterface

@@ -33,6 +33,10 @@
         "name": "Show food level",
         "description": "Displays the nutrition of a food item in its tooltip."
       },
+      "showArmorBarIcons": {
+        "name": "Show armor bar icons",
+        "description": "Displays the armor bars of a armor item in its tooltip."
+      },
       "saturationLevel": {
         "name": "Show saturation level",
         "description": "Displays the saturation of a food item in its tooltip.\n\nCurrent: Displays the level of saturation reached after eating.\nMaximum: Displays the maximum possible saturation level of a food.",

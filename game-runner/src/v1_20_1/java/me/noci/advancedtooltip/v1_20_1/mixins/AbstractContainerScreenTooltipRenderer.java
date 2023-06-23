@@ -38,7 +38,7 @@ public abstract class AbstractContainerScreenTooltipRenderer extends Screen {
             cancellable = true
     )
     private void injectIcons(GuiGraphics graphics, int x, int y, CallbackInfo ci, ItemStack itemStack) {
-        if (!AdvancedTooltipAddon.enabled() || !itemStack.isEdible()) {
+        if (!AdvancedTooltipAddon.enabled()) {
             return;
         }
 

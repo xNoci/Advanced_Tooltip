@@ -25,7 +25,7 @@ public abstract class ScreenTooltipRenderer {
 
     @ModifyArgs(method = "renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/item/ItemStack;II)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/util/List;Ljava/util/Optional;II)V"))
     private void addIconComponents(Args args, PoseStack poseStack, ItemStack itemStack, int x, int y) {
-        if (!AdvancedTooltipAddon.enabled() || !itemStack.isEdible()) {
+        if (!AdvancedTooltipAddon.enabled()) {
             return;
         }
 

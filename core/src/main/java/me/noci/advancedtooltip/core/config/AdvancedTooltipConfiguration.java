@@ -44,6 +44,9 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     @SwitchSetting @VersionCompatibility("1.19.4<1.20.1")
     private final ConfigProperty<Boolean> foodLevel = new ConfigProperty<>(true);
 
+    @SwitchSetting @VersionCompatibility("1.19.4<1.20.1")
+    private final ConfigProperty<Boolean> showArmorBarIcons = new ConfigProperty<>(true);
+
     @VersionCompatibility("1.19.4<1.20.1")
     private final FoodIconSubSetting foodIconSettings = new FoodIconSubSetting();
 
@@ -89,6 +92,10 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
 
     public boolean showFoodLevel() {
         return this.foodLevel.get();
+    }
+
+    public boolean showArmorBarIcons() {
+        return this.showArmorBarIcons.get();
     }
 
     public ConfigProperty<Integer> iconSize() {
