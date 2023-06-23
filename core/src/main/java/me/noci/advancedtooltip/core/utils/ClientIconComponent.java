@@ -21,8 +21,8 @@ public abstract class ClientIconComponent {
 
     public ClientIconComponent(List<TooltipIcon> icons) {
         this.icons = icons;
-        this.iconSize = AdvancedTooltipAddon.getInstance().configuration().iconSize().get();
-        this.iconSpacing = AdvancedTooltipAddon.getInstance().configuration().iconSpacing().get();
+        this.iconSize = TooltipIcon.getSize(icons);
+        this.iconSpacing = TooltipIcon.getSpacing(icons);
         this.width = TooltipIcon.getWidth(icons, iconSize, iconSpacing);
 
         this.iconPaddingTop = AdvancedTooltipAddon.getInstance().configuration().iconSubSetting().paddingTop();

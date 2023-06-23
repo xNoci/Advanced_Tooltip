@@ -102,14 +102,6 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
         return this.iconSubSetting;
     }
 
-    public ConfigProperty<Integer> iconSize() {
-        return this.iconSubSetting.iconSize;
-    }
-
-    public ConfigProperty<Integer> iconSpacing() {
-        return this.iconSubSetting.iconSpacing;
-    }
-
     public DeveloperSubSetting developerSettings() {
         return this.developerSettings;
     }

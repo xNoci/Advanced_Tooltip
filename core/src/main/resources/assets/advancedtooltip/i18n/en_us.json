@@ -48,10 +48,16 @@
       },
       "iconSubSetting": {
         "name": "Icon settings",
-        "iconSize": {
+        "foodSize": {
           "name": "Icon size"
         },
-        "iconSpacing": {
+        "foodSpacing": {
+          "name": "Icon spacing"
+        },
+        "armorSize": {
+          "name": "Icon size"
+        },
+        "armorSpacing": {
           "name": "Icon spacing"
         },
         "paddingTop": {
@@ -64,6 +70,12 @@
           "name": "Left padding"
         },
         "header": {
+          "food_icons": {
+            "name": "Food icons"
+          },
+          "armor_icons": {
+            "name": "Armor icons"
+          },
           "padding": {
             "name": "Icon padding"
           }
