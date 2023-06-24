@@ -31,7 +31,7 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ValidItemI
         List<T> icons = Lists.newArrayList();
 
         for (IconQuery iconQuery : iconQueries) {
-            iconQuery.apply(itemStack, icons, convert);
+            iconQuery.apply(icons, itemStack, convert);
         }
 
         if (icons.size() > 0) {
@@ -54,7 +54,7 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ValidItemI
         return validItemInterface.isValid(itemQuery, itemStack);
     }
 
-    private <T> void apply(ItemStack itemStack, List<T> icons, Function<List<TooltipIcon>, T> convert) {
+    private <T> void apply(List<T> icons, ItemStack itemStack, Function<List<TooltipIcon>, T> convert) {
         AdvancedTooltipAddon addon = AdvancedTooltipAddon.getInstance();
         AdvancedTooltipConfiguration configuration = addon.configuration();
         ItemQuery itemQuery = addon.getItemQuery();
