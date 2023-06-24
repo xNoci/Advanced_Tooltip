@@ -56,6 +56,10 @@ public class ItemStackTooltipListener {
             handleSuspiciousStewEffect(itemStack, tooltip);
         }
 
+        if (config.showCommandBlockCommand()) {
+            handleCommandBlockCommand(itemStack, tooltip);
+        }
+
     }
 
     private void handleShowNbtData(ItemStack itemStack, List<Component> tooltip) {
@@ -105,6 +109,17 @@ public class ItemStackTooltipListener {
                         }
 
                         tooltip(tooltip, false, I18n.translate("advancedtooltip.tooltip.potion_effect.display", name, duration));
+                    }
+                });
+    }
+
+    private void handleCommandBlockCommand(ItemStack itemStack, List<Component> tooltip) {
+        itemQuery.getCommandBlockCommand(itemStack)
+                .ifPresent(command -> {
+                    if (command.isEmpty()) {
+                        tooltip(tooltip, "command_block_no_command");
+                    } else {
+                        tooltip(tooltip, "command_block_command", command);
                     }
                 });
     }

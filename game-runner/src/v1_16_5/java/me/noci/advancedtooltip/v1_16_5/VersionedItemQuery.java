@@ -13,10 +13,8 @@ import net.labymod.api.util.collection.Lists;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.MapItem;
-import net.minecraft.world.item.RecordItem;
-import net.minecraft.world.item.SuspiciousStewItem;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.block.CommandBlock;
 
 import javax.inject.Singleton;
 import java.util.ArrayList;
@@ -76,4 +74,12 @@ public class VersionedItemQuery implements ItemQuery {
         if (!itemStack.hasNBTTag()) return Optional.empty();
         return Optional.of(NBTPrinter.prettyPrint((Tag) itemStack.getNBTTag(), withArrayContent));
     }
+
+    @Override
+    public boolean isCommandBlock(ItemStack itemStack) {
+        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
+        if (!(item instanceof GameMasterBlockItem blockItem)) return false;
+        return blockItem.getBlock() instanceof CommandBlock;
+    }
+
 }

@@ -5,8 +5,10 @@ import me.noci.advancedtooltip.v1_8_9.utils.ItemCast;
 import me.noci.advancedtooltip.v1_8_9.utils.NBTPrinter;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemRecord;
 import net.minecraft.nbt.NBTBase;
@@ -38,6 +40,13 @@ public class VersionedItemQuery implements ItemQuery {
     public Optional<String> getItemNBTData(ItemStack itemStack, boolean withArrayContent) {
         if (!itemStack.hasNBTTag()) return Optional.empty();
         return Optional.of(NBTPrinter.prettyPrint((NBTBase) itemStack.getNBTTag(), withArrayContent));
+    }
+
+    @Override
+    public boolean isCommandBlock(ItemStack itemStack) {
+        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
+        if (!(item instanceof ItemBlock itemBlock)) return false;
+        return itemBlock.getBlock() == Blocks.command_block;
     }
 
 }

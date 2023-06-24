@@ -12,10 +12,8 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.MapItem;
-import net.minecraft.world.item.RecordItem;
-import net.minecraft.world.item.SuspiciousStewItem;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.block.CommandBlock;
 import org.apache.commons.compress.utils.Lists;
 
 import javax.inject.Singleton;
@@ -75,6 +73,13 @@ public class VersionedItemQuery implements ItemQuery {
     public Optional<String> getItemNBTData(ItemStack itemStack, boolean withArrayContent) {
         if (!itemStack.hasNBTTag()) return Optional.empty();
         return Optional.of(NbtUtils.prettyPrint((Tag) itemStack.getNBTTag(), withArrayContent));
+    }
+
+    @Override
+    public boolean isCommandBlock(ItemStack itemStack) {
+        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
+        if (!(item instanceof GameMasterBlockItem blockItem)) return false;
+        return blockItem.getBlock() instanceof CommandBlock;
     }
 
 }

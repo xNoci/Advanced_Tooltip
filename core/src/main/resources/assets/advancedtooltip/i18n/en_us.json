@@ -25,6 +25,10 @@
         "name": "Show durability",
         "description": "Shows the durability of an item when advanced tooltip is turned off."
       },
+      "showCommandBlockCommand": {
+        "name": "Show command block command",
+        "description": "When the command block was saved with nbt data, it will display the saved command."
+      },
       "tooltipTextColor": {
         "name": "Text color",
         "description": "Set the color of the tooltip text."
@@ -83,6 +87,8 @@
       "anvil_usages": "Anvil usages (%s)",
       "disc_signal_strength": "Disc signal strength (%s)",
       "durability": "Durability: %s/%s",
+      "command_block_command": "Command: /%s",
+      "command_block_no_command": "No command saved",
       "potion_effect": {
         "display": "%s (%s)",
         "duration_infinity": "∞"

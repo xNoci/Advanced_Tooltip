@@ -34,6 +34,9 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     @SwitchSetting
     private final ConfigProperty<Boolean> showDurability = new ConfigProperty<>(false);
 
+    @SwitchSetting
+    private final ConfigProperty<Boolean> showCommandBlockCommand = new ConfigProperty<>(true);
+
     @ColorPickerWidget.ColorPickerSetting(chroma = true)
     private final ConfigProperty<Color> tooltipTextColor = new ConfigProperty<>(Color.WHITE);
 
@@ -73,6 +76,10 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
 
     public ConfigProperty<Boolean> showDurability() {
         return this.showDurability;
+    }
+
+    public boolean showCommandBlockCommand() {
+        return this.showCommandBlockCommand.get();
     }
 
     public ConfigProperty<Color> tooltipColor() {
