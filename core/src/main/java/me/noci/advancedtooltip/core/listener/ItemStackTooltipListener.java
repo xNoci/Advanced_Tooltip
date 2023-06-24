@@ -82,9 +82,9 @@ public class ItemStackTooltipListener {
     }
 
     private void handleAnvilUses(ItemStack itemStack, List<Component> tooltip) {
-        Optional<Integer> usages = itemQuery.getAnvilUsages(itemStack);
-        if (usages.isEmpty()) return;
-        tooltip(tooltip, "anvil_usages", usages.get());
+        int usages = itemQuery.getAnvilUsages(itemStack).orElse(0);
+        if (usages == 0) return;
+        tooltip(tooltip, "anvil_usages", usages);
     }
 
     private void handleDiscSignalStrength(ItemStack itemStack, List<Component> tooltip) {
