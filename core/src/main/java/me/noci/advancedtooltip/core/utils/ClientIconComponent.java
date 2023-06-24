@@ -9,7 +9,6 @@ public abstract class ClientIconComponent {
 
     private final List<TooltipIcon> icons;
     private final int iconSize;
-    private final int iconSpacing;
     private final int width;
 
     private final int iconPaddingTop;
@@ -22,8 +21,7 @@ public abstract class ClientIconComponent {
     public ClientIconComponent(List<TooltipIcon> icons) {
         this.icons = icons;
         this.iconSize = TooltipIcon.getSize(icons);
-        this.iconSpacing = TooltipIcon.getSpacing(icons);
-        this.width = TooltipIcon.getWidth(icons, iconSize, iconSpacing);
+        this.width = TooltipIcon.getWidth(icons);
 
         this.iconPaddingTop = AdvancedTooltipAddon.getInstance().configuration().iconSubSetting().paddingTop();
         this.iconPaddingBottom = AdvancedTooltipAddon.getInstance().configuration().iconSubSetting().pattingBottom();
@@ -39,7 +37,7 @@ public abstract class ClientIconComponent {
     }
 
     public void renderIcons(Stack stack, int x, int y) {
-        TooltipIcon.drawRow(icons, stack, x + iconPaddingLeft, y + paddingTop(), iconSize, iconSpacing);
+        TooltipIcon.drawRow(icons, stack, x + iconPaddingLeft, y + paddingTop());
     }
 
     public void setFirstComponent() {

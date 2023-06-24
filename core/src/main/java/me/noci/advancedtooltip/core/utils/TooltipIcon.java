@@ -32,46 +32,58 @@ public enum TooltipIcon {
         icon.render(stack, x, y, size);
     }
 
-    public static void drawRow(List<TooltipIcon> icons, Stack stack, int x, int y, int iconSize, int iconSpacing) {
-        //TODO use getSize and getSpacing instead
+    public int getSize() {
+        IconSubSetting iconSubSetting = AdvancedTooltipAddon.getInstance().configuration().iconSubSetting();
+        return switch (iconType) {
+            case FOOD -> iconSubSetting.foodSize();
+            case ARMOR -> iconSubSetting.armorSize();
+        };
+    }
+
+    public int getSpacing() {
+        IconSubSetting iconSubSetting = AdvancedTooltipAddon.getInstance().configuration().iconSubSetting();
+        return switch (iconType) {
+            case FOOD -> iconSubSetting.foodSpacing();
+            case ARMOR -> iconSubSetting.armorSpacing();
+        };
+    }
+
+    public static void drawRow(List<TooltipIcon> icons, Stack stack, int x, int y) {
         int cx = x;
         for (TooltipIcon icon : icons) {
-            icon.draw(stack, cx, y, iconSize);
-            cx += iconSize + iconSpacing;
+            int size = icon.getSize();
+            int spacing = icon.getSpacing();
+
+            icon.draw(stack, cx, y, size);
+            cx += size + spacing;
         }
     }
 
     public static int getSize(List<TooltipIcon> icons) {
-        IconSubSetting iconSubSetting = AdvancedTooltipAddon.getInstance().configuration().iconSubSetting();
         int size = 0;
         for (TooltipIcon icon : icons) {
-            int temp = switch (icon.iconType) {
-                case FOOD -> iconSubSetting.foodSize();
-                case ARMOR -> iconSubSetting.armorSize();
-            };
+            int temp = icon.getSize();
             if (temp > size) size = temp;
         }
         return size;
     }
 
     public static int getSpacing(List<TooltipIcon> icons) {
-        IconSubSetting iconSubSetting = AdvancedTooltipAddon.getInstance().configuration().iconSubSetting();
         int spacing = 0;
         for (TooltipIcon icon : icons) {
-            int temp = switch (icon.iconType) {
-                case FOOD -> iconSubSetting.foodSpacing();
-                case ARMOR -> iconSubSetting.armorSpacing();
-            };
+            int temp = icon.getSpacing();
             if (temp > spacing) spacing = temp;
         }
         return spacing;
     }
 
-    public static int getWidth(List<TooltipIcon> icons, int iconSize, int iconSpacing) {
-        //TODO use getSize and getSpacing instead
+    public static int getWidth(List<TooltipIcon> icons) {
         int width = 0;
         for (TooltipIcon icon : icons) {
-            width += iconSize + iconSpacing;
+            int size = icon.getSize();
+            int spacing = icon.getSpacing();
+
+            width += size + spacing;
         }
         return width;
     }
