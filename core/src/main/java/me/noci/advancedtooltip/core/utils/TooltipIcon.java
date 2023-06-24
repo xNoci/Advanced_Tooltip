@@ -33,6 +33,7 @@ public enum TooltipIcon {
     }
 
     public static void drawRow(List<TooltipIcon> icons, Stack stack, int x, int y, int iconSize, int iconSpacing) {
+        //TODO use getSize and getSpacing instead
         int cx = x;
         for (TooltipIcon icon : icons) {
             icon.draw(stack, cx, y, iconSize);
@@ -67,6 +68,7 @@ public enum TooltipIcon {
     }
 
     public static int getWidth(List<TooltipIcon> icons, int iconSize, int iconSpacing) {
+        //TODO use getSize and getSpacing instead
         int width = 0;
         for (TooltipIcon icon : icons) {
             width += iconSize + iconSpacing;
