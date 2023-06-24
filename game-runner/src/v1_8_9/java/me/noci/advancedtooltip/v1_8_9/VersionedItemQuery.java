@@ -8,7 +8,6 @@ import net.labymod.api.models.Implements;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemRecord;
 import net.minecraft.nbt.NBTBase;
@@ -44,9 +43,9 @@ public class VersionedItemQuery implements ItemQuery {
 
     @Override
     public boolean isCommandBlock(ItemStack itemStack) {
-        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
-        if (!(item instanceof ItemBlock itemBlock)) return false;
-        return itemBlock.getBlock() == Blocks.command_block;
+        return ItemCast.toMinecraftBlockItem(itemStack)
+                .filter(blockItem -> blockItem.getBlock() == Blocks.command_block)
+                .isPresent();
     }
 
 }

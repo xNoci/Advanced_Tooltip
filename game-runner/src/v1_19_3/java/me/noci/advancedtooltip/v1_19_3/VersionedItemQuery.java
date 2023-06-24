@@ -77,9 +77,9 @@ public class VersionedItemQuery implements ItemQuery {
 
     @Override
     public boolean isCommandBlock(ItemStack itemStack) {
-        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
-        if (!(item instanceof GameMasterBlockItem blockItem)) return false;
-        return blockItem.getBlock() instanceof CommandBlock;
+        return ItemCast.toMinecraftBlockItem(itemStack)
+                .filter(blockItem -> blockItem.getBlock() instanceof CommandBlock)
+                .isPresent();
     }
 
 }
