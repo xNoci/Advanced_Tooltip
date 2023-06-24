@@ -91,7 +91,7 @@ public class ItemStackTooltipListener {
 
     private void handleExplorerMap(ItemStack itemStack, List<Component> tooltip) {
         itemQuery.getExplorerMapLocation(itemStack)
-                .ifPresent(mapLocation -> tooltip(tooltip, "explorer_map." + mapLocation.getType().name().toLowerCase(), mapLocation.getX(), mapLocation.getZ()));
+                .ifPresent(mapLocation -> tooltip(tooltip, "explorer_map." + mapLocation.typeAsString(), mapLocation.getX(), mapLocation.getZ()));
     }
 
     private void handleSuspiciousStewEffect(ItemStack itemStack, List<Component> tooltip) {

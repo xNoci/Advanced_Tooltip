@@ -4,7 +4,7 @@ import lombok.Getter;
 
 public class MapLocation {
 
-    @Getter private final MapType type;
+    private final MapType type;
     @Getter private final double x;
     @Getter private final double z;
 
@@ -12,6 +12,10 @@ public class MapLocation {
         this.type = MapType.byType(type);
         this.x = x;
         this.z = z;
+    }
+
+    public String typeAsString() {
+        return type.name().toLowerCase();
     }
 
     public enum MapType {
