@@ -26,6 +26,18 @@ import java.util.Optional;
 public class VersionedItemQuery implements ItemQuery {
 
     @Override
+    public boolean isArmor(ItemStack itemStack) {
+        return ItemCast.toMinecraftItemStack(itemStack).getItem() instanceof ArmorItem;
+    }
+
+    @Override
+    public Optional<Integer> getArmorBars(ItemStack itemStack) {
+        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
+        if (!(item instanceof ArmorItem armorItem)) return Optional.empty();
+        return Optional.of(armorItem.getDefense());
+    }
+
+    @Override
     public boolean isMapItem(ItemStack itemStack) {
         Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
         return item instanceof MapItem;

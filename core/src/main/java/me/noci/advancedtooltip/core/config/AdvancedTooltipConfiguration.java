@@ -18,7 +18,7 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     @SwitchSetting
     private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
 
-    @SettingSection("items")
+    @SettingSection("tooltip_text")
     @SwitchSetting
     private final ConfigProperty<Boolean> showAnvilUses = new ConfigProperty<>(true);
 
@@ -40,15 +40,18 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     @ColorPickerWidget.ColorPickerSetting(chroma = true)
     private final ConfigProperty<Color> tooltipTextColor = new ConfigProperty<>(Color.WHITE);
 
-    @SettingSection("food_info")
+    @SettingSection("tooltip_icon")
     @DropdownSetting @VersionCompatibility("1.19.4<1.20.1")
     private final ConfigProperty<SaturationType> saturationLevel = new ConfigProperty<>(SaturationType.CURRENT_SATURATION);
 
     @SwitchSetting @VersionCompatibility("1.19.4<1.20.1")
     private final ConfigProperty<Boolean> foodLevel = new ConfigProperty<>(true);
 
+    @SwitchSetting @VersionCompatibility("1.19.4<1.20.1")
+    private final ConfigProperty<Boolean> showArmorBarIcons = new ConfigProperty<>(true);
+
     @VersionCompatibility("1.19.4<1.20.1")
-    private final FoodIconSubSetting foodIconSettings = new FoodIconSubSetting();
+    private final IconSubSetting iconSubSetting = new IconSubSetting();
 
     @SettingSection("developer") @SettingExperimental
     private final DeveloperSubSetting developerSettings = new DeveloperSubSetting();
@@ -86,20 +89,24 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
         return this.tooltipTextColor;
     }
 
-    public ConfigProperty<SaturationType> saturationLevel() {
-        return this.saturationLevel;
+    public SaturationType saturationType() {
+        return this.saturationLevel.get();
     }
 
-    public ConfigProperty<Boolean> foodLevel() {
-        return this.foodLevel;
+    public boolean showSaturationLevel() {
+        return saturationType() != SaturationType.HIDDEN;
     }
 
-    public ConfigProperty<Integer> iconSize() {
-        return this.foodIconSettings.iconSize;
+    public boolean showFoodLevel() {
+        return this.foodLevel.get();
     }
 
-    public ConfigProperty<Integer> iconSpacing() {
-        return this.foodIconSettings.iconSpacing;
+    public boolean showArmorBarIcons() {
+        return this.showArmorBarIcons.get();
+    }
+
+    public IconSubSetting iconSubSetting() {
+        return this.iconSubSetting;
     }
 
     public DeveloperSubSetting developerSettings() {

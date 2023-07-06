@@ -2,7 +2,7 @@ package me.noci.advancedtooltip.v1_19_4.mixins;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
-import me.noci.advancedtooltip.core.utils.FoodIcons;
+import me.noci.advancedtooltip.core.utils.IconQuery;
 import me.noci.advancedtooltip.v1_19_4.util.ItemCast;
 import me.noci.advancedtooltip.v1_19_4.util.VersionedClientIconComponent;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
@@ -22,12 +22,12 @@ public class CreativeModeInventoryTooltipRenderer {
 
     @Inject(method = "renderTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/CreativeModeInventoryScreen;renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/util/List;Ljava/util/Optional;II)V"), locals = LocalCapture.CAPTURE_FAILHARD)
     public void renderTooltip(PoseStack poseStack, ItemStack itemStack, int x, int y, CallbackInfo ci, boolean $$4, boolean $$5, boolean $$6, TooltipFlag.Default $$7, TooltipFlag $$8, List<Component> $$9, List<Component> finalComponents) {
-        if (!AdvancedTooltipAddon.enabled() || !itemStack.isEdible()) {
+        if (!AdvancedTooltipAddon.enabled()) {
             return;
         }
 
         net.labymod.api.client.world.item.ItemStack labyItemStack = ItemCast.toLabyItemStack(itemStack);
-        List<VersionedClientIconComponent> icons = FoodIcons.getIcons(labyItemStack, VersionedClientIconComponent::new, VersionedClientIconComponent.class);
+        List<VersionedClientIconComponent> icons = IconQuery.getIcons(labyItemStack, VersionedClientIconComponent::new);
 
         finalComponents.addAll(icons);
     }
