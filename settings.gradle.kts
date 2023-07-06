@@ -1,7 +1,7 @@
-rootProject.name = "Advanced_Tooltip"
+rootProject.name = "advancedtooltip"
 
 pluginManagement {
-    val labyGradlePluginVersion = "0.3.26"
+    val labyGradlePluginVersion = "0.3.27"
     plugins {
         id("net.labymod.gradle") version (labyGradlePluginVersion)
     }
