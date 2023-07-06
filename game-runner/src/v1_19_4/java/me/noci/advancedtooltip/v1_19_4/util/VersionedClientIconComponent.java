@@ -21,8 +21,13 @@ public class VersionedClientIconComponent extends ClientIconComponent implements
     }
 
     @Override
+    public int getHeight() {
+        return super.getHeight();
+    }
+
+    @Override
     public int getWidth(Font font) {
-        return getWidth();
+        return super.getWidth();
     }
 
     @Override
