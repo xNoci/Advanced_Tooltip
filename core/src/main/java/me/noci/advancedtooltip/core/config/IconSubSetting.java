@@ -31,6 +31,9 @@ public class IconSubSetting extends Config {
     @SliderWidget.SliderSetting(min = 0.0f, max = 8.0f)
     protected final ConfigProperty<Integer> paddingLeft = new ConfigProperty<>(2);
 
+    @SliderWidget.SliderSetting(min = 0.0f, max = 16.0f)
+    protected final ConfigProperty<Integer> paddingRight = new ConfigProperty<>(2);
+
     public int foodSize() {
         return foodSize.get();
     }
@@ -57,6 +60,10 @@ public class IconSubSetting extends Config {
 
     public int pattingLeft() {
         return this.paddingLeft.get();
+    }
+
+    public int pattingRight() {
+        return this.paddingRight.get();
     }
 
 }

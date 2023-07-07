@@ -73,6 +73,9 @@
         "paddingLeft": {
           "name": "Left padding"
         },
+        "paddingRight": {
+          "name": "Right padding"
+        },
         "header": {
           "food_icons": {
             "name": "Food icons"
