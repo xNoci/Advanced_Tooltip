@@ -52,7 +52,7 @@ public class ItemStackTooltipListener {
             handleExplorerMap(itemStack, tooltip);
         }
 
-        if (config.showSuspiciousStewEffect().get()) {
+        if (config.showSuspiciousStewEffect().get() && !event.isCreative()) {
             handleSuspiciousStewEffect(itemStack, tooltip);
         }
 
