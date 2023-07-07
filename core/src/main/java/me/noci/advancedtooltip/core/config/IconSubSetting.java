@@ -22,13 +22,13 @@ public class IconSubSetting extends Config {
     protected final ConfigProperty<Integer> armorSpacing = new ConfigProperty<>(2);
 
     @SettingSection("padding")
-    @SliderWidget.SliderSetting(min = 0.0f, max = 8.0f)
+    @SliderWidget.SliderSetting(min = 0.0f, max = 16.0f)
     protected final ConfigProperty<Integer> paddingTop = new ConfigProperty<>(2);
 
-    @SliderWidget.SliderSetting(min = 0.0f, max = 8.0f)
+    @SliderWidget.SliderSetting(min = 0.0f, max = 16.0f)
     protected final ConfigProperty<Integer> paddingBottom = new ConfigProperty<>(2);
 
-    @SliderWidget.SliderSetting(min = 0.0f, max = 8.0f)
+    @SliderWidget.SliderSetting(min = 0.0f, max = 16.0f)
     protected final ConfigProperty<Integer> paddingLeft = new ConfigProperty<>(2);
 
     @SliderWidget.SliderSetting(min = 0.0f, max = 16.0f)
