@@ -37,6 +37,9 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     @SwitchSetting
     private final ConfigProperty<Boolean> showCommandBlockCommand = new ConfigProperty<>(true);
 
+    @SwitchSetting
+    private final ConfigProperty<Boolean> showSignText = new ConfigProperty<>(true);
+
     @ColorPickerWidget.ColorPickerSetting(chroma = true)
     private final ConfigProperty<Color> tooltipTextColor = new ConfigProperty<>(Color.WHITE);
 
@@ -83,6 +86,10 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
 
     public boolean showCommandBlockCommand() {
         return this.showCommandBlockCommand.get();
+    }
+
+    public boolean showSignText() {
+        return this.showSignText.get();
     }
 
     public ConfigProperty<Color> tooltipColor() {

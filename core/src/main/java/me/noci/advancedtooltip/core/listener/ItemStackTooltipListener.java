@@ -60,6 +60,10 @@ public class ItemStackTooltipListener {
             handleCommandBlockCommand(itemStack, tooltip);
         }
 
+        if (config.showSignText()) {
+            handleShowSignText(itemStack, tooltip);
+        }
+
     }
 
     private void handleShowNbtData(ItemStack itemStack, List<Component> tooltip) {
@@ -123,6 +127,31 @@ public class ItemStackTooltipListener {
                     }
                 });
     }
+
+    private void handleShowSignText(ItemStack itemStack, List<Component> tooltip) {
+        itemQuery.getSignText(itemStack)
+                .ifPresent(signText -> {
+                    boolean hasFrontText = signText.hasFrontText();
+                    boolean hasBackText = signText.hasBackText();
+
+                    if (!hasFrontText && !hasBackText) return;
+                    if (hasFrontText) {
+                        tooltip(tooltip, "sign_text.front_text");
+                        for (int i = 0; i < signText.frontText().length; i++) {
+                            tooltip(tooltip, "sign_text.line", signText.frontText()[i]);
+                        }
+                        if (hasBackText) tooltip(tooltip, false, "");
+                    }
+
+                    if (hasBackText) {
+                        tooltip(tooltip, "sign_text.back_text");
+                        for (int i = 0; i < signText.backText().length; i++) {
+                            tooltip(tooltip, "sign_text.line", signText.backText()[i]);
+                        }
+                    }
+                });
+    }
+
 
     private void tooltip(List<Component> tooltip, String key, Object... value) {
         tooltip(tooltip, true, key, value);

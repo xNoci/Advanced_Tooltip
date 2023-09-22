@@ -29,6 +29,10 @@
         "name": "Show command block command",
         "description": "When the command block was saved with nbt data, it will display the saved command."
       },
+      "showSignText": {
+        "name": "Show sign text lines",
+        "description": "When enabled shows the lines of an sign, if nbt data is saved."
+      },
       "tooltipTextColor": {
         "name": "Text color",
         "description": "Set the color of the tooltip text."
@@ -131,6 +135,11 @@
         "ocean": "Ocean monument (X: %s, Z: %s)",
         "buried_treasure": "Buried treasure (X: %s, Z: %s)",
         "unknown": "Unknown map type (X: %s, Z: %s)"
+      },
+      "sign_text": {
+        "front_text": "Front text:",
+        "back_text": "Back text:",
+        "line": "'%s'"
       }
     }
   }

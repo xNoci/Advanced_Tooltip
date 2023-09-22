@@ -1,6 +1,7 @@
 package me.noci.advancedtooltip.core.referenceable;
 
 import me.noci.advancedtooltip.core.utils.MapLocation;
+import me.noci.advancedtooltip.core.utils.SignText;
 import net.labymod.api.Laby;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.world.effect.PotionEffect;
@@ -121,6 +122,14 @@ public interface ItemQuery {
         tag = tag.getCompound("BlockEntityTag");
         if (!tag.contains("Command", NBTTagType.STRING)) return Optional.empty();
         return Optional.of(tag.getString("Command"));
+    }
+
+    default Optional<SignText> getSignText(ItemStack itemStack) {
+        int protocolVersion = Laby.labyAPI().minecraft().getProtocolVersion();
+        System.out.println(protocolVersion);
+        if (protocolVersion >= 763) return SignText.parseAboveOrEquals120(itemStack);
+        if (protocolVersion >= 754) return SignText.parseBelow120(itemStack);
+        return SignText.parseBelowOrEquals112(itemStack);
     }
 
     //-------- Utilities --------

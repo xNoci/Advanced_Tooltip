@@ -1,6 +1,7 @@
 package me.noci.advancedtooltip.v1_19_3;
 
 import me.noci.advancedtooltip.core.referenceable.ItemQuery;
+import me.noci.advancedtooltip.core.utils.NBTUtils;
 import me.noci.advancedtooltip.v1_19_3.utils.ItemCast;
 import net.labymod.api.client.world.effect.PotionEffect;
 import net.labymod.api.client.world.item.ItemStack;
@@ -43,20 +44,18 @@ public class VersionedItemQuery implements ItemQuery {
         if (!itemStack.hasNBTTag() || !itemStack.getNBTTag().contains("Effects")) return Optional.empty();
         Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
         if (!(item instanceof SuspiciousStewItem)) return Optional.empty();
-        NBTTagList effects = itemStack.getNBTTag().getList("Effects", NBTTagType.COMPOUND);
-
         ArrayList<PotionEffect> stewEffects = Lists.newArrayList();
-        for (int i = 0; i < effects.size(); i++) {
-            NBTTagCompound effect = (NBTTagCompound) effects.get(i);
 
+        NBTTagList<NBTTagCompound, ?> effects = itemStack.getNBTTag().getList("Effects", NBTTagType.COMPOUND);
+        NBTUtils.listIterator(effects).forEachRemaining(compound -> {
             int duration = SuspiciousStewItem.DEFAULT_DURATION;
-            if (effect.contains("EffectDuration", NBTTagType.INT)) {
-                duration = effect.getInt("EffectDuration");
+            if (compound.contains("EffectDuration", NBTTagType.INT)) {
+                duration = compound.getInt("EffectDuration");
             }
 
-            MobEffect mobEffect = MobEffect.byId(effect.getInt("EffectId"));
+            MobEffect mobEffect = MobEffect.byId(compound.getInt("EffectId"));
             stewEffects.add((PotionEffect) new MobEffectInstance(mobEffect, duration));
-        }
+        });
 
         return Optional.of(stewEffects);
     }
