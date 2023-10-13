@@ -74,9 +74,7 @@ public class ItemStackTooltipListener {
                     for (String s : nbt.split("\n")) {
                         tooltip(tooltip, false, s);
                     }
-                }, () -> {
-                    tooltip(tooltip, "no_nbt_data");
-                });
+                }, () -> tooltip(tooltip, "no_nbt_data"));
     }
 
     private void handleShowDurability(ItemStack itemStack, List<Component> tooltip) {

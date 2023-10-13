@@ -131,9 +131,16 @@
         "duration_infinity": "∞"
       },
       "explorer_map": {
-        "woodland": "Woodland mansion (X: %s, Z: %s)",
-        "ocean": "Ocean monument (X: %s, Z: %s)",
-        "buried_treasure": "Buried treasure (X: %s, Z: %s)",
+        "woodland": "Woodland Mansion (X: %s, Z: %s)",
+        "ocean": "Ocean Monument (X: %s, Z: %s)",
+        "buried_treasure": "Buried Treasure (X: %s, Z: %s)",
+        "desert_village": "Desert Village (X: %s, Z: %s)",
+        "plains_village": "Plains Village (X: %s, Z: %s)",
+        "savanna_village": "Savanna Village (X: %s, Z: %s)",
+        "snowy_village": "Snowy Village (X: %s, Z: %s)",
+        "taiga_village": "Taiga Village (X: %s, Z: %s)",
+        "jungle_explorer": "Jungle Temple (X: %s, Z: %s)",
+        "swamp_village": "Swamp Village (X: %s, Z: %s)",
         "unknown": "Unknown map type (X: %s, Z: %s)"
       },
       "sign_text": {

@@ -126,7 +126,6 @@ public interface ItemQuery {
 
     default Optional<SignText> getSignText(ItemStack itemStack) {
         int protocolVersion = Laby.labyAPI().minecraft().getProtocolVersion();
-        System.out.println(protocolVersion);
         if (protocolVersion >= 763) return SignText.parseAboveOrEquals120(itemStack);
         if (protocolVersion >= 754) return SignText.parseBelow120(itemStack);
         return SignText.parseBelowOrEquals112(itemStack);

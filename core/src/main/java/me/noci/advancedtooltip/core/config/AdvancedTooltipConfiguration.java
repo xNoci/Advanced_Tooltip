@@ -5,6 +5,7 @@ import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.Switc
 import net.labymod.api.client.gui.screen.widget.widgets.input.color.ColorPickerWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.input.dropdown.DropdownWidget.DropdownSetting;
 import net.labymod.api.configuration.loader.annotation.ConfigName;
+import net.labymod.api.configuration.loader.annotation.IntroducedIn;
 import net.labymod.api.configuration.loader.annotation.VersionCompatibility;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.annotation.SettingExperimental;
@@ -25,10 +26,10 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     @SwitchSetting
     private final ConfigProperty<Boolean> discSignalStrength = new ConfigProperty<>(true);
 
-    @SwitchSetting @VersionCompatibility("1.12<1.20.1")
+    @SwitchSetting @VersionCompatibility("1.12<1.20.2")
     private final ConfigProperty<Boolean> explorerMapCoordinates = new ConfigProperty<>(true);
 
-    @SwitchSetting @VersionCompatibility("1.16<1.20.1")
+    @SwitchSetting @VersionCompatibility("1.16<1.20.2")
     private final ConfigProperty<Boolean> showSuspiciousStewEffect = new ConfigProperty<>(true);
 
     @SwitchSetting
@@ -38,6 +39,7 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     private final ConfigProperty<Boolean> showCommandBlockCommand = new ConfigProperty<>(true);
 
     @SwitchSetting
+    @IntroducedIn(namespace = "advancedtooltip", value = "1.5.0")
     private final ConfigProperty<Boolean> showSignText = new ConfigProperty<>(true);
 
     @ColorPickerWidget.ColorPickerSetting(chroma = true)

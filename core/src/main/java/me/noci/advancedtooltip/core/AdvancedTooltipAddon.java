@@ -13,15 +13,13 @@ import me.noci.advancedtooltip.core.referenceable.ItemQuery;
 import net.labymod.api.Laby;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.models.addon.annotation.AddonMain;
+import net.labymod.api.revision.SimpleRevision;
+import net.labymod.api.util.version.SemanticVersion;
 
 @AddonMain
 public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration> {
 
-    private static AdvancedTooltipAddon instance;
-
-    public static AdvancedTooltipAddon getInstance() {
-        return instance;
-    }
+    @Getter private static AdvancedTooltipAddon instance;
 
     public static boolean enabled() {
         return getInstance().configuration().enabled().get();
@@ -39,6 +37,8 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
         initialiseReferences();
         registerSettingCategory();
         registerListener();
+
+        Laby.references().revisionRegistry().register(new SimpleRevision("advancedtooltip", new SemanticVersion("1.5.0"), "2023-10-13"));
     }
 
     private void initialiseReferences() {
