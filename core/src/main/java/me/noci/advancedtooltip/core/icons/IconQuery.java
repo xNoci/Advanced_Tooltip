@@ -1,4 +1,4 @@
-package me.noci.advancedtooltip.core.utils;
+package me.noci.advancedtooltip.core.icons;
 
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
 import me.noci.advancedtooltip.core.config.AdvancedTooltipConfiguration;

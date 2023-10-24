@@ -2,7 +2,7 @@ package me.noci.advancedtooltip.v1_19_4.mixins;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
-import me.noci.advancedtooltip.core.utils.IconQuery;
+import me.noci.advancedtooltip.core.icons.IconQuery;
 import me.noci.advancedtooltip.v1_19_4.util.ItemCast;
 import me.noci.advancedtooltip.v1_19_4.util.VersionedClientIconComponent;
 import net.minecraft.client.gui.screens.Screen;

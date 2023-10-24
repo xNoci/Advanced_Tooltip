@@ -1,31 +1,27 @@
-package me.noci.advancedtooltip.core.utils;
+package me.noci.advancedtooltip.core.icons;
 
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
 import me.noci.advancedtooltip.core.config.IconSubSetting;
-import net.labymod.api.Laby;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.render.matrix.Stack;
-import net.labymod.api.client.resources.ResourceLocation;
 
 import java.util.List;
 
 public enum TooltipIcon {
 
-    FULL_FOOD(IconType.FOOD, 52, 27, 8),
-    HALF_FOOD(IconType.FOOD, 61, 27, 8),
-    FULL_SATURATION(IconType.FOOD, 70, 27, 8),
-    HALF_SATURATION(IconType.FOOD, 79, 27, 8),
-    FULL_ARMOR(IconType.ARMOR, 34, 9, 9),
-    HALF_ARMOR(IconType.ARMOR, 25, 9, 9);
+    FULL_FOOD(IconType.FOOD, IconLocation.FOOD_FULL),
+    HALF_FOOD(IconType.FOOD, IconLocation.FOOD_HALF),
+    FULL_SATURATION(IconType.FOOD, IconLocation.SATURATION_FULL),
+    HALF_SATURATION(IconType.FOOD, IconLocation.SATURATION_HALF),
+    FULL_ARMOR(IconType.ARMOR, IconLocation.ARMOR_FULL),
+    HALF_ARMOR(IconType.ARMOR, IconLocation.ARMOR_HALF);
 
     private final IconType iconType;
     private final Icon icon;
 
-    TooltipIcon(IconType iconType, int x, int y, int spritSize) {
+    TooltipIcon(IconType iconType, IconLocation location) {
         this.iconType = iconType;
-
-        ResourceLocation location = Laby.labyAPI().minecraft().textures().iconsTexture();
-        this.icon = Icon.sprite(location, x, y, spritSize, spritSize, 256, 256);
+        this.icon = location.icon();
     }
 
     public void draw(Stack stack, int x, int y, int size) {
@@ -66,15 +62,6 @@ public enum TooltipIcon {
             if (temp > size) size = temp;
         }
         return size;
-    }
-
-    public static int getSpacing(List<TooltipIcon> icons) {
-        int spacing = 0;
-        for (TooltipIcon icon : icons) {
-            int temp = icon.getSpacing();
-            if (temp > spacing) spacing = temp;
-        }
-        return spacing;
     }
 
     public static int getWidth(List<TooltipIcon> icons) {

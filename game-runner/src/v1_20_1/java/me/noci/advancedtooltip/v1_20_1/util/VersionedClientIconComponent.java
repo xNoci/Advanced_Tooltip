@@ -1,7 +1,7 @@
 package me.noci.advancedtooltip.v1_20_1.util;
 
-import me.noci.advancedtooltip.core.utils.ClientIconComponent;
-import me.noci.advancedtooltip.core.utils.TooltipIcon;
+import me.noci.advancedtooltip.core.icons.ClientIconComponent;
+import me.noci.advancedtooltip.core.icons.TooltipIcon;
 import net.labymod.api.client.render.matrix.Stack;
 import net.labymod.v1_20_1.client.render.matrix.StackAccessor;
 import net.minecraft.client.gui.Font;
