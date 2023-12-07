@@ -1,8 +1,8 @@
-package me.noci.advancedtooltip.v1_20_3;
+package me.noci.advancedtooltip.v1_20_4;
 
 import me.noci.advancedtooltip.core.referenceable.ItemQuery;
 import me.noci.advancedtooltip.core.utils.NBTUtils;
-import me.noci.advancedtooltip.v1_20_3.util.ItemCast;
+import me.noci.advancedtooltip.v1_20_4.util.ItemCast;
 import net.labymod.api.client.world.effect.PotionEffect;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
