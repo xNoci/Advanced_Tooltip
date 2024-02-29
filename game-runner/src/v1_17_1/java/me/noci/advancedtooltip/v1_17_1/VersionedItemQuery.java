@@ -27,13 +27,12 @@ public class VersionedItemQuery implements ItemQuery {
 
     @Override
     public boolean isMapItem(ItemStack itemStack) {
-        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
-        return item instanceof MapItem;
+        return ItemCast.toMinecraftItem(itemStack) instanceof MapItem;
     }
 
     @Override
     public Optional<Integer> getDiscSignalStrengt(ItemStack itemStack) {
-        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
+        Item item = ItemCast.toMinecraftItem(itemStack);
         if (!(item instanceof RecordItem recordItem)) return Optional.empty();
         return Optional.of(recordItem.getAnalogOutput());
     }
@@ -41,7 +40,7 @@ public class VersionedItemQuery implements ItemQuery {
     @Override
     public Optional<List<PotionEffect>> getStewEffect(ItemStack itemStack) {
         if (!itemStack.hasNBTTag() || !itemStack.getNBTTag().contains("Effects")) return Optional.empty();
-        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
+        Item item = ItemCast.toMinecraftItem(itemStack);
         if (!(item instanceof SuspiciousStewItem)) return Optional.empty();
         NBTTagList effects = itemStack.getNBTTag().getList("Effects", NBTTagType.COMPOUND);
 
@@ -63,7 +62,7 @@ public class VersionedItemQuery implements ItemQuery {
 
     @Override
     public Optional<FoodProperties> getFoodProperties(ItemStack itemStack) {
-        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
+        Item item = ItemCast.toMinecraftItem(itemStack);
         var foodProperties = item.getFoodProperties();
         if (foodProperties == null) return Optional.empty();
         return Optional.of(new FoodProperties(foodProperties.getNutrition(), foodProperties.getSaturationModifier()));

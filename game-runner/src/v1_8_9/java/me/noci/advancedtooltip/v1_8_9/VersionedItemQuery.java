@@ -23,14 +23,14 @@ public class VersionedItemQuery implements ItemQuery {
 
     @Override
     public Optional<Integer> getDiscSignalStrengt(ItemStack itemStack) {
-        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
+        Item item = ItemCast.toMinecraftItem(itemStack);
         if (!(item instanceof ItemRecord)) return Optional.empty();
         return Optional.of(Item.getIdFromItem(item) + 1 - ITEM_RECORD_13_ID);
     }
 
     @Override
     public Optional<FoodProperties> getFoodProperties(ItemStack itemStack) {
-        Item item = ItemCast.toMinecraftItemStack(itemStack).getItem();
+        Item item = ItemCast.toMinecraftItem(itemStack);
         if (!(item instanceof ItemFood itemFood)) return Optional.empty();
         return Optional.of(new FoodProperties(itemFood.getHealAmount(null), itemFood.getSaturationModifier(null)));
     }
