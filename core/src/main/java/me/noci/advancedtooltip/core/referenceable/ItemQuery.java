@@ -130,10 +130,20 @@ public interface ItemQuery {
     }
 
     default Optional<SignText> getSignText(ItemStack itemStack) {
+        Optional<NBTTagCompound> blockEntityCompound = getBlockEntityTag(itemStack);
+        if (blockEntityCompound.isEmpty()) return Optional.empty();
+        NBTTagCompound compound = blockEntityCompound.get();
+
         int protocolVersion = Laby.labyAPI().minecraft().getProtocolVersion();
-        if (protocolVersion >= 763) return SignText.parseAboveOrEquals120(itemStack);
-        if (protocolVersion >= 754) return SignText.parseBelow120(itemStack);
-        return SignText.parseBelowOrEquals112(itemStack);
+        if (protocolVersion >= 763) return SignText.parseAboveOrEquals120(compound);
+        if (protocolVersion >= 754) return SignText.parseBelow120(compound);
+        return SignText.parseBelowOrEquals112(compound);
+    }
+
+    default Optional<NBTTagCompound> getBlockEntityTag(ItemStack itemStack) {
+        NBTTagCompound itemCompound = itemStack.getNBTTag();
+        if (itemCompound == null || !itemCompound.contains("BlockEntityTag")) return Optional.empty();
+        return Optional.of(itemCompound.getCompound("BlockEntityTag"));
     }
 
     //-------- Utilities --------

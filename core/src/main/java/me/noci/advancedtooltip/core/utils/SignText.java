@@ -3,7 +3,6 @@ package me.noci.advancedtooltip.core.utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.nbt.NBTTag;
 import net.labymod.api.nbt.NBTTagType;
 import net.labymod.api.nbt.tags.NBTTagCompound;
@@ -27,36 +26,26 @@ public record SignText(String[] frontText, String[] backText) {
         return Arrays.stream(backText).filter(Objects::nonNull).anyMatch(text -> !text.isBlank());
     }
 
-    public static Optional<SignText> parseBelowOrEquals112(ItemStack itemStack) {
-        if (!itemStack.hasNBTTag()) return Optional.empty();
+    public static Optional<SignText> parseBelowOrEquals112(NBTTagCompound blockEntityTag) {
         String[] frontText = new String[4];
-        NBTTagCompound itemCompound = itemStack.getNBTTag();
-
-        if (!itemCompound.contains("BlockEntityTag")) return Optional.empty();
-        itemCompound = itemCompound.getCompound("BlockEntityTag");
 
         for (int i = 1; i < 5; i++) {
             String tag = "Text" + i;
-            if (itemCompound.contains(tag)) {
-                frontText[i - 1] = itemCompound.getString(tag);
+            if (blockEntityTag.contains(tag)) {
+                frontText[i - 1] = blockEntityTag.getString(tag);
             }
         }
 
         return Optional.of(new SignText(frontText, null));
     }
 
-    public static Optional<SignText> parseBelow120(ItemStack itemStack) {
-        if (!itemStack.hasNBTTag()) return Optional.empty();
+    public static Optional<SignText> parseBelow120(NBTTagCompound blockEntityTag) {
         String[] frontText = new String[4];
-        NBTTagCompound itemCompound = itemStack.getNBTTag();
-
-        if (!itemCompound.contains("BlockEntityTag")) return Optional.empty();
-        itemCompound = itemCompound.getCompound("BlockEntityTag");
 
         for (int i = 1; i < 5; i++) {
             String tag = "Text" + i;
-            if (itemCompound.contains(tag)) {
-                frontText[i - 1] = GSON.fromJson(itemCompound.getString(tag), JsonObject.class).get("text").getAsString();
+            if (blockEntityTag.contains(tag)) {
+                frontText[i - 1] = GSON.fromJson(blockEntityTag.getString(tag), JsonObject.class).get("text").getAsString();
             }
         }
 
@@ -64,17 +53,12 @@ public record SignText(String[] frontText, String[] backText) {
     }
 
 
-    public static Optional<SignText> parseAboveOrEquals120(ItemStack itemStack) {
-        if (!itemStack.hasNBTTag()) return Optional.empty();
+    public static Optional<SignText> parseAboveOrEquals120(NBTTagCompound blockEntityTag) {
         String[] frontText = null;
         String[] backText = null;
-        NBTTagCompound itemCompound = itemStack.getNBTTag();
 
-        if (!itemCompound.contains("BlockEntityTag")) return Optional.empty();
-        itemCompound = itemCompound.getCompound("BlockEntityTag");
-
-        if (itemCompound.contains("front_text")) {
-            NBTTagCompound frontTextCompound = itemCompound.getCompound("front_text");
+        if (blockEntityTag.contains("front_text")) {
+            NBTTagCompound frontTextCompound = blockEntityTag.getCompound("front_text");
             NBTTagList<NBTTagString, ?> lines = frontTextCompound.getList("messages", NBTTagType.STRING);
             frontText = NBTUtils.asStream(lines)
                     .map(NBTTag::value)
@@ -83,8 +67,8 @@ public record SignText(String[] frontText, String[] backText) {
                     .toArray(String[]::new);
         }
 
-        if (itemCompound.contains("back_text")) {
-            NBTTagCompound frontTextCompound = itemCompound.getCompound("back_text");
+        if (blockEntityTag.contains("back_text")) {
+            NBTTagCompound frontTextCompound = blockEntityTag.getCompound("back_text");
             NBTTagList<NBTTagString, ?> lines = frontTextCompound.getList("messages", NBTTagType.STRING);
             backText = NBTUtils.asStream(lines)
                     .map(NBTTag::value)
