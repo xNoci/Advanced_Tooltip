@@ -34,7 +34,7 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ValidItemI
             iconQuery.apply(icons, itemStack, convert);
         }
 
-        if (icons.size() > 0) {
+        if (!icons.isEmpty()) {
             icons.get(0).setFirstComponent();
             icons.get(icons.size() - 1).setLastComponent();
         }

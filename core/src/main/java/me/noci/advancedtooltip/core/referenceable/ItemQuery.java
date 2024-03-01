@@ -1,6 +1,6 @@
 package me.noci.advancedtooltip.core.referenceable;
 
-import me.noci.advancedtooltip.core.utils.MapLocation;
+import me.noci.advancedtooltip.core.utils.MapDecorationLocation;
 import me.noci.advancedtooltip.core.utils.SignText;
 import net.labymod.api.Laby;
 import net.labymod.api.client.entity.player.ClientPlayer;
@@ -12,6 +12,7 @@ import net.labymod.api.nbt.NBTTagType;
 import net.labymod.api.nbt.tags.NBTTagCompound;
 import net.labymod.api.nbt.tags.NBTTagList;
 import net.labymod.api.reference.annotation.Referenceable;
+import net.labymod.api.util.collection.Lists;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public interface ItemQuery {
         return false;
     }
 
-    default Optional<MapLocation> getExplorerMapLocation(ItemStack itemStack) {
+    default Optional<List<MapDecorationLocation>> getMapDecorationLocations(ItemStack itemStack) {
         if (!isMapItem(itemStack) || !itemStack.hasNBTTag()) return Optional.empty();
 
         NBTTagCompound tagCompound = itemStack.getNBTTag();
@@ -41,15 +42,19 @@ public interface ItemQuery {
         NBTTagList<Object, NBTTag<Object>> decorations = tagCompound.getList("Decorations", NBTTagType.COMPOUND);
         if (decorations.isEmpty()) return Optional.empty();
 
-        NBTTag<?> decorationTag = decorations.get(0);
-        if (decorationTag.type() != NBTTagType.COMPOUND) return Optional.empty();
+        List<MapDecorationLocation> locations = Lists.newArrayList();
+        for (NBTTag<?> decorationTag : decorations.tags()) {
+            if (decorationTag.type() != NBTTagType.COMPOUND) return Optional.empty();
 
-        NBTTagCompound mapData = (NBTTagCompound) decorationTag;
-        byte type = mapData.getByte("type");
-        double x = mapData.getDouble("x");
-        double z = mapData.getDouble("z");
+            NBTTagCompound mapData = (NBTTagCompound) decorationTag;
+            byte type = mapData.getByte("type");
+            double x = mapData.getDouble("x");
+            double z = mapData.getDouble("z");
 
-        return Optional.of(new MapLocation(type, x, z));
+            locations.add(new MapDecorationLocation(type, x, z));
+        }
+
+        return Optional.of(locations);
     }
 
     Optional<Integer> getDiscSignalStrengt(ItemStack itemStack);

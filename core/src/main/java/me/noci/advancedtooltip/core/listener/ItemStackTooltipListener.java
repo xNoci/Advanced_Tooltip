@@ -3,6 +3,7 @@ package me.noci.advancedtooltip.core.listener;
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
 import me.noci.advancedtooltip.core.config.AdvancedTooltipConfiguration;
 import me.noci.advancedtooltip.core.referenceable.ItemQuery;
+import me.noci.advancedtooltip.core.utils.MapDecorationLocation;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.TextColor;
@@ -96,8 +97,16 @@ public class ItemStackTooltipListener {
     }
 
     private void handleExplorerMap(ItemStack itemStack, List<Component> tooltip) {
-        itemQuery.getExplorerMapLocation(itemStack)
-                .ifPresent(mapLocation -> tooltip(tooltip, "explorer_map." + mapLocation.typeAsString(), mapLocation.getX(), mapLocation.getZ()));
+        itemQuery.getMapDecorationLocations(itemStack)
+                .ifPresent(mapLocations -> mapLocations
+                        .stream()
+                        .filter(MapDecorationLocation::showInToolTip)
+                        .forEach(mapLocation -> {
+                            String translationKey = "explorer_map." + mapLocation.typeAsString();
+                            double x = mapLocation.getX();
+                            double z = mapLocation.getZ();
+                            tooltip(tooltip, translationKey, x, z);
+                        }));
     }
 
     private void handleSuspiciousStewEffect(ItemStack itemStack, List<Component> tooltip) {
