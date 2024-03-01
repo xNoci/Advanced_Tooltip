@@ -121,10 +121,9 @@ public interface ItemQuery {
 
     default Optional<String> getCommandBlockCommand(ItemStack itemStack) {
         if (!isCommandBlock(itemStack)) return Optional.empty();
-        if (!itemStack.hasNBTTag()) return Optional.empty();
-        NBTTagCompound tag = itemStack.getNBTTag();
-        if (!tag.contains("BlockEntityTag", NBTTagType.COMPOUND)) return Optional.empty();
-        tag = tag.getCompound("BlockEntityTag");
+        Optional<NBTTagCompound> tagCompound = getBlockEntityTag(itemStack);
+        if (tagCompound.isEmpty()) return Optional.empty();
+        NBTTagCompound tag = tagCompound.get();
         if (!tag.contains("Command", NBTTagType.STRING)) return Optional.empty();
         return Optional.of(tag.getString("Command"));
     }
