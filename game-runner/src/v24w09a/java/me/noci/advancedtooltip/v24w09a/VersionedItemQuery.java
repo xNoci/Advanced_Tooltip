@@ -2,8 +2,8 @@ package me.noci.advancedtooltip.v24w09a;
 
 import me.noci.advancedtooltip.core.referenceable.ItemQuery;
 import me.noci.advancedtooltip.core.utils.MapDecorationLocation;
-import me.noci.advancedtooltip.v24w09a.util.ItemCast;
 import me.noci.advancedtooltip.v24w09a.components.ComponentUtils;
+import me.noci.advancedtooltip.v24w09a.util.ItemCast;
 import net.labymod.api.client.world.effect.PotionEffect;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
@@ -71,10 +71,10 @@ public class VersionedItemQuery implements ItemQuery {
     }
 
     @Override
-    public Optional<String> displayItemData(ItemStack itemStack, boolean withNbtArrayData, boolean expandComponents) {
+    public Optional<String> displayItemData(ItemStack itemStack, boolean withNbtArrayData) {
         var is = ItemCast.toMinecraftItemStack(itemStack);
         if (is.getComponents().isEmpty()) return Optional.empty();
-        return Optional.of(ComponentUtils.prettyPrint(is, withNbtArrayData, expandComponents));
+        return Optional.of(ComponentUtils.prettyPrint(is));
     }
 
     @Override

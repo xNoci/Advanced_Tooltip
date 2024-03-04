@@ -9,6 +9,8 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
+import java.util.List;
+
 @Mixin(ItemEnchantments.class)
 public class ItemEnchantmentsMixin implements ItemEnchantmentsAccessor {
 
@@ -24,7 +26,7 @@ public class ItemEnchantmentsMixin implements ItemEnchantmentsAccessor {
     }
 
     @Override
-    public Enchantment[] enchantments() {
-        return enchantments.keySet().stream().map(Holder::value).toArray(Enchantment[]::new);
+    public List<Enchantment> enchantments() {
+        return enchantments.keySet().stream().map(Holder::value).toList();
     }
 }

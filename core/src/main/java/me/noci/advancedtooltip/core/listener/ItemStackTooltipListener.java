@@ -69,8 +69,7 @@ public class ItemStackTooltipListener {
 
     private void handleShowNbtData(ItemStack itemStack, List<Component> tooltip) {
         boolean withNbtArrayData = config.developerSettings().printWithNbtArrayData().get().isPressed();
-        boolean expandComponents = config.developerSettings().expandComponents().get().isPressed();
-        itemQuery.displayItemData(itemStack, withNbtArrayData, expandComponents)
+        itemQuery.displayItemData(itemStack, withNbtArrayData)
                 .ifPresentOrElse(nbt -> {
                     tooltip(tooltip, false, "");
                     for (String s : nbt.split("\n")) {

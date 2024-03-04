@@ -2,8 +2,10 @@ package me.noci.advancedtooltip.v24w09a.components.accessor;
 
 import net.minecraft.world.item.enchantment.Enchantment;
 
+import java.util.List;
+
 public interface ItemEnchantmentsAccessor {
     boolean isShownInTooltip();
 
-    Enchantment[] enchantments();
+    List<Enchantment> enchantments();
 }
