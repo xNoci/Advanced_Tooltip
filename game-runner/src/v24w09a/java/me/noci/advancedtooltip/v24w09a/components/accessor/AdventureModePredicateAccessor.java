@@ -1,4 +1,4 @@
-package me.noci.advancedtooltip.v24w09a.util.components;
+package me.noci.advancedtooltip.v24w09a.components.accessor;
 
 import net.minecraft.advancements.critereon.BlockPredicate;
 

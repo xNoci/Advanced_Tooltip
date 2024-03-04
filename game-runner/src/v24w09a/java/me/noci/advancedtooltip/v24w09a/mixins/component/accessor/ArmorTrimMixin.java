@@ -1,6 +1,6 @@
-package me.noci.advancedtooltip.v24w09a.mixins;
+package me.noci.advancedtooltip.v24w09a.mixins.component.accessor;
 
-import me.noci.advancedtooltip.v24w09a.util.components.ArmorTrimAccessor;
+import me.noci.advancedtooltip.v24w09a.components.accessor.ArmorTrimAccessor;
 import net.minecraft.world.item.armortrim.ArmorTrim;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

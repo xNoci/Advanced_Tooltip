@@ -1,7 +1,10 @@
-package me.noci.advancedtooltip.v24w09a.util.components;
+package me.noci.advancedtooltip.v24w09a.components;
 
 import com.google.common.collect.Lists;
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
+import me.noci.advancedtooltip.v24w09a.components.accessor.AdventureModePredicateAccessor;
+import me.noci.advancedtooltip.v24w09a.components.accessor.ArmorTrimAccessor;
+import me.noci.advancedtooltip.v24w09a.components.accessor.ItemEnchantmentsAccessor;
 import net.labymod.api.util.I18n;
 import net.minecraft.Util;
 import net.minecraft.advancements.critereon.BlockPredicate;

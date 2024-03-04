@@ -3,7 +3,7 @@ package me.noci.advancedtooltip.v24w09a;
 import me.noci.advancedtooltip.core.referenceable.ItemQuery;
 import me.noci.advancedtooltip.core.utils.MapDecorationLocation;
 import me.noci.advancedtooltip.v24w09a.util.ItemCast;
-import me.noci.advancedtooltip.v24w09a.util.components.ComponentUtils;
+import me.noci.advancedtooltip.v24w09a.components.ComponentUtils;
 import net.labymod.api.client.world.effect.PotionEffect;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
