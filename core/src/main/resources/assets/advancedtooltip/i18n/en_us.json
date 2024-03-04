@@ -97,14 +97,20 @@
         "debugMode": {
           "name": "Debug Mode"
         },
-        "togglePrettyPrintNBT": {
-          "name": "Toggle show item nbt data"
+        "toggleDisplayItemData": {
+          "name": "Toggle 'Show item data'"
         },
-        "prettyPrintNBT": {
-          "name": "Show item nbt data"
+        "displayItemData": {
+          "name": "Show item data",
+          "description": "<= 1.20.4: Display NBT data of an item stack.\n>= 1.20.5: Display components of an item stack."
         },
-        "printWithArrayData": {
-          "name": "Show nbt array data"
+        "printWithNbtArrayData": {
+          "name": "Show NBT array data",
+          "description": "Display values inside of an NBT array."
+        },
+        "expandComponents": {
+          "name": "Expand Components",
+          "description": "Expand lists/objects of a component when they are collapsed."
         }
       },
       "header": {
@@ -148,6 +154,14 @@
         "back_text": "Back text:",
         "line": "'%s'"
       }
+    },
+    "components": {
+      "count": "%s component(s):",
+      "pressToShowObject": "{ ... } // press '%s' to show",
+      "pressToShowList": "[ ... ] // press '%s' to show",
+      "currentlyNotSupported": "[ // not yet supported ]",
+      "potion.effect.amplified": "'%s':%s (%s)",
+      "potion.effect.not_amplified": "'%s':%s"
     }
   }
 }

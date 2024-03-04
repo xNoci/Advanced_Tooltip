@@ -83,7 +83,7 @@ public class VersionedItemQuery implements ItemQuery {
     }
 
     @Override
-    public Optional<String> getItemNBTData(ItemStack itemStack, boolean withArrayContent) {
+    public Optional<String> displayItemData(ItemStack itemStack, boolean withArrayContent, boolean expandComponents) {
         if (!itemStack.hasNBTTag()) return Optional.empty();
         return Optional.of(NbtUtils.prettyPrint((Tag) itemStack.getNBTTag(), withArrayContent));
     }

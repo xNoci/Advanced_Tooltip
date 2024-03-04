@@ -19,10 +19,10 @@ public class KeyPressListener {
     @Subscribe
     public void keyPress(KeyEvent event) {
         if (!inventoryManager.isInventoryOpen()) return;
-        if (event.key() != config.developerSettings().prettyPrintNBT().get()) return;
+        if (event.key() != config.developerSettings().displayItemData().get()) return;
         if (event.state() != KeyEvent.State.PRESS) return;
 
-        config.developerSettings().togglePrintNBT();
+        config.developerSettings().toggleDisplayItemData();
     }
 
 }

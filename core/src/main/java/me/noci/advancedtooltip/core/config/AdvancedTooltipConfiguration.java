@@ -16,7 +16,7 @@ import net.labymod.api.util.Color;
 @ConfigName("settings")
 public class AdvancedTooltipConfiguration extends AddonConfig {
 
-    private static final String LATEST_VERSION = "1.20.4";
+    public static final String LATEST_SUPPORTED_VERSION = "1.20.4";
 
     @SwitchSetting
     private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
@@ -28,10 +28,10 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     @SwitchSetting
     private final ConfigProperty<Boolean> discSignalStrength = new ConfigProperty<>(true);
 
-    @SwitchSetting @VersionCompatibility("1.12<" + LATEST_VERSION)
+    @SwitchSetting @VersionCompatibility("1.12<" + LATEST_SUPPORTED_VERSION)
     private final ConfigProperty<Boolean> explorerMapCoordinates = new ConfigProperty<>(true);
 
-    @SwitchSetting @VersionCompatibility("1.16<" + LATEST_VERSION)
+    @SwitchSetting @VersionCompatibility("1.16<" + LATEST_SUPPORTED_VERSION)
     private final ConfigProperty<Boolean> showSuspiciousStewEffect = new ConfigProperty<>(true);
 
     @SwitchSetting
@@ -48,16 +48,16 @@ public class AdvancedTooltipConfiguration extends AddonConfig {
     private final ConfigProperty<Color> tooltipTextColor = new ConfigProperty<>(Color.WHITE);
 
     @SettingSection("tooltip_icon")
-    @DropdownSetting @VersionCompatibility("1.19.4<" + LATEST_VERSION)
+    @DropdownSetting @VersionCompatibility("1.19.4<" + LATEST_SUPPORTED_VERSION)
     private final ConfigProperty<SaturationType> saturationLevel = new ConfigProperty<>(SaturationType.CURRENT_SATURATION);
 
-    @SwitchSetting @VersionCompatibility("1.19.4<" + LATEST_VERSION)
+    @SwitchSetting @VersionCompatibility("1.19.4<" + LATEST_SUPPORTED_VERSION)
     private final ConfigProperty<Boolean> foodLevel = new ConfigProperty<>(true);
 
-    @SwitchSetting @VersionCompatibility("1.19.4<" + LATEST_VERSION)
+    @SwitchSetting @VersionCompatibility("1.19.4<" + LATEST_SUPPORTED_VERSION)
     private final ConfigProperty<Boolean> showArmorBarIcons = new ConfigProperty<>(true);
 
-    @VersionCompatibility("1.19.4<" + LATEST_VERSION)
+    @VersionCompatibility("1.19.4<" + LATEST_SUPPORTED_VERSION)
     private final IconSubSetting iconSubSetting = new IconSubSetting();
 
     @SettingSection("developer") @SettingExperimental

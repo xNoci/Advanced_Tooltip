@@ -4,6 +4,7 @@ import net.labymod.api.client.gui.screen.key.Key;
 import net.labymod.api.client.gui.screen.widget.widgets.input.KeybindWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget;
 import net.labymod.api.configuration.loader.Config;
+import net.labymod.api.configuration.loader.annotation.VersionCompatibility;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.annotation.SettingExperimental;
 
@@ -13,37 +14,45 @@ public class DeveloperSubSetting extends Config {
     private final ConfigProperty<Boolean> debugMode = new ConfigProperty<>(false);
 
     @SwitchWidget.SwitchSetting @SettingExperimental
-    private final ConfigProperty<Boolean> togglePrettyPrintNBT = new ConfigProperty<>(false);
+    private final ConfigProperty<Boolean> toggleDisplayItemData = new ConfigProperty<>(false);
 
     @KeybindWidget.KeyBindSetting
-    private final ConfigProperty<Key> prettyPrintNBT = new ConfigProperty<>(Key.Y);
+    private final ConfigProperty<Key> displayItemData = new ConfigProperty<>(Key.Y);
 
     @KeybindWidget.KeyBindSetting
-    private final ConfigProperty<Key> printWithArrayData = new ConfigProperty<>(Key.L_ALT);
+    private final ConfigProperty<Key> printWithNbtArrayData = new ConfigProperty<>(Key.L_ALT);
+
+    @KeybindWidget.KeyBindSetting
+    @VersionCompatibility("1.20.5<" + AdvancedTooltipConfiguration.LATEST_SUPPORTED_VERSION)
+    private final ConfigProperty<Key> expandComponents = new ConfigProperty<>(Key.L_CONTROL);
 
     public ConfigProperty<Boolean> debugMode() {
         return this.debugMode;
     }
 
-    public ConfigProperty<Key> prettyPrintNBT() {
-        return this.prettyPrintNBT;
+    public ConfigProperty<Key> displayItemData() {
+        return this.displayItemData;
     }
 
-    public ConfigProperty<Key> printWithArrayData() {
-        return this.printWithArrayData;
+    public ConfigProperty<Key> printWithNbtArrayData() {
+        return this.printWithNbtArrayData;
+    }
+
+    public ConfigProperty<Key> expandComponents() {
+        return this.expandComponents;
     }
 
     private boolean nbtDataShownToggled = false;
 
-    public void togglePrintNBT() {
-        if (!togglePrettyPrintNBT.get()) return;
+    public void toggleDisplayItemData() {
+        if (!toggleDisplayItemData.get()) return;
         nbtDataShownToggled = !nbtDataShownToggled;
     }
 
-    public boolean showNBTData() {
-        if (!togglePrettyPrintNBT.get() && prettyPrintNBT.get().isPressed()) return true;
+    public boolean isDisplayItemData() {
+        if (!toggleDisplayItemData.get() && displayItemData.get().isPressed()) return true;
 
-        if (togglePrettyPrintNBT.get()) {
+        if (toggleDisplayItemData.get()) {
             return nbtDataShownToggled;
         }
 

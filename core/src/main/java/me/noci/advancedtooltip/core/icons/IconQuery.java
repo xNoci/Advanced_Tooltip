@@ -26,7 +26,7 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ValidItemI
     public static <T extends ClientIconComponent> List<T> getIcons(ItemStack itemStack, Function<List<TooltipIcon>, T> convert) {
         AdvancedTooltipAddon addon = AdvancedTooltipAddon.getInstance();
         AdvancedTooltipConfiguration configuration = addon.configuration();
-        if (configuration.developerSettings().showNBTData()) return List.of();
+        if (configuration.developerSettings().isDisplayItemData()) return List.of();
 
         List<T> icons = Lists.newArrayList();
 

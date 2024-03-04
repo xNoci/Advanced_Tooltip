@@ -32,7 +32,7 @@ public class ItemStackTooltipListener {
         ItemStack itemStack = event.itemStack();
         List<Component> tooltip = event.getTooltipLines();
 
-        if (config.developerSettings().showNBTData()) {
+        if (config.developerSettings().isDisplayItemData()) {
             handleShowNbtData(itemStack, tooltip);
             return;
         }
@@ -68,8 +68,9 @@ public class ItemStackTooltipListener {
     }
 
     private void handleShowNbtData(ItemStack itemStack, List<Component> tooltip) {
-        boolean withArrayContent = config.developerSettings().printWithArrayData().get().isPressed();
-        itemQuery.getItemNBTData(itemStack, withArrayContent)
+        boolean withNbtArrayData = config.developerSettings().printWithNbtArrayData().get().isPressed();
+        boolean expandComponents = config.developerSettings().expandComponents().get().isPressed();
+        itemQuery.displayItemData(itemStack, withNbtArrayData, expandComponents)
                 .ifPresentOrElse(nbt -> {
                     tooltip(tooltip, false, "");
                     for (String s : nbt.split("\n")) {

@@ -111,7 +111,7 @@ public interface ItemQuery {
         return Optional.of(newSaturation - currentPlayerSaturation);
     }
 
-    default Optional<String> getItemNBTData(ItemStack itemStack, boolean withArrayContent) {
+    default Optional<String> displayItemData(ItemStack itemStack, boolean withNbtArrayData, boolean expandComponents) {
         return Optional.empty();
     }
 
