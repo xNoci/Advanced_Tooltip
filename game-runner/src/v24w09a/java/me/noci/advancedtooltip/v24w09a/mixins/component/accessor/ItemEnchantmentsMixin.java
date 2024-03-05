@@ -14,7 +14,6 @@ import java.util.List;
 @Mixin(ItemEnchantments.class)
 public class ItemEnchantmentsMixin implements ItemEnchantmentsAccessor {
 
-
     @Final
     @Shadow boolean showInTooltip;
 

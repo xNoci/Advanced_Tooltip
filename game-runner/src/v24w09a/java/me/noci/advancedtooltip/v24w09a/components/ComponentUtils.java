@@ -1,9 +1,8 @@
 package me.noci.advancedtooltip.v24w09a.components;
 
 import com.google.common.collect.Lists;
-import me.noci.advancedtooltip.v24w09a.components.accessor.AdventureModePredicateAccessor;
-import me.noci.advancedtooltip.v24w09a.components.accessor.ArmorTrimAccessor;
-import me.noci.advancedtooltip.v24w09a.components.accessor.ItemEnchantmentsAccessor;
+import com.mojang.authlib.properties.Property;
+import me.noci.advancedtooltip.v24w09a.components.accessor.*;
 import me.noci.advancedtooltip.v24w09a.components.printer.ComponentPrinter;
 import net.labymod.api.util.I18n;
 import net.minecraft.Util;
@@ -14,7 +13,9 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Unit;
+import net.minecraft.world.LockCode;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Instrument;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
@@ -22,6 +23,9 @@ import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.armortrim.ArmorTrim;
 import net.minecraft.world.item.component.*;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.level.block.entity.BannerPatternLayers;
+import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
+import net.minecraft.world.level.block.entity.PotDecorations;
 import net.minecraft.world.level.saveddata.maps.MapId;
 
 import java.util.List;
@@ -103,7 +107,22 @@ public class ComponentUtils {
         }
 
         if (component.value() instanceof ItemAttributeModifiers modifiers) {
-            //TODO
+            var showInTooltipComponent = ComponentPrinter.value("show_in_tooltip", modifiers.showInTooltip());
+            var modifierObjects = modifiers.modifiers().stream().map(entry -> {
+                var attributeKeyComponent = ComponentPrinter.value("attribute", entry.attribute().getRegisteredName());
+                var equipmentSlotComponent = ComponentPrinter.value("equipment_slot", entry.slot().getSerializedName());
+                var attributeModifierComponent = ComponentPrinter.object("attribute_modifier",
+                        ComponentPrinter.value("amount", entry.modifier().getAmount()),
+                        ComponentPrinter.value("operation", entry.modifier().getOperation().getSerializedName()),
+                        ComponentPrinter.value("id", entry.modifier().getId().toString()),
+                        ComponentPrinter.value("name", ((AttributeModifierAccessor) entry.modifier()).getName())
+                );
+
+                return ComponentPrinter.object(attributeKeyComponent, equipmentSlotComponent, attributeModifierComponent);
+            }).toList();
+
+            var modifierListComponent = ComponentPrinter.expandableList("modifiers", modifierObjects).handler(ComponentPrinter::print);
+            return ComponentPrinter.component(component, ComponentPrinter.expandableObject(showInTooltipComponent, modifierListComponent));
         }
 
         if (component.value() instanceof ChargedProjectiles chargedProjectiles) {
@@ -230,8 +249,148 @@ public class ComponentUtils {
             return ComponentPrinter.component(component, ComponentPrinter.list("recipes", recipes).handler("'%s'"::formatted));
         }
 
-        //TODO MINECRAFT:LODESTONE_TARGET and onwards
-        //TODO https://www.minecraft.net/en-us/article/minecraft-snapshot-24w09a#:~:text=in%20standalone%20file)-,ITEM%20STACK%20COMPONENTS,-We%20are%20making
+        if (component.value() instanceof LodestoneTarget lodestoneTarget) {
+            var globalPos = lodestoneTarget.pos();
+            var blockPos = globalPos.pos();
+
+            var xComponent = ComponentPrinter.value("x", blockPos.getX());
+            var yComponent = ComponentPrinter.value("y", blockPos.getY());
+            var zComponent = ComponentPrinter.value("z", blockPos.getZ());
+            var blockPosComponent = ComponentPrinter.object("pos", xComponent, yComponent, zComponent);
+
+            var dimensionComponent = ComponentPrinter.value("dimension", globalPos.dimension().location().toString());
+            var trackedComponent = ComponentPrinter.value("tracked", lodestoneTarget.tracked());
+
+            return ComponentPrinter.component(component, ComponentPrinter.object(blockPosComponent, dimensionComponent, trackedComponent));
+        }
+
+        if (component.value() instanceof FireworkExplosion fireworkExplosion) {
+            var shapeComponent = ComponentPrinter.value("shape", fireworkExplosion.shape().name());
+            var colorsListComponent = ComponentPrinter.list("colors", fireworkExplosion.colors()).handler(ComponentUtils::toHexInt);
+            var fadeColorsListComponent = ComponentPrinter.list("fade_colors", fireworkExplosion.fadeColors()).handler(ComponentUtils::toHexInt);
+            var hasTrailComponent = ComponentPrinter.value("has_trail", fireworkExplosion.hasTrail());
+            var hasTwinkleComponent = ComponentPrinter.value("has_twinkle", fireworkExplosion.hasTwinkle());
+
+            return ComponentPrinter.component(component, ComponentPrinter.object(shapeComponent, colorsListComponent, fadeColorsListComponent, hasTrailComponent, hasTwinkleComponent));
+        }
+
+        if (component.value() instanceof Fireworks fireworks) {
+            var flightDurationComponent = ComponentPrinter.value("flight_duration", fireworks.flightDuration());
+
+            var explosionsObjectComponentList = fireworks.explosions().stream().map(explosion -> {
+                        var shapeComponent = ComponentPrinter.value("shape", explosion.shape().name());
+                        var colorsListComponent = ComponentPrinter.list("colors", explosion.colors()).handler(ComponentUtils::toHexInt);
+                        var fadeColorsListComponent = ComponentPrinter.list("fade_colors", explosion.fadeColors()).handler(ComponentUtils::toHexInt);
+                        var hasTrailComponent = ComponentPrinter.value("has_trail", explosion.hasTrail());
+                        var hasTwinkleComponent = ComponentPrinter.value("has_twinkle", explosion.hasTwinkle());
+                        return ComponentPrinter.object(shapeComponent, colorsListComponent, fadeColorsListComponent, hasTrailComponent, hasTwinkleComponent);
+                    }
+            ).toList();
+
+            var explosionsListComponent = ComponentPrinter.expandableList("explosions", explosionsObjectComponentList).handler(ComponentPrinter::print);
+            return ComponentPrinter.component(component, ComponentPrinter.object(flightDurationComponent, explosionsListComponent));
+        }
+
+        if (component.value() instanceof ResolvableProfile resolvableProfile) {
+            var nameComponent = ComponentPrinter.value("name", resolvableProfile.name());
+            var idComponent = resolvableProfile.id().map(uuid -> ComponentPrinter.value("uuid", uuid.toString()));
+            var propertiesComponent = resolvableProfile.properties().entries().stream().map(entry -> {
+                String key = entry.getKey();
+                Property property = entry.getValue();
+                List<ComponentPrinter> components = Lists.newArrayList();
+                components.add(ComponentPrinter.value("name", property.name()));
+                components.add(ComponentPrinter.value("value", property.value()));
+                if (property.hasSignature()) {
+                    components.add(ComponentPrinter.value("signature", property.signature()));
+                }
+
+                return ComponentPrinter.list(key, components).handler(ComponentPrinter::print);
+            }).toList();
+
+            List<ComponentPrinter> components = Lists.newArrayList();
+            components.add(nameComponent);
+            idComponent.ifPresent(components::add);
+            components.add(ComponentPrinter.list("properties", propertiesComponent).handler(ComponentPrinter::print));
+
+            return ComponentPrinter.component(component, ComponentPrinter.object(components.toArray(ComponentPrinter[]::new)));
+        }
+
+        if (component.value() instanceof ResourceLocation resourceLocation) {
+            return ComponentPrinter.component(component, ComponentPrinter.value("resource_location", resourceLocation.toString()));
+        }
+
+        if (component.value() instanceof DyeColor dyeColor) {
+            return ComponentPrinter.component(component, ComponentPrinter.value("dye_color", dyeColor.getName()));
+        }
+
+        if (component.value() instanceof BannerPatternLayers bannerPatternLayers) {
+            var bannerLayers = bannerPatternLayers.layers().stream().map(layer -> {
+                var patternComponent = ComponentPrinter.value("pattern", layer.pattern().getRegisteredName());
+                var dyeColorComponent = ComponentPrinter.value("dye_color", layer.color().getName());
+                return ComponentPrinter.object(patternComponent, dyeColorComponent);
+            }).toList();
+
+            var bannerLayersComponent = ComponentPrinter.expandableList("layers", bannerLayers).handler(ComponentPrinter::print);
+            return ComponentPrinter.component(component, bannerLayersComponent);
+        }
+
+        if (component.value() instanceof PotDecorations decorations) {
+            List<ComponentPrinter> components = Lists.newArrayList();
+
+            decorations.back().ifPresent(item -> components.add(ComponentPrinter.value("back", Util.getRegisteredName(BuiltInRegistries.ITEM, item))));
+            decorations.left().ifPresent(item -> components.add(ComponentPrinter.value("left", Util.getRegisteredName(BuiltInRegistries.ITEM, item))));
+            decorations.right().ifPresent(item -> components.add(ComponentPrinter.value("right", Util.getRegisteredName(BuiltInRegistries.ITEM, item))));
+            decorations.front().ifPresent(item -> components.add(ComponentPrinter.value("front", Util.getRegisteredName(BuiltInRegistries.ITEM, item))));
+
+            return ComponentPrinter.component(component, ComponentPrinter.object(components.toArray(ComponentPrinter[]::new)));
+        }
+
+        if (component.value() instanceof ItemContainerContentsAccessor contents) {
+            var slots = contents.slots().stream()
+                    .map(slot -> {
+                        String slotIndex = Integer.toString(slot.index());
+                        String itemKey = Util.getRegisteredName(BuiltInRegistries.ITEM, slot.item().getItem());
+                        return ComponentPrinter.value(slotIndex, "'%s':%s".formatted(itemKey, slot.item().getCount()));
+                    })
+                    .toArray(ComponentPrinter[]::new);
+            return ComponentPrinter.component(component, ComponentPrinter.expandableObject("slots", slots));
+        }
+
+        if (component.type() == DataComponents.BEES) {
+            @SuppressWarnings("unchecked") List<BeehiveBlockEntity.Occupant> occupants = (List<BeehiveBlockEntity.Occupant>) component.value();
+
+            var bees = occupants.stream().map(occupant -> {
+                var ticksInHiveComponent = ComponentPrinter.value("ticks_in_hive", occupant.ticksInHive());
+                var minTicksInHiveComponent = ComponentPrinter.value("min_ticks_in_hive", occupant.minTicksInHive());
+                var customData = ComponentPrinter.nbt("entity_data", occupant.entityData().copyTag());
+
+                return ComponentPrinter.object(ticksInHiveComponent, minTicksInHiveComponent, customData);
+            }).toList();
+
+            return ComponentPrinter.component(component, ComponentPrinter.list("bees", bees).handler(ComponentPrinter::print));
+        }
+
+        if (component.value() instanceof LockCode lockCode) {
+            if (lockCode.key().isBlank()) {
+                return ComponentPrinter.component(component, ComponentPrinter.text(I18n.translate("advancedtooltip.components.no_lock_set")));
+            }
+            return ComponentPrinter.component(component, ComponentPrinter.value("lock", lockCode.key()));
+        }
+
+        if (component.value() instanceof SeededContainerLoot seededContainerLoot) {
+            var lootTableComponent = ComponentPrinter.value("loot_table", seededContainerLoot.lootTable().toString());
+            var seedComponent = ComponentPrinter.value("seed", seededContainerLoot.seed());
+            return ComponentPrinter.component(component, ComponentPrinter.object(lootTableComponent, seedComponent));
+        }
+
+        if (component.value() instanceof BlockItemStateProperties properties) {
+            var propertiesMapComponent = ComponentPrinter.map("properites", properties.properties()).handler(key -> key, ComponentPrinter::text);
+            return ComponentPrinter.component(component, propertiesMapComponent);
+        }
+
+        if (component.value() instanceof Boolean value) {
+            return ComponentPrinter.component(component, ComponentPrinter.value("boolean", value));
+        }
 
         return ComponentPrinter.component(component, ComponentPrinter.unsupported());
     }

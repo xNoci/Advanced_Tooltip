@@ -10,7 +10,11 @@ import java.util.Map;
 public interface ComponentPrinter {
 
     static ComponentPrinter nbt(CompoundTag compoundTag) {
-        return new NbtPrinter(compoundTag);
+        return nbt(null, compoundTag);
+    }
+
+    static ComponentPrinter nbt(String name, CompoundTag compoundTag) {
+        return new NbtPrinter(name, compoundTag);
     }
 
     static <T> ComponentPrinter value(String name, T value) {
@@ -25,7 +29,7 @@ public interface ComponentPrinter {
         return new ObjectPrinter(name, List.of(values), false);
     }
 
-    static ComponentPrinter expandableObject(String name, ComponentPrinter values) {
+    static ComponentPrinter expandableObject(String name, ComponentPrinter... values) {
         return new ObjectPrinter(name, List.of(values), true);
     }
 

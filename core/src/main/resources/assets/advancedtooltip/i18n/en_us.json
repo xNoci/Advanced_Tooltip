@@ -161,7 +161,8 @@
       "pressToShowList": "[ ... ] // press '%s' to show",
       "currentlyNotSupported": "[ // not yet supported ]",
       "potion.effect.amplified": "'%s':%s (%s)",
-      "potion.effect.not_amplified": "'%s':%s"
+      "potion.effect.not_amplified": "'%s':%s",
+      "no_lock_set": "no lock set"
     }
   }
 }
