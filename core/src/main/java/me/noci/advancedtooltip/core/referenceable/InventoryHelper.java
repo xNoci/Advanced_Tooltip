@@ -5,7 +5,9 @@ import org.jetbrains.annotations.Nullable;
 
 @Nullable
 @Referenceable
-public interface InventoryManager {
+public interface InventoryHelper {
+
+    InventoryHelper DEFAULT = () -> false;
 
     boolean isInventoryOpen();
 

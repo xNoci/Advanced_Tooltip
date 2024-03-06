@@ -1,6 +1,6 @@
-package me.noci.advancedtooltip.v1_19_2;
+package me.noci.advancedtooltip.v1_20_2;
 
-import me.noci.advancedtooltip.core.referenceable.InventoryManager;
+import me.noci.advancedtooltip.core.referenceable.InventoryHelper;
 import net.labymod.api.models.Implements;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -9,13 +9,13 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import javax.inject.Singleton;
 
 @Singleton
-@Implements(InventoryManager.class)
-public class VersionedInventoryManager implements InventoryManager {
+@Implements(InventoryHelper.class)
+public class VersionedInventoryHelper implements InventoryHelper {
 
     @Override
     public boolean isInventoryOpen() {
         Screen screen = Minecraft.getInstance().screen;
-        if(screen == null) return false;
+        if (screen == null) return false;
         return screen instanceof AbstractContainerScreen<?>;
     }
 

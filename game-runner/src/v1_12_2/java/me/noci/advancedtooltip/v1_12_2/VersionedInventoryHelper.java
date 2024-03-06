@@ -1,6 +1,6 @@
 package me.noci.advancedtooltip.v1_12_2;
 
-import me.noci.advancedtooltip.core.referenceable.InventoryManager;
+import me.noci.advancedtooltip.core.referenceable.InventoryHelper;
 import net.labymod.api.models.Implements;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -9,8 +9,8 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import javax.inject.Singleton;
 
 @Singleton
-@Implements(InventoryManager.class)
-public class VersionedInventoryManager implements InventoryManager {
+@Implements(InventoryHelper.class)
+public class VersionedInventoryHelper implements InventoryHelper {
 
     @Override
     public boolean isInventoryOpen() {

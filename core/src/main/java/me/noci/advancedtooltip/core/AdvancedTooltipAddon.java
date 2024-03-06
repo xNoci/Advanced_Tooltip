@@ -6,10 +6,9 @@ import me.noci.advancedtooltip.core.generated.DefaultReferenceStorage;
 import me.noci.advancedtooltip.core.listener.FoodItemTooltipDebugListener;
 import me.noci.advancedtooltip.core.listener.ItemStackTooltipListener;
 import me.noci.advancedtooltip.core.listener.KeyPressListener;
-import me.noci.advancedtooltip.core.referenceable.DefaultInventoryManager;
 import me.noci.advancedtooltip.core.component.ComponentHelper;
 import me.noci.advancedtooltip.core.referenceable.DefaultItemQuery;
-import me.noci.advancedtooltip.core.referenceable.InventoryManager;
+import me.noci.advancedtooltip.core.referenceable.InventoryHelper;
 import me.noci.advancedtooltip.core.referenceable.ItemQuery;
 import net.labymod.api.Laby;
 import net.labymod.api.addon.LabyAddon;
@@ -27,7 +26,7 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
     }
 
     @Getter private ItemQuery itemQuery = new DefaultItemQuery();
-    @Getter private InventoryManager inventoryManager = new DefaultInventoryManager();
+    @Getter private InventoryHelper inventoryHelper = InventoryHelper.DEFAULT;
     @Getter private ComponentHelper componentHelper = ComponentHelper.DEFAULT;
 
     public AdvancedTooltipAddon() {
@@ -54,9 +53,9 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
             this.itemQuery = itemQuery;
         }
 
-        InventoryManager inventoryManager = referenceStorage.getInventoryManager();
+        InventoryHelper inventoryManager = referenceStorage.getInventoryHelper();
         if (inventoryManager != null) {
-            this.inventoryManager = inventoryManager;
+            this.inventoryHelper = inventoryManager;
         }
 
         ComponentHelper componentHelper = referenceStorage.getComponentHelper();
@@ -68,7 +67,7 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
     private void registerListener() {
         this.registerListener(new FoodItemTooltipDebugListener(this, this.itemQuery));
         this.registerListener(new ItemStackTooltipListener(this, this.itemQuery));
-        this.registerListener(new KeyPressListener(this, this.inventoryManager));
+        this.registerListener(new KeyPressListener(this, this.inventoryHelper));
     }
 
     @Override
