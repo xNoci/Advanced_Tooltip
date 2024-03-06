@@ -7,6 +7,7 @@ import me.noci.advancedtooltip.core.listener.FoodItemTooltipDebugListener;
 import me.noci.advancedtooltip.core.listener.ItemStackTooltipListener;
 import me.noci.advancedtooltip.core.listener.KeyPressListener;
 import me.noci.advancedtooltip.core.referenceable.DefaultInventoryManager;
+import me.noci.advancedtooltip.core.component.ComponentHelper;
 import me.noci.advancedtooltip.core.referenceable.DefaultItemQuery;
 import me.noci.advancedtooltip.core.referenceable.InventoryManager;
 import me.noci.advancedtooltip.core.referenceable.ItemQuery;
@@ -27,6 +28,7 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
 
     @Getter private ItemQuery itemQuery = new DefaultItemQuery();
     @Getter private InventoryManager inventoryManager = new DefaultInventoryManager();
+    @Getter private ComponentHelper componentHelper = ComponentHelper.DEFAULT;
 
     public AdvancedTooltipAddon() {
         instance = this;
@@ -55,6 +57,11 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
         InventoryManager inventoryManager = referenceStorage.getInventoryManager();
         if (inventoryManager != null) {
             this.inventoryManager = inventoryManager;
+        }
+
+        ComponentHelper componentHelper = referenceStorage.getComponentHelper();
+        if (componentHelper != null) {
+            this.componentHelper = componentHelper;
         }
     }
 

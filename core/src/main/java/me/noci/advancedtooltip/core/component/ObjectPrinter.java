@@ -1,4 +1,4 @@
-package me.noci.advancedtooltip.v24w10a.components.printer;
+package me.noci.advancedtooltip.core.component;
 
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
 import net.labymod.api.util.I18n;

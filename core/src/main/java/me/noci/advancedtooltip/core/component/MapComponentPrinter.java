@@ -1,4 +1,4 @@
-package me.noci.advancedtooltip.v24w10a.components.printer;
+package me.noci.advancedtooltip.core.component;
 
 public interface MapComponentPrinter<K, V> extends ComponentPrinter {
 

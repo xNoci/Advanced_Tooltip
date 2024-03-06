@@ -1,21 +1,21 @@
-package me.noci.advancedtooltip.v24w10a.components.printer;
+package me.noci.advancedtooltip.core.component;
 
-import net.minecraft.core.component.TypedDataComponent;
+import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
 
-public class DataComponentPrinter<T> implements ComponentPrinter {
+public class DataComponentPrinter implements ComponentPrinter {
 
-    private final TypedDataComponent<?> component;
+    private final String componentName;
     private final ComponentPrinter componentPrinter;
     private int indentLevel = 0;
 
-    protected DataComponentPrinter(TypedDataComponent<T> component, ComponentPrinter componentPrinter) {
-        this.component = component;
+    protected DataComponentPrinter(Object component, ComponentPrinter componentPrinter) {
+        this.componentName = AdvancedTooltipAddon.getInstance().getComponentHelper().componentName(component).orElse("UNKNOWN");
         this.componentPrinter = componentPrinter;
     }
 
     @Override
     public String print() {
-        return component.type() + "=>[" + componentPrinter.print() + "]";
+        return componentName + "=>[" + componentPrinter.print() + "]";
     }
 
     @Override

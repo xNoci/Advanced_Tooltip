@@ -1,8 +1,8 @@
-package me.noci.advancedtooltip.v24w10a.components.printer;
+package me.noci.advancedtooltip.core.component;
 
-import com.google.common.collect.Lists;
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
 import net.labymod.api.util.I18n;
+import net.labymod.api.util.collection.Lists;
 
 import java.util.List;
 import java.util.Map;
@@ -13,8 +13,10 @@ public class MapPrinter<K, V> implements MapComponentPrinter<K, V> {
     private final Map<K, V> map;
     private final boolean expandable;
     private int indentLevel = 0;
-    @SuppressWarnings("unchecked") private ValueHandler<String, K> keyHandler = (ValueHandler<String, K>) ValueHandler.DEFAULT;
-    @SuppressWarnings("unchecked") private ValueHandler<ComponentPrinter, V> valueHandler = (ValueHandler<ComponentPrinter, V>) ValueHandler.DEFAULT;
+    @SuppressWarnings("unchecked")
+    private ValueHandler<String, K> keyHandler = (ValueHandler<String, K>) ValueHandler.DEFAULT;
+    @SuppressWarnings("unchecked")
+    private ValueHandler<ComponentPrinter, V> valueHandler = (ValueHandler<ComponentPrinter, V>) ValueHandler.DEFAULT;
 
     protected MapPrinter(String name, Map<K, V> map, boolean expandable) {
         this.name = name;

@@ -1,19 +1,17 @@
-package me.noci.advancedtooltip.v24w10a.components.printer;
+package me.noci.advancedtooltip.core.component;
 
 import net.labymod.api.util.I18n;
-import net.minecraft.core.component.TypedDataComponent;
-import net.minecraft.nbt.CompoundTag;
 
 import java.util.List;
 import java.util.Map;
 
 public interface ComponentPrinter {
 
-    static ComponentPrinter nbt(CompoundTag compoundTag) {
+    static ComponentPrinter nbt(Object compoundTag) {
         return nbt(null, compoundTag);
     }
 
-    static ComponentPrinter nbt(String name, CompoundTag compoundTag) {
+    static ComponentPrinter nbt(String name, Object compoundTag) {
         return new NbtPrinter(name, compoundTag);
     }
 
@@ -73,8 +71,8 @@ public interface ComponentPrinter {
         return new ListPrinter<>(name, values, true);
     }
 
-    static <T> ComponentPrinter component(TypedDataComponent<T> component, ComponentPrinter printer) {
-        return new DataComponentPrinter<>(component, printer);
+    static ComponentPrinter component(Object component, ComponentPrinter printer) {
+        return new DataComponentPrinter(component, printer);
     }
 
     static ComponentPrinter unsupported() {
