@@ -3,6 +3,7 @@ package me.noci.advancedtooltip.v1_20_2.util;
 import me.noci.advancedtooltip.core.icons.ClientIconComponent;
 import me.noci.advancedtooltip.core.icons.TooltipIcon;
 import net.labymod.api.client.render.matrix.Stack;
+import net.labymod.api.client.render.matrix.VanillaStackAccessor;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -31,7 +32,7 @@ public class VersionedClientIconComponent extends ClientIconComponent implements
 
     @Override
     public void renderImage(Font font, int x, int y, GuiGraphics graphics) {
-        Stack stack = Stack.create(graphics.pose());
+        Stack stack = ((VanillaStackAccessor) graphics.pose()).stack();
         renderIcons(stack, x, y);
     }
 
