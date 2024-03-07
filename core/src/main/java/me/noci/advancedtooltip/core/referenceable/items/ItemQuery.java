@@ -1,11 +1,8 @@
-package me.noci.advancedtooltip.core.referenceable;
+package me.noci.advancedtooltip.core.referenceable.items;
 
 import me.noci.advancedtooltip.core.utils.MapDecorationLocation;
 import me.noci.advancedtooltip.core.utils.SignText;
 import net.labymod.api.Laby;
-import net.labymod.api.client.entity.player.ClientPlayer;
-import net.labymod.api.client.world.effect.PotionEffect;
-import net.labymod.api.client.world.food.FoodData;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.nbt.NBTTag;
 import net.labymod.api.nbt.NBTTagType;
@@ -71,45 +68,7 @@ public interface ItemQuery {
         return repairCost.map(integer -> log2(integer + 1));
     }
 
-    default Optional<List<PotionEffect>> getStewEffect(ItemStack itemStack) {
-        return Optional.empty();
-    }
 
-    Optional<FoodProperties> getFoodProperties(ItemStack itemStack);
-
-    default Optional<Integer> getNutrition(ItemStack itemStack) {
-        Optional<FoodProperties> foodProperties = getFoodProperties(itemStack);
-        return foodProperties.map(FoodProperties::nutrition);
-    }
-
-    default Optional<Float> getSaturationModifier(ItemStack itemStack) {
-        Optional<FoodProperties> foodProperties = getFoodProperties(itemStack);
-        return foodProperties.map(FoodProperties::saturationModifier);
-    }
-
-    default Optional<Float> getSaturationIncrement(ItemStack itemStack) {
-        Optional<Integer> foodLevel = getNutrition(itemStack);
-        Optional<Float> saturationModifier = getSaturationModifier(itemStack);
-
-        if (foodLevel.isEmpty() || saturationModifier.isEmpty()) return Optional.empty();
-        return Optional.of(foodLevel.get() * saturationModifier.get() * 2f);
-    }
-
-    default Optional<Float> getAddedSaturation(ItemStack itemStack) {
-        ClientPlayer clientPlayer = Laby.labyAPI().minecraft().getClientPlayer();
-        if (clientPlayer == null) return Optional.empty();
-
-        Optional<Integer> foodLevel = getNutrition(itemStack);
-        Optional<Float> saturationModifier = getSaturationModifier(itemStack);
-        if (foodLevel.isEmpty() || saturationModifier.isEmpty()) return Optional.empty();
-
-        FoodData foodData = clientPlayer.foodData();
-        float currentPlayerSaturation = foodData.getSaturationLevel();
-        int newFoodLevel = Math.min(foodData.getFoodLevel() + foodLevel.get(), 20);
-        float newSaturation = Math.min(foodData.getSaturationLevel() + saturationModifier.get(), newFoodLevel);
-
-        return Optional.of(newSaturation - currentPlayerSaturation);
-    }
 
     default Optional<String> displayItemData(ItemStack itemStack, boolean withNbtArrayData) {
         return Optional.empty();
@@ -150,9 +109,6 @@ public interface ItemQuery {
     //https://stackoverflow.com/a/3305400
     private static int log2(int x) {
         return (int) (Math.log(x) / Math.log(2) + 1e-10);
-    }
-
-    record FoodProperties(int nutrition, float saturationModifier) {
     }
 
 }

@@ -1,7 +1,7 @@
 package me.noci.advancedtooltip.core.listener;
 
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
-import me.noci.advancedtooltip.core.referenceable.ItemQuery;
+import me.noci.advancedtooltip.core.referenceable.items.FoodItems;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.entity.player.ClientPlayer;
@@ -16,12 +16,12 @@ import java.util.Optional;
 public class FoodItemTooltipDebugListener {
 
     private final AdvancedTooltipAddon addon;
-    private final ItemQuery itemQuery;
+    private final FoodItems foodItems;
 
 
-    public FoodItemTooltipDebugListener(AdvancedTooltipAddon addon, ItemQuery itemQuery) {
+    public FoodItemTooltipDebugListener(AdvancedTooltipAddon addon, FoodItems foodItems) {
         this.addon = addon;
-        this.itemQuery = itemQuery;
+        this.foodItems = foodItems;
     }
 
     @Subscribe
@@ -31,8 +31,8 @@ public class FoodItemTooltipDebugListener {
             return;
         }
 
-        Optional<Float> saturationIncrement = itemQuery.getSaturationIncrement(itemStack);
-        Optional<Float> addedSaturation = itemQuery.getAddedSaturation(itemStack);
+        Optional<Float> saturationIncrement = foodItems.saturationIncrement(itemStack);
+        Optional<Float> addedSaturation = foodItems.addedSaturation(itemStack);
         if (saturationIncrement.isEmpty() || addedSaturation.isEmpty()) return;
 
         ClientPlayer clientPlayer = Laby.labyAPI().minecraft().getClientPlayer();

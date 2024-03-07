@@ -1,21 +1,18 @@
 package me.noci.advancedtooltip.v24w10a;
 
-import me.noci.advancedtooltip.core.referenceable.ItemQuery;
+import me.noci.advancedtooltip.core.referenceable.items.ItemQuery;
 import me.noci.advancedtooltip.core.utils.MapDecorationLocation;
 import me.noci.advancedtooltip.v24w10a.components.ComponentUtils;
-import me.noci.advancedtooltip.v24w10a.util.ItemCast;
-import net.labymod.api.client.world.effect.PotionEffect;
+import me.noci.advancedtooltip.v24w10a.utils.ItemCast;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
 import net.labymod.api.nbt.tags.NBTTagCompound;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.RecordItem;
 import net.minecraft.world.item.component.CustomData;
-import net.minecraft.world.item.component.SuspiciousStewEffects;
 import net.minecraft.world.level.block.CommandBlock;
 
 import javax.inject.Singleton;
@@ -48,26 +45,6 @@ public class VersionedItemQuery implements ItemQuery {
         Item item = ItemCast.toMinecraftItem(itemStack);
         if (!(item instanceof RecordItem recordItem)) return Optional.empty();
         return Optional.of(recordItem.getAnalogOutput());
-    }
-
-    @Override
-    public Optional<List<PotionEffect>> getStewEffect(ItemStack itemStack) {
-        var is = ItemCast.toMinecraftItemStack(itemStack);
-        SuspiciousStewEffects stewEffects = is.get(DataComponents.SUSPICIOUS_STEW_EFFECTS);
-        if (stewEffects == null) return Optional.empty();
-        var effects = stewEffects.effects()
-                .stream()
-                .map(entry -> (PotionEffect) new MobEffectInstance(entry.effect(), entry.duration()))
-                .toList();
-        return Optional.of(effects);
-    }
-
-    @Override
-    public Optional<FoodProperties> getFoodProperties(ItemStack itemStack) {
-        Item item = ItemCast.toMinecraftItem(itemStack);
-        var foodProperties = item.getFoodProperties();
-        if (foodProperties == null) return Optional.empty();
-        return Optional.of(new FoodProperties(foodProperties.getNutrition(), foodProperties.getSaturationModifier()));
     }
 
     @Override

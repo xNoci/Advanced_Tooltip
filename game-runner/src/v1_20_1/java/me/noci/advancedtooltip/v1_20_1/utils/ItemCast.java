@@ -1,4 +1,4 @@
-package me.noci.advancedtooltip.v24w10a.util;
+package me.noci.advancedtooltip.v1_20_1.utils;
 
 import net.labymod.api.client.world.item.ItemStack;
 import net.minecraft.world.item.BlockItem;

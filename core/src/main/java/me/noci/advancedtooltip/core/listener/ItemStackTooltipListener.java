@@ -2,7 +2,8 @@ package me.noci.advancedtooltip.core.listener;
 
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
 import me.noci.advancedtooltip.core.config.AdvancedTooltipConfiguration;
-import me.noci.advancedtooltip.core.referenceable.ItemQuery;
+import me.noci.advancedtooltip.core.referenceable.items.FoodItems;
+import me.noci.advancedtooltip.core.referenceable.items.ItemQuery;
 import me.noci.advancedtooltip.core.utils.MapDecorationLocation;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
@@ -20,10 +21,12 @@ import java.util.List;
 public class ItemStackTooltipListener {
 
     private final AdvancedTooltipConfiguration config;
+    private final FoodItems foodItems;
     private final ItemQuery itemQuery;
 
-    public ItemStackTooltipListener(AdvancedTooltipAddon addon, ItemQuery itemQuery) {
+    public ItemStackTooltipListener(AdvancedTooltipAddon addon, FoodItems foodItems, ItemQuery itemQuery) {
         this.config = addon.configuration();
+        this.foodItems = foodItems;
         this.itemQuery = itemQuery;
     }
 
@@ -110,7 +113,7 @@ public class ItemStackTooltipListener {
     }
 
     private void handleSuspiciousStewEffect(ItemStack itemStack, List<Component> tooltip) {
-        itemQuery.getStewEffect(itemStack)
+        foodItems.stewEffect(itemStack)
                 .ifPresent(stewEffects -> {
                     for (PotionEffect stewEffect : stewEffects) {
                         String name = Laby.labyAPI().minecraft().getTranslation(stewEffect.getTranslationKey());

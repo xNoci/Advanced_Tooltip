@@ -1,4 +1,4 @@
-package me.noci.advancedtooltip.v1_19_4.util;
+package me.noci.advancedtooltip.v1_19_4.utils;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import me.noci.advancedtooltip.core.icons.ClientIconComponent;

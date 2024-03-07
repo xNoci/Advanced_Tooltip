@@ -1,4 +1,4 @@
-package me.noci.advancedtooltip.v1_20_4.util;
+package me.noci.advancedtooltip.v1_20_2.utils;
 
 import me.noci.advancedtooltip.core.icons.ClientIconComponent;
 import me.noci.advancedtooltip.core.icons.TooltipIcon;

@@ -2,8 +2,8 @@ package me.noci.advancedtooltip.v1_20_2.mixins;
 
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
 import me.noci.advancedtooltip.core.icons.IconQuery;
-import me.noci.advancedtooltip.v1_20_2.util.ItemCast;
-import me.noci.advancedtooltip.v1_20_2.util.VersionedClientIconComponent;
+import me.noci.advancedtooltip.v1_20_2.utils.ItemCast;
+import me.noci.advancedtooltip.v1_20_2.utils.VersionedClientIconComponent;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;

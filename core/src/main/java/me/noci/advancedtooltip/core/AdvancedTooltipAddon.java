@@ -7,9 +7,10 @@ import me.noci.advancedtooltip.core.listener.FoodItemTooltipDebugListener;
 import me.noci.advancedtooltip.core.listener.ItemStackTooltipListener;
 import me.noci.advancedtooltip.core.listener.KeyPressListener;
 import me.noci.advancedtooltip.core.component.ComponentHelper;
-import me.noci.advancedtooltip.core.referenceable.DefaultItemQuery;
+import me.noci.advancedtooltip.core.referenceable.items.DefaultItemQuery;
 import me.noci.advancedtooltip.core.referenceable.InventoryHelper;
-import me.noci.advancedtooltip.core.referenceable.ItemQuery;
+import me.noci.advancedtooltip.core.referenceable.items.FoodItems;
+import me.noci.advancedtooltip.core.referenceable.items.ItemQuery;
 import net.labymod.api.Laby;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.models.addon.annotation.AddonMain;
@@ -25,6 +26,7 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
         return getInstance().configuration().enabled().get();
     }
 
+    @Getter private FoodItems foodItems = FoodItems.DEFAULT;
     @Getter private ItemQuery itemQuery = new DefaultItemQuery();
     @Getter private InventoryHelper inventoryHelper = InventoryHelper.DEFAULT;
     @Getter private ComponentHelper componentHelper = ComponentHelper.DEFAULT;
@@ -48,6 +50,11 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
     private void initialiseReferences() {
         DefaultReferenceStorage referenceStorage = this.referenceStorageAccessor();
 
+        FoodItems foodItems = referenceStorage.getFoodItems();
+        if(itemQuery != null) {
+            this.foodItems = foodItems;
+        }
+
         ItemQuery itemQuery = referenceStorage.getItemQuery();
         if (itemQuery != null) {
             this.itemQuery = itemQuery;
@@ -65,8 +72,8 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
     }
 
     private void registerListener() {
-        this.registerListener(new FoodItemTooltipDebugListener(this, this.itemQuery));
-        this.registerListener(new ItemStackTooltipListener(this, this.itemQuery));
+        this.registerListener(new FoodItemTooltipDebugListener(this, this.foodItems));
+        this.registerListener(new ItemStackTooltipListener(this, this.foodItems, this.itemQuery));
         this.registerListener(new KeyPressListener(this, this.inventoryHelper));
     }
 
