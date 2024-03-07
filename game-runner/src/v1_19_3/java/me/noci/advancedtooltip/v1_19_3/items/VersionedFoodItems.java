@@ -13,7 +13,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SuspiciousStewItem;
 
 import javax.inject.Singleton;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,17 +28,16 @@ public class VersionedFoodItems extends FoodItems.DefaultFoodItems {
         if (!itemStack.hasTag() || !itemStack.getTag().contains("Effects")) return Optional.empty();
 
         ListTag effects = itemStack.getTag().getList("Effects", ListTag.TAG_COMPOUND);
-        ArrayList<PotionEffect> stewEffects = org.apache.commons.compress.utils.Lists.newArrayList();
-
-        effects.stream().map(tag -> (CompoundTag) tag).forEach(effect -> {
+        List<PotionEffect> stewEffects = effects.stream().map(tag -> {
+            var compound = (CompoundTag) tag;
             int duration = 160;
-            if (effect.contains("EffectDuration", CompoundTag.TAG_INT)) {
-                duration = effect.getInt("EffectDuration");
+            if (compound.contains("EffectDuration", CompoundTag.TAG_INT)) {
+                duration = compound.getInt("EffectDuration");
             }
 
-            MobEffect mobEffect = MobEffect.byId(effect.getInt("EffectId"));
-            stewEffects.add((PotionEffect) new MobEffectInstance(mobEffect, duration));
-        });
+            MobEffect mobEffect = MobEffect.byId(compound.getInt("EffectId"));
+            return (PotionEffect) new MobEffectInstance(mobEffect, duration);
+        }).toList();
 
         return Optional.of(stewEffects);
     }
@@ -48,7 +46,6 @@ public class VersionedFoodItems extends FoodItems.DefaultFoodItems {
     public Optional<FoodProperties> foodProperties(ItemStack itemStack) {
         Item item = ItemCast.toMinecraftItem(itemStack);
         var foodProperties = item.getFoodProperties();
-
         if (foodProperties == null) return Optional.empty();
         return Optional.of(new FoodProperties(foodProperties.getNutrition(), foodProperties.getSaturationModifier()));
     }
