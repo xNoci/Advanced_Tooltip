@@ -14,7 +14,7 @@ import net.labymod.api.util.Color;
 
 @SuppressWarnings("FieldMayBeFinal")
 @ConfigName("settings")
-public class AdvancedTooltipConfiguration extends AddonConfig {
+public class TooltipConfiguration extends AddonConfig {
 
     public static final String LATEST_SUPPORTED_VERSION = "1.20.4";
 

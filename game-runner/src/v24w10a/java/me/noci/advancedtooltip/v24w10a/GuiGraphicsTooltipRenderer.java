@@ -1,6 +1,6 @@
 package me.noci.advancedtooltip.v24w10a;
 
-import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
+import me.noci.advancedtooltip.core.TooltipAddon;
 import me.noci.advancedtooltip.v24w10a.utils.VersionedClientIconComponent;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -19,7 +19,7 @@ public class GuiGraphicsTooltipRenderer {
 
     @ModifyVariable(method = "renderTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V", at = @At(value = "STORE"), index = 6)
     private List<ClientTooltipComponent> alterComponentList(List<ClientTooltipComponent> original, Font font, List<Component> components) {
-        if (!AdvancedTooltipAddon.enabled()) return original;
+        if (!TooltipAddon.enabled()) return original;
 
         return components.stream().map(component -> {
             if (component instanceof VersionedClientIconComponent iconComponent) {

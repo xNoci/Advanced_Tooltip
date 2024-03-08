@@ -1,6 +1,6 @@
 package me.noci.advancedtooltip.core.icons;
 
-import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
+import me.noci.advancedtooltip.core.TooltipAddon;
 import me.noci.advancedtooltip.core.config.IconSubSetting;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.render.matrix.Stack;
@@ -29,7 +29,7 @@ public enum TooltipIcon {
     }
 
     public int getSize() {
-        IconSubSetting iconSubSetting = AdvancedTooltipAddon.getInstance().configuration().iconSubSetting();
+        IconSubSetting iconSubSetting = TooltipAddon.get().configuration().iconSubSetting();
         return switch (iconType) {
             case FOOD -> iconSubSetting.foodSize();
             case ARMOR -> iconSubSetting.armorSize();
@@ -37,7 +37,7 @@ public enum TooltipIcon {
     }
 
     public int getSpacing() {
-        IconSubSetting iconSubSetting = AdvancedTooltipAddon.getInstance().configuration().iconSubSetting();
+        IconSubSetting iconSubSetting = TooltipAddon.get().configuration().iconSubSetting();
         return switch (iconType) {
             case FOOD -> iconSubSetting.foodSpacing();
             case ARMOR -> iconSubSetting.armorSpacing();

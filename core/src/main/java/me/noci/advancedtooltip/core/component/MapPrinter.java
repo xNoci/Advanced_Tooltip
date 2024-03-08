@@ -1,6 +1,6 @@
 package me.noci.advancedtooltip.core.component;
 
-import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
+import me.noci.advancedtooltip.core.TooltipAddon;
 import net.labymod.api.util.I18n;
 import net.labymod.api.util.collection.Lists;
 
@@ -31,9 +31,9 @@ public class MapPrinter<K, V> implements MapComponentPrinter<K, V> {
             return name + ": {}";
         }
 
-        boolean expandComponents = AdvancedTooltipAddon.getInstance().configuration().developerSettings().expandComponents().get().isPressed();
+        boolean expandComponents = TooltipAddon.get().configuration().developerSettings().expandComponents().get().isPressed();
         if (expandable && !expandComponents) {
-            String keyTranslationKey = AdvancedTooltipAddon.getInstance().configuration().developerSettings().expandComponents().get().getTranslationKey();
+            String keyTranslationKey = TooltipAddon.get().configuration().developerSettings().expandComponents().get().getTranslationKey();
             return name + ": " + I18n.translate("advancedtooltip.components.pressToShowObject", I18n.translate(keyTranslationKey));
         }
 

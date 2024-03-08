@@ -1,6 +1,6 @@
 package me.noci.advancedtooltip.core.component;
 
-import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
+import me.noci.advancedtooltip.core.TooltipAddon;
 import net.labymod.api.util.I18n;
 
 import java.util.List;
@@ -26,9 +26,9 @@ public class ListPrinter<T> implements ListComponentPrinter<T> {
             return name + ": []";
         }
 
-        boolean expandComponents = AdvancedTooltipAddon.getInstance().configuration().developerSettings().expandComponents().get().isPressed();
+        boolean expandComponents = TooltipAddon.get().configuration().developerSettings().expandComponents().get().isPressed();
         if (expandable && !expandComponents) {
-            String keyTranslationKey = AdvancedTooltipAddon.getInstance().configuration().developerSettings().expandComponents().get().getTranslationKey();
+            String keyTranslationKey = TooltipAddon.get().configuration().developerSettings().expandComponents().get().getTranslationKey();
             return name + ": " + I18n.translate("advancedtooltip.components.pressToShowList", I18n.translate(keyTranslationKey));
         }
 

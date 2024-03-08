@@ -1,7 +1,7 @@
 package me.noci.advancedtooltip.core.icons;
 
-import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
-import me.noci.advancedtooltip.core.config.AdvancedTooltipConfiguration;
+import me.noci.advancedtooltip.core.TooltipAddon;
+import me.noci.advancedtooltip.core.config.TooltipConfiguration;
 import me.noci.advancedtooltip.core.config.SaturationType;
 import me.noci.advancedtooltip.core.referenceable.items.FoodItems;
 import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
@@ -25,8 +25,8 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValida
     }
 
     public static <T extends ClientIconComponent> List<T> getIcons(ItemStack itemStack, Function<List<TooltipIcon>, T> convert) {
-        AdvancedTooltipAddon addon = AdvancedTooltipAddon.getInstance();
-        AdvancedTooltipConfiguration config = addon.configuration();
+        TooltipAddon addon = TooltipAddon.get();
+        TooltipConfiguration config = addon.configuration();
         if (config.developerSettings().isDisplayItemData()) return List.of();
 
         List<T> icons = Lists.newArrayList();
@@ -44,16 +44,15 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValida
     }
 
     private <T> void apply(List<T> icons, ItemStack itemStack, Function<List<TooltipIcon>, T> convert) {
-        AdvancedTooltipAddon addon = AdvancedTooltipAddon.getInstance();
-        AdvancedTooltipConfiguration configuration = addon.configuration();
-        FoodItems foodItems = addon.getFoodItems();
-        ItemHelper itemHelper = addon.getItemHelper();
+        TooltipConfiguration config = TooltipAddon.get().configuration();
+        FoodItems foodItems = TooltipAddon.foodItems();
+        ItemHelper itemHelper = TooltipAddon.itemHelper();
 
         if (!itemValidator.isValid(itemHelper, itemStack)) return;
-        if (!showFunction.shouldShow(configuration)) return;
+        if (!showFunction.shouldShow(config)) return;
         List<TooltipIcon> temp = Lists.newArrayList();
 
-        float level = levelFunction.get(configuration, foodItems, itemHelper, itemStack);
+        float level = levelFunction.get(config, foodItems, itemHelper, itemStack);
         while (level >= 2) {
             level -= 2;
             temp.add(full_icon);
@@ -81,9 +80,9 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValida
         LevelFunction SATURATION = (c, fi, iq, is) -> (c.saturationType() == SaturationType.MAX_SATURATION) ? fi.saturationIncrement(is) : fi.addedSaturation(is);
         LevelFunction ARMOR_BARS = (c, fi, ih, is) -> ih.armorBars(is);
 
-        Optional<? extends Number> apply(AdvancedTooltipConfiguration config, FoodItems foodItems, ItemHelper itemHelper, ItemStack itemStack);
+        Optional<? extends Number> apply(TooltipConfiguration config, FoodItems foodItems, ItemHelper itemHelper, ItemStack itemStack);
 
-        default float get(AdvancedTooltipConfiguration config, FoodItems foodItems, ItemHelper itemHelper, ItemStack itemStack) {
+        default float get(TooltipConfiguration config, FoodItems foodItems, ItemHelper itemHelper, ItemStack itemStack) {
             return apply(config, foodItems, itemHelper, itemStack).map(Number::floatValue).orElse(0F);
         }
     }
@@ -91,11 +90,11 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValida
     @FunctionalInterface
     private interface ShowFunction {
 
-        ShowFunction NUTRITION = AdvancedTooltipConfiguration::showFoodLevel;
-        ShowFunction SATURATION = AdvancedTooltipConfiguration::showSaturationLevel;
-        ShowFunction ARMOR_BARS = AdvancedTooltipConfiguration::showArmorBarIcons;
+        ShowFunction NUTRITION = TooltipConfiguration::showFoodLevel;
+        ShowFunction SATURATION = TooltipConfiguration::showSaturationLevel;
+        ShowFunction ARMOR_BARS = TooltipConfiguration::showArmorBarIcons;
 
-        boolean shouldShow(AdvancedTooltipConfiguration config);
+        boolean shouldShow(TooltipConfiguration config);
     }
 
 }

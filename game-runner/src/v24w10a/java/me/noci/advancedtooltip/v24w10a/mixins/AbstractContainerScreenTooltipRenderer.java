@@ -1,6 +1,6 @@
 package me.noci.advancedtooltip.v24w10a.mixins;
 
-import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
+import me.noci.advancedtooltip.core.TooltipAddon;
 import me.noci.advancedtooltip.core.icons.IconQuery;
 import me.noci.advancedtooltip.v24w10a.utils.ItemCast;
 import me.noci.advancedtooltip.v24w10a.utils.VersionedClientIconComponent;
@@ -38,7 +38,7 @@ public abstract class AbstractContainerScreenTooltipRenderer extends Screen {
             cancellable = true
     )
     private void injectIcons(GuiGraphics graphics, int x, int y, CallbackInfo ci, ItemStack itemStack) {
-        if (!AdvancedTooltipAddon.enabled()) {
+        if (!TooltipAddon.enabled()) {
             return;
         }
 

@@ -1,6 +1,6 @@
 package me.noci.advancedtooltip.core.icons;
 
-import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
+import me.noci.advancedtooltip.core.TooltipAddon;
 import net.labymod.api.client.render.matrix.Stack;
 
 import java.util.List;
@@ -24,10 +24,10 @@ public abstract class ClientIconComponent {
         this.iconSize = TooltipIcon.getSize(icons);
         this.width = TooltipIcon.getWidth(icons);
 
-        this.iconPaddingTop = AdvancedTooltipAddon.getInstance().configuration().iconSubSetting().paddingTop();
-        this.iconPaddingBottom = AdvancedTooltipAddon.getInstance().configuration().iconSubSetting().pattingBottom();
-        this.iconPaddingLeft = AdvancedTooltipAddon.getInstance().configuration().iconSubSetting().pattingLeft();
-        this.iconPaddingRight = AdvancedTooltipAddon.getInstance().configuration().iconSubSetting().pattingRight();
+        this.iconPaddingTop = TooltipAddon.get().configuration().iconSubSetting().paddingTop();
+        this.iconPaddingBottom = TooltipAddon.get().configuration().iconSubSetting().pattingBottom();
+        this.iconPaddingLeft = TooltipAddon.get().configuration().iconSubSetting().pattingLeft();
+        this.iconPaddingRight = TooltipAddon.get().configuration().iconSubSetting().pattingRight();
     }
 
     public int getHeight() {

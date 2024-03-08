@@ -1,6 +1,6 @@
 package me.noci.advancedtooltip.core.listener;
 
-import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
+import me.noci.advancedtooltip.core.TooltipAddon;
 import me.noci.advancedtooltip.core.referenceable.items.FoodItems;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
@@ -15,11 +15,11 @@ import java.util.Optional;
 
 public class FoodItemTooltipDebugListener {
 
-    private final AdvancedTooltipAddon addon;
+    private final TooltipAddon addon;
     private final FoodItems foodItems;
 
 
-    public FoodItemTooltipDebugListener(AdvancedTooltipAddon addon, FoodItems foodItems) {
+    public FoodItemTooltipDebugListener(TooltipAddon addon, FoodItems foodItems) {
         this.addon = addon;
         this.foodItems = foodItems;
     }

@@ -1,7 +1,7 @@
 package me.noci.advancedtooltip.v1_19_4.mixins;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
+import me.noci.advancedtooltip.core.TooltipAddon;
 import me.noci.advancedtooltip.core.icons.IconQuery;
 import me.noci.advancedtooltip.v1_19_4.utils.ItemCast;
 import me.noci.advancedtooltip.v1_19_4.utils.VersionedClientIconComponent;
@@ -25,7 +25,7 @@ public abstract class ScreenTooltipRenderer {
 
     @ModifyArgs(method = "renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/item/ItemStack;II)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/util/List;Ljava/util/Optional;II)V"))
     private void addIconComponents(Args args, PoseStack poseStack, ItemStack itemStack, int x, int y) {
-        if (!AdvancedTooltipAddon.enabled()) {
+        if (!TooltipAddon.enabled()) {
             return;
         }
 
@@ -37,7 +37,7 @@ public abstract class ScreenTooltipRenderer {
 
     @ModifyVariable(method = "renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/util/List;Ljava/util/Optional;II)V", at = @At(value = "STORE"), index = 6)
     private List<ClientTooltipComponent> alterComponentList(List<ClientTooltipComponent> original, PoseStack poseStack, List<Component> components) {
-        if (!AdvancedTooltipAddon.enabled()) return original;
+        if (!TooltipAddon.enabled()) return original;
 
         return components.stream().map(component -> {
             if (component instanceof VersionedClientIconComponent iconComponent) {

@@ -1,7 +1,6 @@
 package me.noci.advancedtooltip.core;
 
-import lombok.Getter;
-import me.noci.advancedtooltip.core.config.AdvancedTooltipConfiguration;
+import me.noci.advancedtooltip.core.config.TooltipConfiguration;
 import me.noci.advancedtooltip.core.generated.DefaultReferenceStorage;
 import me.noci.advancedtooltip.core.listener.FoodItemTooltipDebugListener;
 import me.noci.advancedtooltip.core.listener.ItemStackTooltipListener;
@@ -17,20 +16,40 @@ import net.labymod.api.revision.SimpleRevision;
 import net.labymod.api.util.version.SemanticVersion;
 
 @AddonMain
-public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration> {
+public class TooltipAddon extends LabyAddon<TooltipConfiguration> {
 
-    @Getter private static AdvancedTooltipAddon instance;
+    private static TooltipAddon instance;
 
-    public static boolean enabled() {
-        return getInstance().configuration().enabled().get();
+    public static TooltipAddon get() {
+        return instance;
     }
 
-    @Getter private FoodItems foodItems = FoodItems.DEFAULT;
-    @Getter private ItemHelper itemHelper = ItemHelper.DEFAULT;
-    @Getter private InventoryHelper inventoryHelper = InventoryHelper.DEFAULT;
-    @Getter private ComponentHelper componentHelper = ComponentHelper.DEFAULT;
+    public static boolean enabled() {
+        return instance.configuration().enabled().get();
+    }
 
-    public AdvancedTooltipAddon() {
+    public static FoodItems foodItems() {
+        return instance.foodItems;
+    }
+
+    public static ItemHelper itemHelper() {
+        return instance.itemHelper;
+    }
+
+    public static InventoryHelper inventoryHelper() {
+        return instance.inventoryHelper;
+    }
+
+    public static ComponentHelper componentHelper() {
+        return instance.componentHelper;
+    }
+
+    private FoodItems foodItems = FoodItems.DEFAULT;
+    private ItemHelper itemHelper = ItemHelper.DEFAULT;
+    private InventoryHelper inventoryHelper = InventoryHelper.DEFAULT;
+    private ComponentHelper componentHelper = ComponentHelper.DEFAULT;
+
+    public TooltipAddon() {
         instance = this;
     }
 
@@ -77,7 +96,7 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
     }
 
     @Override
-    protected Class<AdvancedTooltipConfiguration> configurationClass() {
-        return AdvancedTooltipConfiguration.class;
+    protected Class<TooltipConfiguration> configurationClass() {
+        return TooltipConfiguration.class;
     }
 }

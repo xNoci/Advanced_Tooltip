@@ -1,6 +1,6 @@
 package me.noci.advancedtooltip.core.component;
 
-import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
+import me.noci.advancedtooltip.core.TooltipAddon;
 import me.noci.advancedtooltip.core.config.DeveloperSubSetting;
 import me.noci.advancedtooltip.core.referenceable.items.ComponentHelper;
 import net.labymod.api.util.I18n;
@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class NbtPrinter implements ComponentPrinter {
 
-    private static StringBuilder FALLBACK_BUILDER = new StringBuilder("{}");
+    private static final StringBuilder FALLBACK_BUILDER = new StringBuilder("{}");
 
     private final Object compoundTag;
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType") private final Optional<String> name;
@@ -22,8 +22,8 @@ public class NbtPrinter implements ComponentPrinter {
 
     @Override
     public String print() {
-        ComponentHelper helper = AdvancedTooltipAddon.getInstance().getComponentHelper();
-        DeveloperSubSetting settings = AdvancedTooltipAddon.getInstance().configuration().developerSettings();
+        ComponentHelper helper = TooltipAddon.componentHelper();
+        DeveloperSubSetting settings = TooltipAddon.get().configuration().developerSettings();
         StringBuilder builder = new StringBuilder();
 
         name.ifPresent(s -> builder.append(s).append(": "));
@@ -33,7 +33,7 @@ public class NbtPrinter implements ComponentPrinter {
 
         boolean expandComponents = settings.expandComponents().get().isPressed();
         if (!expandComponents) {
-            String keyTranslationKey = AdvancedTooltipAddon.getInstance().configuration().developerSettings().expandComponents().get().getTranslationKey();
+            String keyTranslationKey = TooltipAddon.get().configuration().developerSettings().expandComponents().get().getTranslationKey();
             builder.append(I18n.translate("advancedtooltip.components.pressToShowObject", I18n.translate(keyTranslationKey)));
             return builder.toString();
         }

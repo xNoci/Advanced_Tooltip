@@ -1,6 +1,6 @@
 package me.noci.advancedtooltip.core.component;
 
-import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
+import me.noci.advancedtooltip.core.TooltipAddon;
 
 public class DataComponentPrinter implements ComponentPrinter {
 
@@ -9,7 +9,7 @@ public class DataComponentPrinter implements ComponentPrinter {
     private int indentLevel = 0;
 
     protected DataComponentPrinter(Object component, ComponentPrinter componentPrinter) {
-        this.componentName = AdvancedTooltipAddon.getInstance().getComponentHelper().componentName(component).orElse("UNKNOWN");
+        this.componentName = TooltipAddon.componentHelper().componentName(component).orElse("UNKNOWN");
         this.componentPrinter = componentPrinter;
     }
 

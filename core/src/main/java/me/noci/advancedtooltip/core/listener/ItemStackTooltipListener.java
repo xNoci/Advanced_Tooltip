@@ -1,7 +1,7 @@
 package me.noci.advancedtooltip.core.listener;
 
-import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
-import me.noci.advancedtooltip.core.config.AdvancedTooltipConfiguration;
+import me.noci.advancedtooltip.core.TooltipAddon;
+import me.noci.advancedtooltip.core.config.TooltipConfiguration;
 import me.noci.advancedtooltip.core.referenceable.items.ComponentHelper;
 import me.noci.advancedtooltip.core.referenceable.items.FoodItems;
 import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
@@ -19,12 +19,12 @@ import java.util.List;
 
 public class ItemStackTooltipListener {
 
-    private final AdvancedTooltipConfiguration config;
+    private final TooltipConfiguration config;
     private final FoodItems foodItems;
     private final ItemHelper itemHelper;
     private final ComponentHelper componentHelper;
 
-    public ItemStackTooltipListener(AdvancedTooltipAddon addon, FoodItems foodItems, ItemHelper itemHelper, ComponentHelper componentHelper) {
+    public ItemStackTooltipListener(TooltipAddon addon, FoodItems foodItems, ItemHelper itemHelper, ComponentHelper componentHelper) {
         this.config = addon.configuration();
         this.foodItems = foodItems;
         this.itemHelper = itemHelper;
