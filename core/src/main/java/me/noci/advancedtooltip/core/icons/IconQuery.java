@@ -4,7 +4,7 @@ import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
 import me.noci.advancedtooltip.core.config.AdvancedTooltipConfiguration;
 import me.noci.advancedtooltip.core.config.SaturationType;
 import me.noci.advancedtooltip.core.referenceable.items.FoodItems;
-import me.noci.advancedtooltip.core.referenceable.items.ItemQuery;
+import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.util.collection.Lists;
 
@@ -47,13 +47,13 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValida
         AdvancedTooltipAddon addon = AdvancedTooltipAddon.getInstance();
         AdvancedTooltipConfiguration configuration = addon.configuration();
         FoodItems foodItems = addon.getFoodItems();
-        ItemQuery itemQuery = addon.getItemQuery();
+        ItemHelper itemHelper = addon.getItemHelper();
 
-        if (!itemValidator.isValid(itemQuery, itemStack)) return;
+        if (!itemValidator.isValid(itemHelper, itemStack)) return;
         if (!showFunction.shouldShow(configuration)) return;
         List<TooltipIcon> temp = Lists.newArrayList();
 
-        float level = levelFunction.get(configuration, foodItems, itemQuery, itemStack);
+        float level = levelFunction.get(configuration, foodItems, itemHelper, itemStack);
         while (level >= 2) {
             level -= 2;
             temp.add(full_icon);
@@ -70,21 +70,21 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValida
     @FunctionalInterface
     private interface ItemValidator {
         ItemValidator IS_FOOD = (itemQuery, itemStack) -> itemStack.isFood();
-        ItemValidator IS_ARMOR = ItemQuery::isArmor;
+        ItemValidator IS_ARMOR = ItemHelper::isArmor;
 
-        boolean isValid(ItemQuery itemQuery, ItemStack itemStack);
+        boolean isValid(ItemHelper itemQuery, ItemStack itemStack);
     }
 
     @FunctionalInterface
     private interface LevelFunction {
         LevelFunction NUTRITION = (c, fi, iq, is) -> fi.nutrition(is);
         LevelFunction SATURATION = (c, fi, iq, is) -> (c.saturationType() == SaturationType.MAX_SATURATION) ? fi.saturationIncrement(is) : fi.addedSaturation(is);
-        LevelFunction ARMOR_BARS = (c, fi, iq, is) -> iq.getArmorBars(is);
+        LevelFunction ARMOR_BARS = (c, fi, ih, is) -> ih.armorBars(is);
 
-        Optional<? extends Number> apply(AdvancedTooltipConfiguration config, FoodItems foodItems, ItemQuery itemQuery, ItemStack itemStack);
+        Optional<? extends Number> apply(AdvancedTooltipConfiguration config, FoodItems foodItems, ItemHelper itemHelper, ItemStack itemStack);
 
-        default float get(AdvancedTooltipConfiguration config, FoodItems foodItems, ItemQuery itemQuery, ItemStack itemStack) {
-            return apply(config, foodItems, itemQuery, itemStack).map(Number::floatValue).orElse(0F);
+        default float get(AdvancedTooltipConfiguration config, FoodItems foodItems, ItemHelper itemHelper, ItemStack itemStack) {
+            return apply(config, foodItems, itemHelper, itemStack).map(Number::floatValue).orElse(0F);
         }
     }
 

@@ -2,6 +2,7 @@ package me.noci.advancedtooltip.core.component;
 
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
 import me.noci.advancedtooltip.core.config.DeveloperSubSetting;
+import me.noci.advancedtooltip.core.referenceable.items.ComponentHelper;
 import net.labymod.api.util.I18n;
 
 import java.util.Optional;

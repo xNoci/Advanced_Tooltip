@@ -6,11 +6,10 @@ import me.noci.advancedtooltip.core.generated.DefaultReferenceStorage;
 import me.noci.advancedtooltip.core.listener.FoodItemTooltipDebugListener;
 import me.noci.advancedtooltip.core.listener.ItemStackTooltipListener;
 import me.noci.advancedtooltip.core.listener.KeyPressListener;
-import me.noci.advancedtooltip.core.component.ComponentHelper;
-import me.noci.advancedtooltip.core.referenceable.items.DefaultItemQuery;
 import me.noci.advancedtooltip.core.referenceable.InventoryHelper;
+import me.noci.advancedtooltip.core.referenceable.items.ComponentHelper;
 import me.noci.advancedtooltip.core.referenceable.items.FoodItems;
-import me.noci.advancedtooltip.core.referenceable.items.ItemQuery;
+import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
 import net.labymod.api.Laby;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.models.addon.annotation.AddonMain;
@@ -27,7 +26,7 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
     }
 
     @Getter private FoodItems foodItems = FoodItems.DEFAULT;
-    @Getter private ItemQuery itemQuery = new DefaultItemQuery();
+    @Getter private ItemHelper itemHelper = ItemHelper.DEFAULT;
     @Getter private InventoryHelper inventoryHelper = InventoryHelper.DEFAULT;
     @Getter private ComponentHelper componentHelper = ComponentHelper.DEFAULT;
 
@@ -51,13 +50,13 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
         DefaultReferenceStorage referenceStorage = this.referenceStorageAccessor();
 
         FoodItems foodItems = referenceStorage.getFoodItems();
-        if(itemQuery != null) {
+        if (foodItems != null) {
             this.foodItems = foodItems;
         }
 
-        ItemQuery itemQuery = referenceStorage.getItemQuery();
-        if (itemQuery != null) {
-            this.itemQuery = itemQuery;
+        ItemHelper itemHelper = referenceStorage.getItemHelper();
+        if (itemHelper != null) {
+            this.itemHelper = itemHelper;
         }
 
         InventoryHelper inventoryManager = referenceStorage.getInventoryHelper();
@@ -73,7 +72,7 @@ public class AdvancedTooltipAddon extends LabyAddon<AdvancedTooltipConfiguration
 
     private void registerListener() {
         this.registerListener(new FoodItemTooltipDebugListener(this, this.foodItems));
-        this.registerListener(new ItemStackTooltipListener(this, this.foodItems, this.itemQuery));
+        this.registerListener(new ItemStackTooltipListener(this, this.foodItems, this.itemHelper, this.componentHelper));
         this.registerListener(new KeyPressListener(this, this.inventoryHelper));
     }
 

@@ -126,7 +126,7 @@
       }
     },
     "tooltip": {
-      "no_nbt_data": "No nbt data found.",
+      "no_nbt_data": "No data found.",
       "anvil_usages": "Anvil usages (%s)",
       "disc_signal_strength": "Disc signal strength (%s)",
       "durability": "Durability: %s/%s",

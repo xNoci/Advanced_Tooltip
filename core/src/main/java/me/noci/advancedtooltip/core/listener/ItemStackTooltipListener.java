@@ -2,9 +2,9 @@ package me.noci.advancedtooltip.core.listener;
 
 import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
 import me.noci.advancedtooltip.core.config.AdvancedTooltipConfiguration;
+import me.noci.advancedtooltip.core.referenceable.items.ComponentHelper;
 import me.noci.advancedtooltip.core.referenceable.items.FoodItems;
-import me.noci.advancedtooltip.core.referenceable.items.ItemQuery;
-import me.noci.advancedtooltip.core.utils.MapDecorationLocation;
+import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.TextColor;
@@ -12,7 +12,6 @@ import net.labymod.api.client.world.effect.PotionEffect;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.world.ItemStackTooltipEvent;
-import net.labymod.api.nbt.tags.NBTTagCompound;
 import net.labymod.api.util.I18n;
 import net.labymod.api.util.time.TimeUtil;
 
@@ -22,12 +21,14 @@ public class ItemStackTooltipListener {
 
     private final AdvancedTooltipConfiguration config;
     private final FoodItems foodItems;
-    private final ItemQuery itemQuery;
+    private final ItemHelper itemHelper;
+    private final ComponentHelper componentHelper;
 
-    public ItemStackTooltipListener(AdvancedTooltipAddon addon, FoodItems foodItems, ItemQuery itemQuery) {
+    public ItemStackTooltipListener(AdvancedTooltipAddon addon, FoodItems foodItems, ItemHelper itemHelper, ComponentHelper componentHelper) {
         this.config = addon.configuration();
         this.foodItems = foodItems;
-        this.itemQuery = itemQuery;
+        this.itemHelper = itemHelper;
+        this.componentHelper = componentHelper;
     }
 
     @Subscribe
@@ -72,10 +73,10 @@ public class ItemStackTooltipListener {
 
     private void handleShowNbtData(ItemStack itemStack, List<Component> tooltip) {
         boolean withNbtArrayData = config.developerSettings().printWithNbtArrayData().get().isPressed();
-        itemQuery.displayItemData(itemStack, withNbtArrayData)
-                .ifPresentOrElse(nbt -> {
+        componentHelper.displayItemData(itemStack, withNbtArrayData)
+                .ifPresentOrElse(data -> {
                     tooltip(tooltip, false, "");
-                    for (String s : nbt.split("\n")) {
+                    for (String s : data.split("\n")) {
                         tooltip(tooltip, false, s);
                     }
                 }, () -> tooltip(tooltip, "no_nbt_data"));
@@ -83,31 +84,30 @@ public class ItemStackTooltipListener {
 
     private void handleShowDurability(ItemStack itemStack, List<Component> tooltip) {
         if (itemStack.getMaximumDamage() <= 0) return;
-        NBTTagCompound tag = itemStack.getNBTTag();
-        if (tag != null && tag.contains("Unbreakable")) return;
+        if (componentHelper.unbreakable(itemStack)) return;
         tooltip(tooltip, "durability", itemStack.getMaximumDamage() - itemStack.getCurrentDamageValue(), itemStack.getMaximumDamage());
     }
 
     private void handleAnvilUses(ItemStack itemStack, List<Component> tooltip) {
-        int usages = itemQuery.getAnvilUsages(itemStack).orElse(0);
+        int usages = componentHelper.anvilUsages(itemStack).orElse(0);
         if (usages == 0) return;
         tooltip(tooltip, "anvil_usages", usages);
     }
 
     private void handleDiscSignalStrength(ItemStack itemStack, List<Component> tooltip) {
-        itemQuery.getDiscSignalStrengt(itemStack)
+        itemHelper.discSignalStrengt(itemStack)
                 .ifPresent(strength -> tooltip(tooltip, "disc_signal_strength", strength));
     }
 
     private void handleExplorerMap(ItemStack itemStack, List<Component> tooltip) {
-        itemQuery.getMapDecorationLocations(itemStack)
+        componentHelper.mapDecorations(itemStack)
                 .ifPresent(mapLocations -> mapLocations
                         .stream()
-                        .filter(MapDecorationLocation::showInToolTip)
+                        .filter(mapDecoration -> mapDecoration.type().isShowInTooltip())
                         .forEach(mapLocation -> {
-                            String translationKey = "explorer_map." + mapLocation.typeAsString();
-                            double x = mapLocation.getX();
-                            double z = mapLocation.getZ();
+                            String translationKey = mapLocation.type().getTranslationKey();
+                            double x = mapLocation.x();
+                            double z = mapLocation.z();
                             tooltip(tooltip, translationKey, x, z);
                         }));
     }
@@ -128,7 +128,7 @@ public class ItemStackTooltipListener {
     }
 
     private void handleCommandBlockCommand(ItemStack itemStack, List<Component> tooltip) {
-        itemQuery.getCommandBlockCommand(itemStack)
+        componentHelper.commandBlockCommand(itemStack)
                 .ifPresent(command -> {
                     if (command.isEmpty()) {
                         tooltip(tooltip, "command_block_no_command");
@@ -139,7 +139,7 @@ public class ItemStackTooltipListener {
     }
 
     private void handleShowSignText(ItemStack itemStack, List<Component> tooltip) {
-        itemQuery.getSignText(itemStack)
+        componentHelper.signText(itemStack)
                 .ifPresent(signText -> {
                     boolean hasFrontText = signText.hasFrontText();
                     boolean hasBackText = signText.hasBackText();

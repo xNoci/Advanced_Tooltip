@@ -1,6 +1,9 @@
 package me.noci.advancedtooltip.v24w10a.utils;
 
 import net.labymod.api.client.world.item.ItemStack;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 
@@ -16,16 +19,22 @@ public class ItemCast {
         return cast(itemStack);
     }
 
-    public static Optional<BlockItem> toMinecraftBlockItem(ItemStack itemStack) {
-        if (!itemStack.isBlock()) return Optional.empty();
-        BlockItem item = (BlockItem) toMinecraftItemStack(itemStack).getItem();
-        return Optional.of(item);
-    }
-
     public static Item toMinecraftItem(ItemStack itemStack) {
         return toMinecraftItemStack(itemStack).getItem();
     }
 
+    public static <T extends Item> Optional<T> asItem(ItemStack itemStack, Class<T> clazz) {
+        Item item = toMinecraftItem(itemStack);
+        if (!clazz.isInstance(item)) return Optional.empty();
+        return Optional.of(cast(item));
+    }
+
+    public static <T> Optional<T> typedDataComponent(ItemStack itemStack, DataComponentType<T> component) {
+        var item = ItemCast.toMinecraftItemStack(itemStack);
+        return Optional.ofNullable(item.get(component));
+    }
+
+    @SuppressWarnings("unchecked")
     private static <T> T cast(Object object) {
         return (T) object;
     }

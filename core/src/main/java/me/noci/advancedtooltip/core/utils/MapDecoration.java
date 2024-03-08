@@ -2,28 +2,9 @@ package me.noci.advancedtooltip.core.utils;
 
 import lombok.Getter;
 
-public class MapDecorationLocation {
+public record MapDecoration(Type type, double x, double z) {
 
-    private final MapDecoration type;
-    @Getter private final double x;
-    @Getter private final double z;
-
-    public MapDecorationLocation(int type, double x, double z) {
-        this.type = MapDecoration.byType(type);
-        this.x = x;
-        this.z = z;
-    }
-
-    public String typeAsString() {
-        return type.name().toLowerCase();
-    }
-
-    public boolean showInToolTip() {
-        return type.display;
-    }
-
-    public enum MapDecoration {
-
+    public enum Type {
         PLAYER(0),
         FRAME(1),
         RED_MARKER(2),
@@ -61,20 +42,23 @@ public class MapDecorationLocation {
         UNKNOWN(-1, true);
 
         private final int id;
-        private final boolean display;
+        @Getter private final boolean showInTooltip;
+        @Getter private final String translationKey;
 
-        MapDecoration(int id) {
+        Type(int id) {
             this.id = id;
-            this.display = false;
+            this.showInTooltip = false;
+            this.translationKey = "explorer_map." + name().toLowerCase();
         }
 
-        MapDecoration(int id, boolean display) {
+        Type(int id, boolean showInTooltip) {
             this.id = id;
-            this.display = display;
+            this.showInTooltip = showInTooltip;
+            this.translationKey = "explorer_map." + name().toLowerCase();
         }
 
-        public static MapDecoration byType(int type) {
-            for (MapDecoration value : values()) {
+        public static Type byType(int type) {
+            for (Type value : values()) {
                 if (value.id == type) return value;
             }
             return UNKNOWN;

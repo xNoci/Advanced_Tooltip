@@ -12,16 +12,17 @@ public class ItemCast {
         return cast(itemStack);
     }
 
-    public static Optional<ItemBlock> toMinecraftBlockItem(ItemStack itemStack) {
-        if (!itemStack.isBlock()) return Optional.empty();
-        ItemBlock item = (ItemBlock) toMinecraftItemStack(itemStack).getItem();
-        return Optional.of(item);
-    }
-
     public static Item toMinecraftItem(ItemStack itemStack) {
         return toMinecraftItemStack(itemStack).getItem();
     }
 
+    public static <T extends Item> Optional<T> asItem(ItemStack itemStack, Class<T> clazz) {
+        Item item = toMinecraftItem(itemStack);
+        if (!clazz.isInstance(item)) return Optional.empty();
+        return Optional.of(cast(item));
+    }
+
+    @SuppressWarnings("unchecked")
     private static <T> T cast(Object object) {
         return (T) object;
     }
