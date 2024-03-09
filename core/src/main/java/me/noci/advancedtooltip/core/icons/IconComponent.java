@@ -5,7 +5,7 @@ import net.labymod.api.client.render.matrix.Stack;
 
 import java.util.List;
 
-public abstract class ClientIconComponent {
+public abstract class IconComponent {
 
     private final List<TooltipIcon> icons;
     private final int iconSize;
@@ -19,7 +19,7 @@ public abstract class ClientIconComponent {
     private boolean firstIconComponent = false;
     private boolean lastIconComponent = false;
 
-    public ClientIconComponent(List<TooltipIcon> icons) {
+    public IconComponent(List<TooltipIcon> icons) {
         this.icons = icons;
         this.iconSize = TooltipIcon.maximum(icons, IconConfig::iconSize).orElse(IconConfig.DEFAULT_ICON_SIZE);
         this.width = TooltipIcon.width(icons);

@@ -30,7 +30,7 @@ public abstract class ScreenTooltipRenderer {
         }
 
         net.labymod.api.client.world.item.ItemStack labyItemStack = ItemCast.toLabyItemStack(itemStack);
-        List<VersionedClientIconComponent> icons = IconQuery.getIcons(labyItemStack, VersionedClientIconComponent::new);
+        List<VersionedClientIconComponent> icons = IconQuery.iconComponents(labyItemStack, VersionedClientIconComponent::new);
 
         ((List<Component>) args.get(1)).addAll(icons);
     }

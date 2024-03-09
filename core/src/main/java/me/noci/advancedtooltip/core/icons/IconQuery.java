@@ -10,7 +10,6 @@ import net.labymod.api.util.collection.Lists;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValidator itemValidator,
                         ShowFunction showFunction,
@@ -24,46 +23,47 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValida
         iconQueries.add(new IconQuery(TooltipIcon.FULL_ARMOR, TooltipIcon.HALF_ARMOR, ItemValidator.IS_ARMOR, ShowFunction.ARMOR_BARS, LevelFunction.ARMOR_BARS));
     }
 
-    public static <T extends ClientIconComponent> List<T> getIcons(ItemStack itemStack, Function<List<TooltipIcon>, T> convert) {
+    public static <T extends IconComponent> List<T> iconComponents(ItemStack itemStack, VersionedIconComponentMapper<T> mapper) {
         TooltipAddon addon = TooltipAddon.get();
         TooltipConfiguration config = addon.configuration();
         if (config.developerSettings().displayComponent().isDisplayItemData()) return List.of();
 
-        List<T> icons = Lists.newArrayList();
+        List<T> iconComponents = iconQueries.stream()
+                .map(iconQuery -> iconQuery.itemIcons(itemStack, mapper))
+                .flatMap(Optional::stream)
+                .toList();
 
-        for (IconQuery iconQuery : iconQueries) {
-            iconQuery.apply(icons, itemStack, convert);
+        if (!iconComponents.isEmpty()) {
+            iconComponents.get(0).setFirstComponent();
+            iconComponents.get(iconComponents.size() - 1).setLastComponent();
         }
 
-        if (!icons.isEmpty()) {
-            icons.get(0).setFirstComponent();
-            icons.get(icons.size() - 1).setLastComponent();
-        }
-
-        return icons;
+        return iconComponents;
     }
 
-    private <T> void apply(List<T> icons, ItemStack itemStack, Function<List<TooltipIcon>, T> convert) {
+    private <T extends IconComponent> Optional<T> itemIcons(ItemStack itemStack, VersionedIconComponentMapper<T> mapper) {
         TooltipConfiguration config = TooltipAddon.get().configuration();
         FoodItems foodItems = TooltipAddon.foodItems();
         ItemHelper itemHelper = TooltipAddon.itemHelper();
 
-        if (!itemValidator.isValid(itemHelper, itemStack)) return;
-        if (!showFunction.shouldShow(config)) return;
-        List<TooltipIcon> temp = Lists.newArrayList();
+        if (!itemValidator.isValid(itemHelper, itemStack)) return Optional.empty();
+        if (!showFunction.shouldShow(config)) return Optional.empty();
 
+        List<TooltipIcon> itemIcons = Lists.newArrayList();
         float level = levelFunction.get(config, foodItems, itemHelper, itemStack);
         while (level >= 2) {
             level -= 2;
-            temp.add(full_icon);
+            itemIcons.add(full_icon);
         }
 
         if (level > 0) {
-            temp.add(half_icon);
+            itemIcons.add(half_icon);
         }
 
-        if (temp.isEmpty()) return;
-        icons.add(convert.apply(temp));
+        if (itemIcons.isEmpty()) return Optional.empty();
+
+        T versionIconComponent = mapper.apply(itemIcons);
+        return Optional.of(versionIconComponent);
     }
 
     @FunctionalInterface
@@ -76,8 +76,8 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValida
 
     @FunctionalInterface
     private interface LevelFunction {
-        LevelFunction NUTRITION = (c, fi, iq, is) -> fi.nutrition(is);
-        LevelFunction SATURATION = (c, fi, iq, is) -> (c.saturationIcons().saturationType() == SaturationType.MAX_SATURATION) ? fi.saturationIncrement(is) : fi.addedSaturation(is);
+        LevelFunction NUTRITION = (c, fi, ih, is) -> fi.nutrition(is);
+        LevelFunction SATURATION = (c, fi, ih, is) -> (c.saturationIcons().saturationType() == SaturationType.MAX_SATURATION) ? fi.saturationIncrement(is) : fi.addedSaturation(is);
         LevelFunction ARMOR_BARS = (c, fi, ih, is) -> ih.armorBars(is);
 
         Optional<? extends Number> apply(TooltipConfiguration config, FoodItems foodItems, ItemHelper itemHelper, ItemStack itemStack);

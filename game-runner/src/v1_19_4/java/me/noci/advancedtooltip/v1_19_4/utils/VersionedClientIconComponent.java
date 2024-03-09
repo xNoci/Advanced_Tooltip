@@ -1,7 +1,7 @@
 package me.noci.advancedtooltip.v1_19_4.utils;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import me.noci.advancedtooltip.core.icons.ClientIconComponent;
+import me.noci.advancedtooltip.core.icons.IconComponent;
 import me.noci.advancedtooltip.core.icons.TooltipIcon;
 import net.labymod.api.client.render.matrix.Stack;
 import net.labymod.api.client.render.matrix.VanillaStackAccessor;
@@ -15,7 +15,7 @@ import net.minecraft.util.FormattedCharSequence;
 
 import java.util.List;
 
-public class VersionedClientIconComponent extends ClientIconComponent implements ClientTooltipComponent, Component {
+public class VersionedClientIconComponent extends IconComponent implements ClientTooltipComponent, Component {
 
     public VersionedClientIconComponent(List<TooltipIcon> icons) {
         super(icons);

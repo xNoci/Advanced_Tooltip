@@ -44,7 +44,7 @@ public abstract class AbstractContainerScreenTooltipRenderer extends Screen {
 
         List<Component> tooltip = getTooltipFromContainerItem(itemStack);
         net.labymod.api.client.world.item.ItemStack labyItemStack = ItemCast.toLabyItemStack(itemStack);
-        List<VersionedClientIconComponent> icons = IconQuery.getIcons(labyItemStack, VersionedClientIconComponent::new);
+        List<VersionedClientIconComponent> icons = IconQuery.iconComponents(labyItemStack, VersionedClientIconComponent::new);
 
         tooltip.addAll(icons);
 
