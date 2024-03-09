@@ -36,83 +36,91 @@ public class ItemStackTooltipListener {
         ItemStack itemStack = event.itemStack();
         List<Component> tooltip = event.getTooltipLines();
 
-        if (config.developerSettings().isDisplayItemData()) {
-            handleShowNbtData(itemStack, tooltip);
+        var displayComponent = config.developerSettings().displayComponent();
+        if (displayComponent.isDisplayItemData()) {
+            handleShowNbtData(itemStack, tooltip, displayComponent.textColor());
             return;
         }
 
-        if (config.showDurability().get() && event.type() != ItemStackTooltipEvent.TooltipType.ADVANCED) {
-            handleShowDurability(itemStack, tooltip);
+        var durability = config.itemDurability();
+        if (durability.enabled() && event.type() != ItemStackTooltipEvent.TooltipType.ADVANCED) {
+            handleShowDurability(itemStack, tooltip, durability.textColor());
         }
 
-        if (config.showAnvilUses().get()) {
-            handleAnvilUses(itemStack, tooltip);
+        var anvilUses = config.anvilUsages();
+        if (anvilUses.enabled()) {
+            handleAnvilUses(itemStack, tooltip, anvilUses.textColor());
         }
 
-        if (config.discSignalStrength().get()) {
-            handleDiscSignalStrength(itemStack, tooltip);
+        var discSignalStrength = config.discSignalStrength();
+        if (discSignalStrength.enabled()) {
+            handleDiscSignalStrength(itemStack, tooltip, discSignalStrength.textColor());
         }
 
-        if (config.explorerMapCoordinates().get()) {
-            handleExplorerMap(itemStack, tooltip);
+        var mapDecoration = config.mapDecoration();
+        if (mapDecoration.enabled()) {
+            handleExplorerMap(itemStack, tooltip, mapDecoration.textColor());
         }
 
-        if (config.showSuspiciousStewEffect().get() && !event.isCreative()) {
-            handleSuspiciousStewEffect(itemStack, tooltip);
+        var suspiciousStewEffect = config.suspiciousStewEffect();
+        if (suspiciousStewEffect.enabled() && !event.isCreative()) {
+            handleSuspiciousStewEffect(itemStack, tooltip, suspiciousStewEffect.textColor());
         }
 
-        if (config.showCommandBlockCommand()) {
-            handleCommandBlockCommand(itemStack, tooltip);
+        var commandBlockCommand = config.commandBlockCommand();
+        if (commandBlockCommand.enabled()) {
+            handleCommandBlockCommand(itemStack, tooltip, commandBlockCommand.textColor());
         }
 
-        if (config.showSignText()) {
-            handleShowSignText(itemStack, tooltip);
+        var signText = config.signText();
+        if (signText.enabled()) {
+            handleShowSignText(itemStack, tooltip, signText.textColor());
         }
 
     }
 
-    private void handleShowNbtData(ItemStack itemStack, List<Component> tooltip) {
-        boolean withNbtArrayData = config.developerSettings().printWithNbtArrayData().get().isPressed();
+    private void handleShowNbtData(ItemStack itemStack, List<Component> tooltip, TextColor color) {
+        boolean withNbtArrayData = config.developerSettings().displayComponent().printWithNbtArrayData().isPressed();
         componentHelper.displayItemData(itemStack, withNbtArrayData)
                 .ifPresentOrElse(data -> {
-                    tooltip(tooltip, false, "");
+                    tooltip(tooltip, color, false, "");
                     for (String s : data.split("\n")) {
-                        tooltip(tooltip, false, s);
+                        tooltip(tooltip, color, false, s);
                     }
-                }, () -> tooltip(tooltip, "no_nbt_data"));
+                }, () -> tooltip(tooltip, color, "no_nbt_data"));
     }
 
-    private void handleShowDurability(ItemStack itemStack, List<Component> tooltip) {
+    private void handleShowDurability(ItemStack itemStack, List<Component> tooltip, TextColor color) {
         if (itemStack.getMaximumDamage() <= 0) return;
         if (componentHelper.unbreakable(itemStack)) return;
-        tooltip(tooltip, "durability", itemStack.getMaximumDamage() - itemStack.getCurrentDamageValue(), itemStack.getMaximumDamage());
+        tooltip(tooltip, color, "durability", itemStack.getMaximumDamage() - itemStack.getCurrentDamageValue(), itemStack.getMaximumDamage());
     }
 
-    private void handleAnvilUses(ItemStack itemStack, List<Component> tooltip) {
+    private void handleAnvilUses(ItemStack itemStack, List<Component> tooltip, TextColor color) {
         int usages = componentHelper.anvilUsages(itemStack).orElse(0);
         if (usages == 0) return;
-        tooltip(tooltip, "anvil_usages", usages);
+        tooltip(tooltip, color, "anvil_usages", usages);
     }
 
-    private void handleDiscSignalStrength(ItemStack itemStack, List<Component> tooltip) {
+    private void handleDiscSignalStrength(ItemStack itemStack, List<Component> tooltip, TextColor color) {
         itemHelper.discSignalStrengt(itemStack)
-                .ifPresent(strength -> tooltip(tooltip, "disc_signal_strength", strength));
+                .ifPresent(strength -> tooltip(tooltip, color, "disc_signal_strength", strength));
     }
 
-    private void handleExplorerMap(ItemStack itemStack, List<Component> tooltip) {
+    private void handleExplorerMap(ItemStack itemStack, List<Component> tooltip, TextColor color) {
         componentHelper.mapDecorations(itemStack)
                 .ifPresent(mapLocations -> mapLocations
                         .stream()
-                        .filter(mapDecoration -> mapDecoration.type().isShowInTooltip())
+                        .filter(mapDecoration -> mapDecoration.type().showInTooltip())
                         .forEach(mapLocation -> {
-                            String translationKey = mapLocation.type().getTranslationKey();
+                            String translationKey = mapLocation.type().translationKey();
                             double x = mapLocation.x();
                             double z = mapLocation.z();
-                            tooltip(tooltip, translationKey, x, z);
+                            tooltip(tooltip, color, translationKey, x, z);
                         }));
     }
 
-    private void handleSuspiciousStewEffect(ItemStack itemStack, List<Component> tooltip) {
+    private void handleSuspiciousStewEffect(ItemStack itemStack, List<Component> tooltip, TextColor color) {
         foodItems.stewEffect(itemStack)
                 .ifPresent(stewEffects -> {
                     for (PotionEffect stewEffect : stewEffects) {
@@ -122,23 +130,23 @@ public class ItemStackTooltipListener {
                             duration = I18n.translate("advancedtooltip.tooltip.potion_effect.duration_infinity");
                         }
 
-                        tooltip(tooltip, false, I18n.translate("advancedtooltip.tooltip.potion_effect.display", name, duration));
+                        tooltip(tooltip, color, false, I18n.translate("advancedtooltip.tooltip.potion_effect.display", name, duration));
                     }
                 });
     }
 
-    private void handleCommandBlockCommand(ItemStack itemStack, List<Component> tooltip) {
+    private void handleCommandBlockCommand(ItemStack itemStack, List<Component> tooltip, TextColor color) {
         componentHelper.commandBlockCommand(itemStack)
                 .ifPresent(command -> {
                     if (command.isEmpty()) {
-                        tooltip(tooltip, "command_block_no_command");
+                        tooltip(tooltip, color, "command_block_no_command");
                     } else {
-                        tooltip(tooltip, "command_block_command", command);
+                        tooltip(tooltip, color, "command_block_command", command);
                     }
                 });
     }
 
-    private void handleShowSignText(ItemStack itemStack, List<Component> tooltip) {
+    private void handleShowSignText(ItemStack itemStack, List<Component> tooltip, TextColor color) {
         componentHelper.signText(itemStack)
                 .ifPresent(signText -> {
                     boolean hasFrontText = signText.hasFrontText();
@@ -146,29 +154,28 @@ public class ItemStackTooltipListener {
 
                     if (!hasFrontText && !hasBackText) return;
                     if (hasFrontText) {
-                        tooltip(tooltip, "sign_text.front_text");
+                        tooltip(tooltip, color, "sign_text.front_text");
                         for (int i = 0; i < signText.frontText().length; i++) {
-                            tooltip(tooltip, "sign_text.line", signText.frontText()[i]);
+                            tooltip(tooltip, color, "sign_text.line", signText.frontText()[i]);
                         }
-                        if (hasBackText) tooltip(tooltip, false, "");
+                        if (hasBackText) tooltip(tooltip, color, false, "");
                     }
 
                     if (hasBackText) {
-                        tooltip(tooltip, "sign_text.back_text");
+                        tooltip(tooltip, color, "sign_text.back_text");
                         for (int i = 0; i < signText.backText().length; i++) {
-                            tooltip(tooltip, "sign_text.line", signText.backText()[i]);
+                            tooltip(tooltip, color, "sign_text.line", signText.backText()[i]);
                         }
                     }
                 });
     }
 
 
-    private void tooltip(List<Component> tooltip, String key, Object... value) {
-        tooltip(tooltip, true, key, value);
+    private void tooltip(List<Component> tooltip, TextColor color, String key, Object... value) {
+        tooltip(tooltip, color, true, key, value);
     }
 
-    private void tooltip(List<Component> tooltip, boolean useTranslation, String key, Object... value) {
-        TextColor color = TextColor.color(config.tooltipColor().get().get());
+    private void tooltip(List<Component> tooltip, TextColor color, boolean useTranslation, String key, Object... value) {
         String text = useTranslation ? I18n.translate("advancedtooltip.tooltip." + key, value) : key;
         tooltip.add(Component.text(text, color));
     }

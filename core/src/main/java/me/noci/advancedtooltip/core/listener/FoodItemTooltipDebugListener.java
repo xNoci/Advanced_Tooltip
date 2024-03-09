@@ -4,6 +4,7 @@ import me.noci.advancedtooltip.core.TooltipAddon;
 import me.noci.advancedtooltip.core.referenceable.items.FoodItems;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
+import net.labymod.api.client.component.format.TextColor;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.world.food.FoodData;
 import net.labymod.api.client.world.item.ItemStack;
@@ -27,7 +28,8 @@ public class FoodItemTooltipDebugListener {
     @Subscribe
     public void onToolTip(ItemStackTooltipEvent event) {
         ItemStack itemStack = event.itemStack();
-        if (!itemStack.isFood() || !addon.configuration().developerSettings().debugMode().get()) {
+        var debugSettings = addon.configuration().developerSettings().debugMode();
+        if (!itemStack.isFood() || !debugSettings.enabled()) {
             return;
         }
 
@@ -42,15 +44,16 @@ public class FoodItemTooltipDebugListener {
         int newFoodLevel = Math.min(foodData.getFoodLevel() + foodData.getFoodLevel(), 20);
         float newSaturation = Math.min(foodData.getSaturationLevel() + saturationIncrement.get(), newFoodLevel);
 
+        TextColor color = debugSettings.textColor();
         List<Component> tooltip = event.getTooltipLines();
-        tooltip.add(Component.text(""));
-        tooltip.add(Component.text("Food level: " + foodData.getFoodLevel()));
-        tooltip.add(Component.text("Saturation Increment: " + saturationIncrement.get()));
-        tooltip.add(Component.text("Added Saturation: " + addedSaturation.get()));
-        tooltip.add(Component.text(""));
-        tooltip.add(Component.text("Current Player Saturation: " + foodData.getSaturationLevel()));
-        tooltip.add(Component.text("New Saturation: " + newSaturation));
-        tooltip.add(Component.text(""));
+        tooltip.add(Component.text("", color));
+        tooltip.add(Component.text("Food level: " + foodData.getFoodLevel(), color));
+        tooltip.add(Component.text("Saturation Increment: " + saturationIncrement.get(), color));
+        tooltip.add(Component.text("Added Saturation: " + addedSaturation.get(), color));
+        tooltip.add(Component.text("", color));
+        tooltip.add(Component.text("Current Player Saturation: " + foodData.getSaturationLevel(), color));
+        tooltip.add(Component.text("New Saturation: " + newSaturation, color));
+        tooltip.add(Component.text("", color));
     }
 
 }

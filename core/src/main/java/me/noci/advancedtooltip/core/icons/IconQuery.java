@@ -1,8 +1,8 @@
 package me.noci.advancedtooltip.core.icons;
 
 import me.noci.advancedtooltip.core.TooltipAddon;
-import me.noci.advancedtooltip.core.config.TooltipConfiguration;
 import me.noci.advancedtooltip.core.config.SaturationType;
+import me.noci.advancedtooltip.core.config.TooltipConfiguration;
 import me.noci.advancedtooltip.core.referenceable.items.FoodItems;
 import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
 import net.labymod.api.client.world.item.ItemStack;
@@ -27,7 +27,7 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValida
     public static <T extends ClientIconComponent> List<T> getIcons(ItemStack itemStack, Function<List<TooltipIcon>, T> convert) {
         TooltipAddon addon = TooltipAddon.get();
         TooltipConfiguration config = addon.configuration();
-        if (config.developerSettings().isDisplayItemData()) return List.of();
+        if (config.developerSettings().displayComponent().isDisplayItemData()) return List.of();
 
         List<T> icons = Lists.newArrayList();
 
@@ -77,7 +77,7 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValida
     @FunctionalInterface
     private interface LevelFunction {
         LevelFunction NUTRITION = (c, fi, iq, is) -> fi.nutrition(is);
-        LevelFunction SATURATION = (c, fi, iq, is) -> (c.saturationType() == SaturationType.MAX_SATURATION) ? fi.saturationIncrement(is) : fi.addedSaturation(is);
+        LevelFunction SATURATION = (c, fi, iq, is) -> (c.saturationIcons().saturationType() == SaturationType.MAX_SATURATION) ? fi.saturationIncrement(is) : fi.addedSaturation(is);
         LevelFunction ARMOR_BARS = (c, fi, ih, is) -> ih.armorBars(is);
 
         Optional<? extends Number> apply(TooltipConfiguration config, FoodItems foodItems, ItemHelper itemHelper, ItemStack itemStack);
@@ -90,9 +90,9 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValida
     @FunctionalInterface
     private interface ShowFunction {
 
-        ShowFunction NUTRITION = TooltipConfiguration::showFoodLevel;
-        ShowFunction SATURATION = TooltipConfiguration::showSaturationLevel;
-        ShowFunction ARMOR_BARS = TooltipConfiguration::showArmorBarIcons;
+        ShowFunction NUTRITION = config -> config.nutritionIcons().enabled();
+        ShowFunction SATURATION = config -> config.saturationIcons().enabled();
+        ShowFunction ARMOR_BARS = config -> config.armorIcons().enabled();
 
         boolean shouldShow(TooltipConfiguration config);
     }

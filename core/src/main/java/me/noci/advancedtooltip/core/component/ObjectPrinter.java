@@ -31,9 +31,9 @@ public class ObjectPrinter implements ComponentPrinter {
             return builder.toString();
         }
 
-        boolean expandComponents = TooltipAddon.get().configuration().developerSettings().expandComponents().get().isPressed();
+        boolean expandComponents = TooltipAddon.get().configuration().developerSettings().displayComponent().expandComponents().isPressed();
         if (expandable && !expandComponents) {
-            String keyTranslationKey = TooltipAddon.get().configuration().developerSettings().expandComponents().get().getTranslationKey();
+            String keyTranslationKey = TooltipAddon.get().configuration().developerSettings().displayComponent().expandComponents().getTranslationKey();
             builder.append(I18n.translate("advancedtooltip.components.pressToShowObject", I18n.translate(keyTranslationKey)));
             return builder.toString();
         }

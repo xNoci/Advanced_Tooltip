@@ -1,6 +1,6 @@
 package me.noci.advancedtooltip.core.icons;
 
-import me.noci.advancedtooltip.core.TooltipAddon;
+import me.noci.advancedtooltip.core.config.icon.IconConfig;
 import net.labymod.api.client.render.matrix.Stack;
 
 import java.util.List;
@@ -21,13 +21,13 @@ public abstract class ClientIconComponent {
 
     public ClientIconComponent(List<TooltipIcon> icons) {
         this.icons = icons;
-        this.iconSize = TooltipIcon.getSize(icons);
-        this.width = TooltipIcon.getWidth(icons);
+        this.iconSize = TooltipIcon.maximum(icons, IconConfig::iconSize).orElse(IconConfig.DEFAULT_ICON_SIZE);
+        this.width = TooltipIcon.width(icons);
 
-        this.iconPaddingTop = TooltipAddon.get().configuration().iconSubSetting().paddingTop();
-        this.iconPaddingBottom = TooltipAddon.get().configuration().iconSubSetting().pattingBottom();
-        this.iconPaddingLeft = TooltipAddon.get().configuration().iconSubSetting().pattingLeft();
-        this.iconPaddingRight = TooltipAddon.get().configuration().iconSubSetting().pattingRight();
+        this.iconPaddingTop = TooltipIcon.maximum(icons, IconConfig::paddingTop).orElse(IconConfig.DEFAULT_PADDING);
+        this.iconPaddingBottom = TooltipIcon.maximum(icons, IconConfig::pattingBottom).orElse(IconConfig.DEFAULT_PADDING);
+        this.iconPaddingLeft = TooltipIcon.maximum(icons, IconConfig::pattingLeft).orElse(IconConfig.DEFAULT_PADDING);
+        this.iconPaddingRight = TooltipIcon.maximum(icons, IconConfig::pattingRight).orElse(IconConfig.DEFAULT_PADDING);
     }
 
     public int getHeight() {

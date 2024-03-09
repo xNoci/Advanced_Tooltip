@@ -5,67 +5,85 @@
       "enabled": {
         "name": "Enabled"
       },
-      "showAnvilUses": {
-        "name": "Show anvil uses",
-        "description": "Displays the amount of anvils uses of an item in its tooltip."
+      "globalColor": {
+        "name": "Global color",
+        "description": "When enabled the color in each setting will be ignored and this one will be used instead.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for every tooltip when 'Global color' is enabled."
+        }
+      },
+      "itemDurability": {
+        "name": "Item durability",
+        "description": "Shows the durability of an item when advanced tooltip is turned off.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Item durability' when 'Global color' is disabled."
+        }
+      },
+      "anvilUsages": {
+        "name": "Anvil uses",
+        "description": "Displays the amount of anvils uses of an item in its tooltip.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Anvil uses' when 'Global color' is disabled."
+        }
       },
       "discSignalStrength": {
         "name": "Disc signal strength",
-        "description": "Displays the redstone strength of the disc."
-      },
-      "explorerMapCoordinates": {
-        "name": "Show explorer map coordinates",
-        "description": "Displays the coordinates of a explorer map."
-      },
-      "showSuspiciousStewEffect": {
-        "name": "Show suspicious stew effect",
-        "description": "Displays the effect type and duration of a suspicious stew."
-      },
-      "showDurability": {
-        "name": "Show durability",
-        "description": "Shows the durability of an item when advanced tooltip is turned off."
-      },
-      "showCommandBlockCommand": {
-        "name": "Show command block command",
-        "description": "When the command block was saved with nbt data, it will display the saved command."
-      },
-      "showSignText": {
-        "name": "Show sign text lines",
-        "description": "When enabled shows the lines of an sign, if nbt data is saved."
-      },
-      "tooltipTextColor": {
-        "name": "Text color",
-        "description": "Set the color of the tooltip text."
-      },
-      "foodLevel": {
-        "name": "Show food level",
-        "description": "Displays the nutrition of a food item in its tooltip."
-      },
-      "showArmorBarIcons": {
-        "name": "Show armor bar icons",
-        "description": "Displays the armor bars of a armor item in its tooltip."
-      },
-      "saturationLevel": {
-        "name": "Show saturation level",
-        "description": "Displays the saturation of a food item in its tooltip.\n\nCurrent: Displays the level of saturation reached after eating.\nMaximum: Displays the maximum possible saturation level of a food.",
-        "entries": {
-          "hidden": "Off",
-          "currentSaturation": "Current",
-          "maxSaturation": "Maximum"
+        "description": "Displays the redstone strength of the disc.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Disc signal strength' when 'Global color' is disabled."
         }
       },
-      "iconSubSetting": {
-        "name": "Icon settings",
-        "foodSize": {
+      "commandBlockCommand": {
+        "name": "Command block command",
+        "description": "When the command block was saved with nbt data, it will display the saved command.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Command block command' when 'Global color' is disabled."
+        }
+      },
+      "signText": {
+        "name": "Sign text lines",
+        "description": "When enabled shows the lines of an sign, if nbt/component data is saved.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Sign text lines' when 'Global color' is disabled."
+        }
+      },
+      "mapDecoration": {
+        "name": "Explorer map coordinates",
+        "description": "Displays the coordinates of a map. For example the location of a mansion or ocean monument.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Explorer map coordinates' when 'Global color' is disabled."
+        }
+      },
+      "suspiciousStewEffect": {
+        "name": "Suspicious stew effect",
+        "description": "Displays the effect type and duration of a suspicious stew.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Suspicious stew effect' when 'Global color' is disabled."
+        }
+      },
+      "saturationIcons": {
+        "name": "Saturation level icons",
+        "description": "Display the saturation of an item when enabled.",
+        "saturationType": {
+          "name": "Saturation Type",
+          "description": "Displays the saturation of a food item in its tooltip.\n\nCurrent: Displays the level of saturation reached after eating.\nMaximum: Displays the maximum possible saturation level of a food.",
+          "entries": {
+            "currentSaturation": "Current",
+            "maxSaturation": "Maximum"
+          }
+        },
+        "iconSize": {
           "name": "Icon size"
         },
-        "foodSpacing": {
-          "name": "Icon spacing"
-        },
-        "armorSize": {
-          "name": "Icon size"
-        },
-        "armorSpacing": {
+        "iconSpacing": {
           "name": "Icon spacing"
         },
         "paddingTop": {
@@ -81,11 +99,68 @@
           "name": "Right padding"
         },
         "header": {
-          "food_icons": {
-            "name": "Food icons"
+          "icon": {
+            "name": "Icon settings"
           },
-          "armor_icons": {
-            "name": "Armor icons"
+          "padding": {
+            "name": "Icon padding"
+          }
+        }
+      },
+      "nutritionIcons": {
+        "name": "Food level icons",
+        "description": "Displays the nutrition of a food item in its tooltip.",
+        "iconSize": {
+          "name": "Icon size"
+        },
+        "iconSpacing": {
+          "name": "Icon spacing"
+        },
+        "paddingTop": {
+          "name": "Top padding"
+        },
+        "paddingBottom": {
+          "name": "Bottom padding"
+        },
+        "paddingLeft": {
+          "name": "Left padding"
+        },
+        "paddingRight": {
+          "name": "Right padding"
+        },
+        "header": {
+          "icon": {
+            "name": "Icon settings"
+          },
+          "padding": {
+            "name": "Icon padding"
+          }
+        }
+      },
+      "armorIcons": {
+        "name": "Armor bar icons",
+        "description": "Displays the armor bars of a armor item in its tooltip.",
+        "iconSize": {
+          "name": "Icon size"
+        },
+        "iconSpacing": {
+          "name": "Icon spacing"
+        },
+        "paddingTop": {
+          "name": "Top padding"
+        },
+        "paddingBottom": {
+          "name": "Bottom padding"
+        },
+        "paddingLeft": {
+          "name": "Left padding"
+        },
+        "paddingRight": {
+          "name": "Right padding"
+        },
+        "header": {
+          "icon": {
+            "name": "Icon settings"
           },
           "padding": {
             "name": "Icon padding"
@@ -95,22 +170,33 @@
       "developerSettings": {
         "name": "Developer settings",
         "debugMode": {
-          "name": "Debug Mode"
+          "name": "Debug Mode",
+          "textColor": {
+            "name": "Color",
+            "description": "The color for 'Suspicious stew effect' when 'Global color' is disabled."
+          }
         },
-        "toggleDisplayItemData": {
-          "name": "Toggle 'Show item data'"
-        },
-        "displayItemData": {
-          "name": "Show item data",
-          "description": "<= 1.20.4: Display NBT data of an item stack.\n>= 1.20.5: Display components of an item stack."
-        },
-        "printWithNbtArrayData": {
-          "name": "Show NBT array data",
-          "description": "Display values inside of an NBT array."
-        },
-        "expandComponents": {
-          "name": "Expand Components",
-          "description": "Expand lists/objects of a component when they are collapsed."
+        "displayComponent": {
+          "name": "Display item data",
+          "description": "Allows you to display the item data of an item.\n\n<= 1.20.4: Displays NBT data of an item stack.\n>= 1.20.5: Displays components of an item stack.",
+          "textColor": {
+            "name": "Color",
+            "description": "The color for 'Suspicious stew effect' when 'Global color' is disabled."
+          },
+          "toggleDisplayItemData": {
+            "name": "Toggle 'Show item data'"
+          },
+          "displayItemData": {
+            "name": "Show item data"
+          },
+          "printWithNbtArrayData": {
+            "name": "Show NBT array data",
+            "description": "Display values inside of an NBT array."
+          },
+          "expandComponents": {
+            "name": "Expand Components",
+            "description": "Expand lists/objects of a component when they are collapsed."
+          }
         }
       },
       "header": {

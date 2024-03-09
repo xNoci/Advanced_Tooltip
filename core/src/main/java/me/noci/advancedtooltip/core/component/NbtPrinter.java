@@ -23,7 +23,7 @@ public class NbtPrinter implements ComponentPrinter {
     @Override
     public String print() {
         ComponentHelper helper = TooltipAddon.componentHelper();
-        DeveloperSubSetting settings = TooltipAddon.get().configuration().developerSettings();
+        var settings = TooltipAddon.get().configuration().developerSettings().displayComponent();
         StringBuilder builder = new StringBuilder();
 
         name.ifPresent(s -> builder.append(s).append(": "));
@@ -31,14 +31,14 @@ public class NbtPrinter implements ComponentPrinter {
             return builder.append("{}").toString();
         }
 
-        boolean expandComponents = settings.expandComponents().get().isPressed();
+        boolean expandComponents = settings.expandComponents().isPressed();
         if (!expandComponents) {
-            String keyTranslationKey = TooltipAddon.get().configuration().developerSettings().expandComponents().get().getTranslationKey();
+            String keyTranslationKey = settings.expandComponents().getTranslationKey();
             builder.append(I18n.translate("advancedtooltip.components.pressToShowObject", I18n.translate(keyTranslationKey)));
             return builder.toString();
         }
 
-        boolean withNbtArrayData = settings.printWithNbtArrayData().get().isPressed();
+        boolean withNbtArrayData = settings.printWithNbtArrayData().isPressed();
         Optional<StringBuilder> builderOptional = helper.prettyPrintCompound(compoundTag, indentLevel, withNbtArrayData);
 
         builderOptional.ifPresent(nbtBuilder -> {
