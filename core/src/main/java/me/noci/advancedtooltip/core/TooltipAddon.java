@@ -36,10 +36,6 @@ public class TooltipAddon extends LabyAddon<TooltipConfiguration> {
         return instance.itemHelper;
     }
 
-    public static InventoryHelper inventoryHelper() {
-        return instance.inventoryHelper;
-    }
-
     public static ComponentHelper componentHelper() {
         return instance.componentHelper;
     }
