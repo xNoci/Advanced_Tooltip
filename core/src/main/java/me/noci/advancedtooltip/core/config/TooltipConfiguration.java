@@ -3,6 +3,7 @@ package me.noci.advancedtooltip.core.config;
 import lombok.Getter;
 import me.noci.advancedtooltip.core.config.icon.IconConfig;
 import me.noci.advancedtooltip.core.config.icon.SaturationIconConfig;
+import me.noci.advancedtooltip.core.config.text.DisplayComponentTextTooltipConfig;
 import me.noci.advancedtooltip.core.config.text.TextTooltipConfig;
 import net.labymod.api.addon.AddonConfig;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
@@ -40,6 +41,9 @@ public class TooltipConfiguration extends AddonConfig {
     private final TextTooltipConfig commandBlockCommand = new TextTooltipConfig();
 
     @Getter
+    private final DisplayComponentTextTooltipConfig displayComponent = new DisplayComponentTextTooltipConfig();
+
+    @Getter
     @IntroducedIn(namespace = "advancedtooltip", value = "1.5.0")
     private final TextTooltipConfig signText = new TextTooltipConfig();
 
@@ -63,10 +67,5 @@ public class TooltipConfiguration extends AddonConfig {
     @Getter
     @VersionCompatibility("1.19.4<" + LATEST_SUPPORTED_VERSION)
     private final IconConfig armorIcons = new IconConfig();
-
-    @Getter
-    @SettingSection("developer")
-    @SettingExperimental
-    private final DeveloperSubSetting developerSettings = new DeveloperSubSetting();
 
 }

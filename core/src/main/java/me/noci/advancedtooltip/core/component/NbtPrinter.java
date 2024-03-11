@@ -1,7 +1,6 @@
 package me.noci.advancedtooltip.core.component;
 
 import me.noci.advancedtooltip.core.TooltipAddon;
-import me.noci.advancedtooltip.core.config.DeveloperSubSetting;
 import me.noci.advancedtooltip.core.referenceable.items.ComponentHelper;
 import net.labymod.api.util.I18n;
 
@@ -23,7 +22,7 @@ public class NbtPrinter implements ComponentPrinter {
     @Override
     public String print() {
         ComponentHelper helper = TooltipAddon.componentHelper();
-        var settings = TooltipAddon.get().configuration().developerSettings().displayComponent();
+        var settings = TooltipAddon.get().configuration().displayComponent();
         StringBuilder builder = new StringBuilder();
 
         name.ifPresent(s -> builder.append(s).append(": "));

@@ -31,9 +31,9 @@ public class MapPrinter<K, V> implements MapComponentPrinter<K, V> {
             return name + ": {}";
         }
 
-        boolean expandComponents = TooltipAddon.get().configuration().developerSettings().displayComponent().expandComponents().isPressed();
+        boolean expandComponents = TooltipAddon.get().configuration().displayComponent().expandComponents().isPressed();
         if (expandable && !expandComponents) {
-            String keyTranslationKey = TooltipAddon.get().configuration().developerSettings().displayComponent().expandComponents().getTranslationKey();
+            String keyTranslationKey = TooltipAddon.get().configuration().displayComponent().expandComponents().getTranslationKey();
             return name + ": " + I18n.translate("advancedtooltip.components.pressToShowObject", I18n.translate(keyTranslationKey));
         }
 

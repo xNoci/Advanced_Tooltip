@@ -13,7 +13,7 @@ public class KeyPressListener {
 
     public KeyPressListener(TooltipAddon addon, InventoryHelper inventoryHelper) {
         this.inventoryHelper = inventoryHelper;
-        this.config = addon.configuration().developerSettings().displayComponent();
+        this.config = addon.configuration().displayComponent();
     }
 
     @Subscribe

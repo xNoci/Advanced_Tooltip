@@ -36,7 +36,7 @@ public class ItemStackTooltipListener {
         ItemStack itemStack = event.itemStack();
         List<Component> tooltip = event.getTooltipLines();
 
-        var displayComponent = config.developerSettings().displayComponent();
+        var displayComponent = config.displayComponent();
         if (displayComponent.isDisplayItemData()) {
             handleShowNbtData(itemStack, tooltip, displayComponent.textColor());
             return;
@@ -80,7 +80,7 @@ public class ItemStackTooltipListener {
     }
 
     private void handleShowNbtData(ItemStack itemStack, List<Component> tooltip, TextColor color) {
-        boolean withNbtArrayData = config.developerSettings().displayComponent().printWithNbtArrayData().isPressed();
+        boolean withNbtArrayData = config.displayComponent().printWithNbtArrayData().isPressed();
         componentHelper.displayItemData(itemStack, withNbtArrayData)
                 .ifPresentOrElse(data -> {
                     tooltip(tooltip, color, false, "");

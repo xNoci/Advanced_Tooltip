@@ -45,6 +45,28 @@
           "description": "The color for 'Command block command' when 'Global color' is disabled."
         }
       },
+      "displayComponent": {
+        "name": "Display item data",
+        "description": "Allows you to display the item data of an item.\n\n<= 1.20.4: Displays NBT data of an item stack.\n>= 1.20.5: Displays components of an item stack.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Suspicious stew effect' when 'Global color' is disabled."
+        },
+        "toggleDisplayItemData": {
+          "name": "Toggle 'Show item data'"
+        },
+        "displayItemData": {
+          "name": "Show item data"
+        },
+        "printWithNbtArrayData": {
+          "name": "Show NBT array data",
+          "description": "Display values inside of an NBT array."
+        },
+        "expandComponents": {
+          "name": "Expand Components",
+          "description": "Expand lists/objects of a component when they are collapsed."
+        }
+      },
       "signText": {
         "name": "Sign text lines",
         "description": "When enabled shows the lines of an sign, if nbt/component data is saved.",
@@ -164,38 +186,6 @@
           },
           "padding": {
             "name": "Icon padding"
-          }
-        }
-      },
-      "developerSettings": {
-        "name": "Developer settings",
-        "debugMode": {
-          "name": "Debug Mode",
-          "textColor": {
-            "name": "Color",
-            "description": "The color for 'Suspicious stew effect' when 'Global color' is disabled."
-          }
-        },
-        "displayComponent": {
-          "name": "Display item data",
-          "description": "Allows you to display the item data of an item.\n\n<= 1.20.4: Displays NBT data of an item stack.\n>= 1.20.5: Displays components of an item stack.",
-          "textColor": {
-            "name": "Color",
-            "description": "The color for 'Suspicious stew effect' when 'Global color' is disabled."
-          },
-          "toggleDisplayItemData": {
-            "name": "Toggle 'Show item data'"
-          },
-          "displayItemData": {
-            "name": "Show item data"
-          },
-          "printWithNbtArrayData": {
-            "name": "Show NBT array data",
-            "description": "Display values inside of an NBT array."
-          },
-          "expandComponents": {
-            "name": "Expand Components",
-            "description": "Expand lists/objects of a component when they are collapsed."
           }
         }
       },

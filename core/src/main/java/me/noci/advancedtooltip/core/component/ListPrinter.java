@@ -26,9 +26,9 @@ public class ListPrinter<T> implements ListComponentPrinter<T> {
             return name + ": []";
         }
 
-        boolean expandComponents = TooltipAddon.get().configuration().developerSettings().displayComponent().expandComponents().isPressed();
+        boolean expandComponents = TooltipAddon.get().configuration().displayComponent().expandComponents().isPressed();
         if (expandable && !expandComponents) {
-            String keyTranslationKey = TooltipAddon.get().configuration().developerSettings().displayComponent().expandComponents().getTranslationKey();
+            String keyTranslationKey = TooltipAddon.get().configuration().displayComponent().expandComponents().getTranslationKey();
             return name + ": " + I18n.translate("advancedtooltip.components.pressToShowList", I18n.translate(keyTranslationKey));
         }
 

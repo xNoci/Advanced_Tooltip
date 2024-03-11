@@ -2,7 +2,6 @@ package me.noci.advancedtooltip.core;
 
 import me.noci.advancedtooltip.core.config.TooltipConfiguration;
 import me.noci.advancedtooltip.core.generated.DefaultReferenceStorage;
-import me.noci.advancedtooltip.core.listener.FoodItemTooltipDebugListener;
 import me.noci.advancedtooltip.core.listener.ItemStackTooltipListener;
 import me.noci.advancedtooltip.core.listener.KeyPressListener;
 import me.noci.advancedtooltip.core.referenceable.InventoryHelper;
@@ -86,7 +85,6 @@ public class TooltipAddon extends LabyAddon<TooltipConfiguration> {
     }
 
     private void registerListener() {
-        this.registerListener(new FoodItemTooltipDebugListener(this, this.foodItems));
         this.registerListener(new ItemStackTooltipListener(this, this.foodItems, this.itemHelper, this.componentHelper));
         this.registerListener(new KeyPressListener(this, this.inventoryHelper));
     }

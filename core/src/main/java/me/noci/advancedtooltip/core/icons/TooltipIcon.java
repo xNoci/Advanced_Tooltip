@@ -45,7 +45,6 @@ public enum TooltipIcon {
 
     public static Optional<Integer> maximum(List<TooltipIcon> icons, Function<IconConfig, Integer> comparedValue) {
         return icons.stream().map(TooltipIcon::iconConfig).map(comparedValue).max(Integer::compareTo);
-
     }
 
     public static int width(List<TooltipIcon> icons) {
