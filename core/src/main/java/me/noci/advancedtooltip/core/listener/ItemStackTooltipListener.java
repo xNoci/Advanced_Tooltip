@@ -37,7 +37,7 @@ public class ItemStackTooltipListener {
         List<Component> tooltip = event.getTooltipLines();
 
         var displayComponent = config.displayComponent();
-        if (displayComponent.isDisplayItemData()) {
+        if (displayComponent.displayItemData()) {
             handleShowNbtData(itemStack, tooltip, displayComponent.textColor());
             return;
         }

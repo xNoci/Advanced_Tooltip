@@ -26,7 +26,7 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValida
     public static <T extends IconComponent> List<T> iconComponents(ItemStack itemStack, VersionedIconComponentMapper<T> mapper) {
         TooltipAddon addon = TooltipAddon.get();
         TooltipConfiguration config = addon.configuration();
-        if (config.displayComponent().isDisplayItemData()) return List.of();
+        if (config.displayComponent().displayItemData()) return List.of();
 
         List<T> iconComponents = iconQueries.stream()
                 .map(iconQuery -> iconQuery.itemIcons(itemStack, mapper))

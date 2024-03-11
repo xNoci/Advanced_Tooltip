@@ -1,19 +1,22 @@
 package me.noci.advancedtooltip.core.config.text;
 
+import me.noci.advancedtooltip.core.TooltipAddon;
 import me.noci.advancedtooltip.core.config.TooltipConfiguration;
+import me.noci.advancedtooltip.core.utils.ToggleBind;
 import net.labymod.api.client.gui.screen.key.Key;
 import net.labymod.api.client.gui.screen.widget.widgets.input.KeybindWidget.KeyBindSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
 import net.labymod.api.configuration.loader.annotation.IntroducedIn;
 import net.labymod.api.configuration.loader.annotation.VersionCompatibility;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
-import net.labymod.api.configuration.settings.annotation.SettingExperimental;
 
 public class DisplayComponentTextTooltipConfig extends TextTooltipConfig {
 
     @SwitchSetting
-    @SettingExperimental
-    private final ConfigProperty<Boolean> toggleDisplayItemData = new ConfigProperty<>(false);
+    private final ConfigProperty<Boolean> toggleDisplayItemData = new ConfigProperty<>(false).addChangeListener(isToggle -> {
+        if (isToggle) return;
+        this.itemDataBind.toggle(false);
+    });
 
     @KeyBindSetting
     private final ConfigProperty<Key> displayItemData = new ConfigProperty<>(Key.Y);
@@ -26,11 +29,10 @@ public class DisplayComponentTextTooltipConfig extends TextTooltipConfig {
     @IntroducedIn(namespace = "advancedtooltip", value = "1.6.0")
     private final ConfigProperty<Key> expandComponents = new ConfigProperty<>(Key.L_CONTROL);
 
-    private boolean nbtDataShownToggled = false;
-
-    public Key displayItemData() {
-        return displayItemData.get();
-    }
+    private final transient ToggleBind itemDataBind = new ToggleBind(displayItemData::get, () -> {
+        if (!toggleDisplayItemData.get()) return false;
+        return TooltipAddon.inventoryHelper().isInventoryOpen();
+    });
 
     public Key printWithNbtArrayData() {
         return printWithNbtArrayData.get();
@@ -40,19 +42,8 @@ public class DisplayComponentTextTooltipConfig extends TextTooltipConfig {
         return expandComponents.get();
     }
 
-    public void toggleDisplayItemData() {
-        if (!toggleDisplayItemData.get()) return;
-        nbtDataShownToggled = !nbtDataShownToggled;
-    }
-
-    public boolean isDisplayItemData() {
-        if (!toggleDisplayItemData.get() && displayItemData.get().isPressed()) return true;
-
-        if (toggleDisplayItemData.get()) {
-            return nbtDataShownToggled;
-        }
-
-        return false;
+    public boolean displayItemData() {
+        return itemDataBind.toggledOr(() -> displayItemData.get().isPressed());
     }
 
 }
