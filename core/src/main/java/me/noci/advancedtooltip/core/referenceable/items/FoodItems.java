@@ -23,8 +23,6 @@ public interface FoodItems {
 
     Optional<Integer> nutrition(ItemStack itemStack);
 
-    Optional<Float> saturationModifier(ItemStack itemStack);
-
     Optional<Float> saturationIncrement(ItemStack itemStack);
 
     Optional<Float> addedSaturation(ItemStack itemStack);
@@ -44,12 +42,6 @@ public interface FoodItems {
         public Optional<Integer> nutrition(ItemStack itemStack) {
             Optional<FoodProperties> foodProperties = foodProperties(itemStack);
             return foodProperties.map(FoodProperties::nutrition);
-        }
-
-        @Override
-        public Optional<Float> saturationModifier(ItemStack itemStack) {
-            Optional<FoodProperties> foodProperties = foodProperties(itemStack);
-            return foodProperties.map(FoodProperties::saturationModifier);
         }
 
         @Override
@@ -73,11 +65,17 @@ public interface FoodItems {
             FoodData foodData = clientPlayer.foodData();
 
             int newFoodLevel = Math.min(foodData.getFoodLevel() + foodLevel.get(), 20);
-            float saturationLevel  = foodData.getSaturationLevel();
+            float saturationLevel = foodData.getSaturationLevel();
             float newSaturation = Math.min(saturationLevel + saturationModifier.get(), newFoodLevel);
 
             return Optional.of(newSaturation - saturationLevel);
         }
+
+        private Optional<Float> saturationModifier(ItemStack itemStack) {
+            Optional<FoodProperties> foodProperties = foodProperties(itemStack);
+            return foodProperties.map(FoodProperties::saturationModifier);
+        }
+
     }
 
     record FoodProperties(int nutrition, float saturationModifier) {
