@@ -19,8 +19,7 @@ public class TextTooltipConfig extends Config {
     private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
 
     @ColorPickerSetting(chroma = true)
-    private final ConfigProperty<Color> textColor = new ConfigProperty<>(Color.WHITE)/*TODO (Custom requires).withHandler(new GlobalTextColorHandler(this))*/;
-
+    private final ConfigProperty<Color> textColor = new ConfigProperty<>(Color.WHITE).withHandler(new TextColorEnabledHandler(this));
 
     public boolean enabled() {
         return this.enabled.get();
@@ -33,7 +32,7 @@ public class TextTooltipConfig extends Config {
         return TextColor.color(textColor.get().get());
     }
 
-    private record GlobalTextColorHandler(TextTooltipConfig setting) implements SettingHandler {
+    private record TextColorEnabledHandler(TextTooltipConfig setting) implements SettingHandler {
         @Override
         public void created(Setting setting) {
 
@@ -48,7 +47,10 @@ public class TextTooltipConfig extends Config {
         public boolean isEnabled(Setting setting) {
             TooltipConfiguration config = TooltipAddon.get().configuration();
             TextTooltipConfig globalColor = config.globalColor();
-            return !globalColor.enabled() || globalColor == this.setting;
+            if (this.setting == globalColor) {
+                return globalColor.enabled();
+            }
+            return !globalColor.enabled();
         }
     }
 }
