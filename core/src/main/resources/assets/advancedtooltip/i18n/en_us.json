@@ -101,67 +101,17 @@
             "currentSaturation": "Current",
             "maxSaturation": "Maximum"
           }
-        },
-        "iconSize": {
-          "name": "Icon size"
-        },
-        "iconSpacing": {
-          "name": "Icon spacing"
-        },
-        "paddingTop": {
-          "name": "Top padding"
-        },
-        "paddingBottom": {
-          "name": "Bottom padding"
-        },
-        "paddingLeft": {
-          "name": "Left padding"
-        },
-        "paddingRight": {
-          "name": "Right padding"
-        },
-        "header": {
-          "icon": {
-            "name": "Icon settings"
-          },
-          "padding": {
-            "name": "Icon padding"
-          }
         }
       },
       "nutritionIcons": {
         "name": "Food level icons",
-        "description": "Displays the nutrition of a food item in its tooltip.",
-        "iconSize": {
-          "name": "Icon size"
-        },
-        "iconSpacing": {
-          "name": "Icon spacing"
-        },
-        "paddingTop": {
-          "name": "Top padding"
-        },
-        "paddingBottom": {
-          "name": "Bottom padding"
-        },
-        "paddingLeft": {
-          "name": "Left padding"
-        },
-        "paddingRight": {
-          "name": "Right padding"
-        },
-        "header": {
-          "icon": {
-            "name": "Icon settings"
-          },
-          "padding": {
-            "name": "Icon padding"
-          }
-        }
+        "description": "Displays the nutrition of a food item in its tooltip."
       },
       "armorIcons": {
         "name": "Armor bar icons",
-        "description": "Displays the armor bars of a armor item in its tooltip.",
+        "description": "Displays the armor bars of a armor item in its tooltip."
+      },
+      "iconConfig": {
         "iconSize": {
           "name": "Icon size"
         },
