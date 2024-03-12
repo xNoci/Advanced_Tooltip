@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import me.noci.advancedtooltip.core.icons.ClientIconComponent;
 import me.noci.advancedtooltip.core.icons.TooltipIcon;
 import net.labymod.api.client.render.matrix.Stack;
+import net.labymod.api.client.render.matrix.VanillaStackAccessor;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -32,7 +33,7 @@ public class VersionedClientIconComponent extends ClientIconComponent implements
 
     @Override
     public void renderImage(Font font, int x, int y, PoseStack poseStack, ItemRenderer itemRenderer) {
-        Stack stack = Stack.create(poseStack);
+        Stack stack = ((VanillaStackAccessor) poseStack).stack();
         renderIcons(stack, x, y);
     }
 
