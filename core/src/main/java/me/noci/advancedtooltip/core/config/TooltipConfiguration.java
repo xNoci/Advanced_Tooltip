@@ -22,9 +22,9 @@ public class TooltipConfiguration extends AddonConfig {
     @SwitchSetting
     private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
 
-    @SettingSection("tooltip_text")
     private final TextTooltipConfig globalColor = new TextTooltipConfig();
 
+    @SettingSection("tooltip_text")
     private final TextTooltipConfig itemDurability = new TextTooltipConfig();
 
     private final TextTooltipConfig anvilUsages = new TextTooltipConfig();

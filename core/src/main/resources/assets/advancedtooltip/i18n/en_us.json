@@ -6,60 +6,62 @@
         "name": "Enabled"
       },
       "globalColor": {
-        "name": "Global color",
+        "name": "Global Color",
         "description": "When enabled the color in each setting will be ignored and this one will be used instead.",
         "textColor": {
           "name": "Color",
-          "description": "The color for every tooltip when 'Global color' is enabled."
+          "description": "The color for every tooltip when 'Global Color' is enabled."
         }
       },
       "itemDurability": {
-        "name": "Item durability",
+        "name": "Item Durability",
         "description": "Shows the durability of an item when advanced tooltip is turned off.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Item durability' when 'Global color' is disabled."
+          "description": "The color for 'Item Durability' when 'Global Color' is disabled."
         }
       },
       "anvilUsages": {
-        "name": "Anvil uses",
+        "name": "Anvil Uses",
         "description": "Displays the amount of anvils uses of an item in its tooltip.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Anvil uses' when 'Global color' is disabled."
+          "description": "The color for 'Anvil Uses' when 'Global Color' is disabled."
         }
       },
       "discSignalStrength": {
-        "name": "Disc signal strength",
+        "name": "Disc Signal Strength",
         "description": "Displays the redstone strength of the disc.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Disc signal strength' when 'Global color' is disabled."
+          "description": "The color for 'Disc Signal Strength' when 'Global Color' is disabled."
         }
       },
       "commandBlockCommand": {
-        "name": "Command block command",
+        "name": "Command Block Command",
         "description": "When the command block was saved with nbt data, it will display the saved command.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Command block command' when 'Global color' is disabled."
+          "description": "The color for 'Command Block Command' when 'Global Color' is disabled."
         }
       },
       "displayComponent": {
-        "name": "Display item data",
+        "name": "Item Data",
         "description": "Allows you to display the item data of an item.\n\n<= 1.20.4: Displays NBT data of an item stack.\n>= 1.20.5: Displays components of an item stack.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Suspicious stew effect' when 'Global color' is disabled."
+          "description": "The color for 'Item Data' when 'Global Color' is disabled."
         },
         "toggleDisplayItemData": {
-          "name": "Toggle 'Show item data'"
+          "name": "Toggle 'Item Data'",
+          "description:": "When enabled the key for 'Show Item Data' will toggle the tooltip.\nWhen disabled the tooltip will be shown as long as 'Show Item Data' key is pressed."
         },
         "displayItemData": {
-          "name": "Show item data"
+          "name": "Show Item Data",
+          "description": "Key to toggle or show the 'Item Data'."
         },
         "printWithNbtArrayData": {
-          "name": "Show NBT array data",
+          "name": "Show NBT Array Data",
           "description": "Display values inside of an NBT array."
         },
         "expandComponents": {
@@ -68,31 +70,31 @@
         }
       },
       "signText": {
-        "name": "Sign text lines",
+        "name": "Sign Text Lines",
         "description": "When enabled shows the lines of an sign, if nbt/component data is saved.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Sign text lines' when 'Global color' is disabled."
+          "description": "The color for 'Sign Text Lines' when 'Global Color' is disabled."
         }
       },
       "mapDecoration": {
-        "name": "Explorer map coordinates",
+        "name": "Explorer Map Coordinates",
         "description": "Displays the coordinates of a map. For example the location of a mansion or ocean monument.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Explorer map coordinates' when 'Global color' is disabled."
+          "description": "The color for 'Explorer Map Coordinates' when 'Global Color' is disabled."
         }
       },
       "suspiciousStewEffect": {
-        "name": "Suspicious stew effect",
+        "name": "Suspicious Stew Effect",
         "description": "Displays the effect type and duration of a suspicious stew.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Suspicious stew effect' when 'Global color' is disabled."
+          "description": "The color for 'Suspicious Stew Effect' when 'Global Color' is disabled."
         }
       },
       "saturationIcons": {
-        "name": "Saturation level icons",
+        "name": "Saturation Level Icons",
         "description": "Display the saturation of an item when enabled.",
         "saturationType": {
           "name": "Saturation Type",
@@ -104,50 +106,47 @@
         }
       },
       "nutritionIcons": {
-        "name": "Food level icons",
+        "name": "Food Level Icons",
         "description": "Displays the nutrition of a food item in its tooltip."
       },
       "armorIcons": {
-        "name": "Armor bar icons",
+        "name": "Armor Icons",
         "description": "Displays the armor bars of a armor item in its tooltip."
       },
       "iconConfig": {
         "iconSize": {
-          "name": "Icon size"
+          "name": "Icon Size"
         },
         "iconSpacing": {
-          "name": "Icon spacing"
+          "name": "Icon Spacing"
         },
         "paddingTop": {
-          "name": "Top padding"
+          "name": "Top Padding"
         },
         "paddingBottom": {
-          "name": "Bottom padding"
+          "name": "Bottom Padding"
         },
         "paddingLeft": {
-          "name": "Left padding"
+          "name": "Left Padding"
         },
         "paddingRight": {
-          "name": "Right padding"
+          "name": "Right Padding"
         },
         "header": {
           "icon": {
-            "name": "Icon settings"
+            "name": "Icon Settings"
           },
           "padding": {
-            "name": "Icon padding"
+            "name": "Icon Padding"
           }
         }
       },
       "header": {
         "tooltip_text": {
-          "name": "Tooltip text"
+          "name": "Text"
         },
         "tooltip_icon": {
-          "name": "Tooltip icons"
-        },
-        "developer": {
-          "name": "Developer Section"
+          "name": "Icons"
         }
       }
     },
