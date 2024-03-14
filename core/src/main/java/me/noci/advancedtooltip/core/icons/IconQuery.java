@@ -12,8 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValidator itemValidator,
-                        ShowFunction showFunction,
-                        LevelFunction levelFunction) {
+                        ShowFunction showFunction, LevelFunction levelFunction) {
 
     private static final List<IconQuery> iconQueries = Lists.newArrayList();
 
@@ -46,8 +45,7 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValida
         FoodItems foodItems = TooltipAddon.foodItems();
         ItemHelper itemHelper = TooltipAddon.itemHelper();
 
-        if (!itemValidator.isValid(itemHelper, itemStack)) return Optional.empty();
-        if (!showFunction.shouldShow(config)) return Optional.empty();
+        if (!itemValidator.isValid(itemHelper, itemStack) || !showFunction.shouldShow(config)) return Optional.empty();
 
         List<TooltipIcon> itemIcons = Lists.newArrayList();
         float level = levelFunction.get(config, foodItems, itemHelper, itemStack);
