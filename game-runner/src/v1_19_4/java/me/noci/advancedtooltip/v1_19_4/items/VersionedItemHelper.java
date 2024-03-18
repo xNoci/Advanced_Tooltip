@@ -4,10 +4,9 @@ import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
 import me.noci.advancedtooltip.v1_19_4.utils.ItemCast;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.MapItem;
-import net.minecraft.world.item.RecordItem;
-import net.minecraft.world.level.block.CommandBlock;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 
 import javax.inject.Singleton;
 import java.util.Optional;
@@ -22,8 +21,31 @@ public class VersionedItemHelper implements ItemHelper {
     }
 
     @Override
+    public boolean isMiningTool(ItemStack itemStack) {
+        return ItemCast.toMinecraftItem(itemStack) instanceof DiggerItem;
+    }
+
+    @Override
     public Optional<Integer> armorBars(ItemStack itemStack) {
         return ItemCast.asItem(itemStack, ArmorItem.class).map(ArmorItem::getDefense);
+    }
+
+    @Override
+    public Optional<Integer> miningLevel(ItemStack itemStack) {
+        return ItemCast.asItem(itemStack, TieredItem.class).map(TieredItem::getTier).map(Tier::getLevel);
+    }
+
+    @Override
+    public Optional<Float> miningSpeed(ItemStack itemStack, boolean applyEnchantments) {
+        var speed = ItemCast.asItem(itemStack, TieredItem.class).map(TieredItem::getTier).map(Tier::getSpeed);
+
+        if (applyEnchantments) {
+            int efficiency = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY, ItemCast.toMinecraftItemStack(itemStack));
+            int modifier = efficiency > 0 ? efficiency * efficiency + 1 : 0;
+            speed = speed.map(speedValue -> speedValue + modifier);
+        }
+
+        return speed;
     }
 
     @Override

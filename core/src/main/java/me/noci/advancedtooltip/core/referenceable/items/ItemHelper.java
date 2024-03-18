@@ -17,7 +17,22 @@ public interface ItemHelper {
         }
 
         @Override
+        public boolean isMiningTool(ItemStack itemStack) {
+            return false;
+        }
+
+        @Override
         public Optional<Integer> armorBars(ItemStack itemStack) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<Integer> miningLevel(ItemStack itemStack) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<Float> miningSpeed(ItemStack itemStack, boolean applyEnchantments) {
             return Optional.empty();
         }
 
@@ -29,7 +44,13 @@ public interface ItemHelper {
 
     boolean isArmor(ItemStack itemStack);
 
+    boolean isMiningTool(ItemStack itemStack);
+
     Optional<Integer> armorBars(ItemStack itemStack);
+
+    Optional<Integer> miningLevel(ItemStack itemStack);
+
+    Optional<Float> miningSpeed(ItemStack itemStack, boolean applyEnchantments);
 
     Optional<Integer> discSignalStrengt(ItemStack itemStack);
 

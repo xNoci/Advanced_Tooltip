@@ -16,10 +16,18 @@ public class TextTooltipConfig extends Config {
 
     @ParentSwitch
     @SwitchSetting
-    private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
+    private final ConfigProperty<Boolean> enabled;
 
     @ColorPickerSetting(chroma = true)
     private final ConfigProperty<Color> textColor = new ConfigProperty<>(Color.WHITE).withHandler(new TextColorEnabledHandler(this));
+
+    public TextTooltipConfig() {
+        this(true);
+    }
+
+    public TextTooltipConfig(boolean enabled) {
+        this.enabled = new ConfigProperty<>(enabled);
+    }
 
     public boolean enabled() {
         return this.enabled.get();

@@ -72,6 +72,19 @@ public class ItemStackTooltipListener {
             handleCommandBlockCommand(itemStack, tooltip, commandBlockCommand.textColor());
         }
 
+        boolean miningItem = itemHelper.isMiningTool(itemStack);
+        var miningLevel = config.miningLevel();
+        if (miningLevel.enabled() && miningItem) {
+            itemHelper.miningLevel(itemStack)
+                    .ifPresent(level -> tooltip(tooltip, miningLevel.textColor(), "mining.level." + level));
+        }
+
+        var miningSpeed = config.miningSpeed();
+        if (miningSpeed.enabled() && miningItem) {
+            itemHelper.miningSpeed(itemStack, miningSpeed.applyEnchantments())
+                    .ifPresent(speed -> tooltip(tooltip, miningLevel.textColor(), "mining_speed", speed));
+        }
+
         var signText = config.signText();
         if (signText.enabled()) {
             handleShowSignText(itemStack, tooltip, signText.textColor());

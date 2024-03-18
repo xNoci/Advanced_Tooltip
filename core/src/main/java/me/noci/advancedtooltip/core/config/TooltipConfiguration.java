@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.noci.advancedtooltip.core.config.icon.IconConfig;
 import me.noci.advancedtooltip.core.config.icon.SaturationIconConfig;
 import me.noci.advancedtooltip.core.config.text.DisplayComponentTextTooltipConfig;
+import me.noci.advancedtooltip.core.config.text.MiningSpeedTextTooltipConfig;
 import me.noci.advancedtooltip.core.config.text.TextTooltipConfig;
 import net.labymod.api.addon.AddonConfig;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
@@ -32,6 +33,12 @@ public class TooltipConfiguration extends AddonConfig {
     private final TextTooltipConfig discSignalStrength = new TextTooltipConfig();
 
     private final TextTooltipConfig commandBlockCommand = new TextTooltipConfig();
+
+    @IntroducedIn(namespace = "advancedtooltip", value = "1.6.0")
+    private final TextTooltipConfig miningLevel = new TextTooltipConfig(false);
+
+    @IntroducedIn(namespace = "advancedtooltip", value = "1.6.0")
+    private final MiningSpeedTextTooltipConfig miningSpeed = new MiningSpeedTextTooltipConfig();
 
     private final DisplayComponentTextTooltipConfig displayComponent = new DisplayComponentTextTooltipConfig();
 

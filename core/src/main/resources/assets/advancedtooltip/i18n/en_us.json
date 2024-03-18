@@ -45,6 +45,26 @@
           "description": "The color for 'Command Block Command' when 'Global Color' is disabled."
         }
       },
+      "miningLevel": {
+        "name": "Mining Level",
+        "description": "Display the mining level of a tool.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Mining Level' when 'Global Color' is disabled."
+        }
+      },
+      "miningSpeed": {
+        "name": "Mining Speed",
+        "description": "Display the mining speed of a tool.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Mining Speed' when 'Global Color' is disabled."
+        },
+        "applyEnchantments": {
+          "name": "Apply Enchantments",
+          "description": "When enabled will add the speed of the current efficiency when available."
+        }
+      },
       "displayComponent": {
         "name": "Item Data",
         "description": "Allows you to display the item data of an item.\n\n<= 1.20.4: Displays NBT data of an item stack.\n>= 1.20.5: Displays components of an item stack.",
@@ -157,6 +177,13 @@
       "durability": "Durability: %s/%s",
       "command_block_command": "Command: /%s",
       "command_block_no_command": "No command saved",
+      "mining.level.0": "Mining Level I",
+      "mining.level.1": "Mining Level II",
+      "mining.level.2": "Mining Level III",
+      "mining.level.3": "Mining Level IV",
+      "mining.level.4": "Mining Level V",
+      "mining.level.5": "Mining Level VI",
+      "mining_speed": "Mining Speed: %s",
       "potion_effect": {
         "display": "%s (%s)",
         "duration_infinity": "∞"
