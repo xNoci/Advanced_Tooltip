@@ -19,6 +19,15 @@
         "textColor": {
           "name": "Color",
           "description": "The color for 'Item Durability' when 'Global Color' is disabled."
+        },
+        "durabilityType": {
+          "name": "Durability Type",
+          "description": "Display type for the item durability.\n\nVanilla: Normal Minecraft durability format.\nPercentage: Display the durability in percentage.\nCombined: Display Minecraft format and percentage.",
+          "entries": {
+            "vanilla": "Vanilla",
+            "percentage": "Percentage",
+            "combined": "Combined"
+          }
         }
       },
       "anvilUsages": {
@@ -174,7 +183,9 @@
       "no_nbt_data": "No data found.",
       "anvil_usages": "Anvil usages (%s)",
       "disc_signal_strength": "Disc signal strength (%s)",
-      "durability": "Durability: %s/%s",
+      "durability.type.vanilla": "Durability: %s/%s",
+      "durability.type.percentage": "Durability (%s%%)",
+      "durability.type.combined": "Durability: %s/%s (%s%%)",
       "command_block_command": "Command: /%s",
       "command_block_no_command": "No command saved",
       "mining.level.0": "Mining Level I",

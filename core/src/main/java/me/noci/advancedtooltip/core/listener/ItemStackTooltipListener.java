@@ -1,6 +1,7 @@
 package me.noci.advancedtooltip.core.listener;
 
 import me.noci.advancedtooltip.core.TooltipAddon;
+import me.noci.advancedtooltip.core.config.DurabilityType;
 import me.noci.advancedtooltip.core.config.TooltipConfiguration;
 import me.noci.advancedtooltip.core.referenceable.items.ComponentHelper;
 import me.noci.advancedtooltip.core.referenceable.items.FoodItems;
@@ -15,9 +16,12 @@ import net.labymod.api.event.client.world.ItemStackTooltipEvent;
 import net.labymod.api.util.I18n;
 import net.labymod.api.util.time.TimeUtil;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ItemStackTooltipListener {
+
+    private static final DecimalFormat PERCENTAGE_FORMAT = new DecimalFormat("0.##");
 
     private final TooltipConfiguration config;
     private final FoodItems foodItems;
@@ -44,7 +48,7 @@ public class ItemStackTooltipListener {
 
         var durability = config.itemDurability();
         if (durability.enabled() && event.type() != ItemStackTooltipEvent.TooltipType.ADVANCED) {
-            handleShowDurability(itemStack, tooltip, durability.textColor());
+            handleShowDurability(itemStack, tooltip, durability.textColor(), durability.durabilityType());
         }
 
         var anvilUses = config.anvilUsages();
@@ -103,10 +107,19 @@ public class ItemStackTooltipListener {
                 }, () -> tooltip(tooltip, color, "no_nbt_data"));
     }
 
-    private void handleShowDurability(ItemStack itemStack, List<Component> tooltip, TextColor color) {
+    private void handleShowDurability(ItemStack itemStack, List<Component> tooltip, TextColor color, DurabilityType durabilityType) {
         if (itemStack.getMaximumDamage() <= 0) return;
         if (componentHelper.unbreakable(itemStack)) return;
-        tooltip(tooltip, color, "durability", itemStack.getMaximumDamage() - itemStack.getCurrentDamageValue(), itemStack.getMaximumDamage());
+
+        int currentDamage = itemStack.getMaximumDamage() - itemStack.getCurrentDamageValue();
+        int maxDamage = itemStack.getMaximumDamage();
+        String percentage = PERCENTAGE_FORMAT.format(((float) currentDamage / maxDamage) * 100);
+
+        switch (durabilityType) {
+            case VANILLA -> tooltip(tooltip, color, "durability.type.vanilla", currentDamage, maxDamage);
+            case PERCENTAGE -> tooltip(tooltip, color, "durability.type.percentage", percentage);
+            case COMBINED -> tooltip(tooltip, color, "durability.type.combined", currentDamage, maxDamage, percentage);
+        }
     }
 
     private void handleAnvilUses(ItemStack itemStack, List<Component> tooltip, TextColor color) {

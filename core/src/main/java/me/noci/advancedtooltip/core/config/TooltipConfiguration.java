@@ -26,7 +26,7 @@ public class TooltipConfiguration extends AddonConfig {
     private final TextTooltipConfig globalColor = new TextTooltipConfig();
 
     @SettingSection("tooltip_text")
-    private final TextTooltipConfig itemDurability = new TextTooltipConfig();
+    private final DurabilityTextTooltipConfig itemDurability = new DurabilityTextTooltipConfig();
 
     private final TextTooltipConfig anvilUsages = new TextTooltipConfig();
 
