@@ -26,6 +26,11 @@ public class VersionedItemHelper implements ItemHelper {
     }
 
     @Override
+    public boolean isClock(ItemStack itemStack) {
+        return ItemCast.toMinecraftItem(itemStack) == Items.CLOCK;
+    }
+
+    @Override
     public Optional<Integer> armorBars(ItemStack itemStack) {
         return ItemCast.asItem(itemStack, ArmorItem.class).map(ArmorItem::getDefense);
     }

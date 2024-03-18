@@ -74,6 +74,18 @@
           "description": "When enabled will add the speed of the current efficiency when available."
         }
       },
+      "clockTime": {
+        "name": "Clock Time",
+        "description": "Display the current world time in the tooltip of a clock.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Clock Time' when 'Global Color' is disabled."
+        },
+        "format24Hours": {
+          "name": "24h Format",
+          "description": "When enabled use 24h Format instead of the 12h Format."
+        }
+      },
       "displayComponent": {
         "name": "Item Data",
         "description": "Allows you to display the item data of an item.\n\n<= 1.20.4: Displays NBT data of an item stack.\n>= 1.20.5: Displays components of an item stack.",

@@ -89,6 +89,24 @@ public class ItemStackTooltipListener {
                     .ifPresent(speed -> tooltip(tooltip, miningLevel.textColor(), "mining_speed", speed));
         }
 
+        var clockTime = config.clockTime();
+        if (clockTime.enabled() && itemHelper.isClock(itemStack)) {
+            long time = Laby.references().clientWorld().getDayTime();
+            int hours = (int) (time / 1000 + 6) % 24;
+            int minutes = (int) (60 * (time % 1000) / 1000);
+
+            String clockFormat;
+            if (clockTime.format24Hours()) {
+                clockFormat = "%02d:%02d".formatted(hours, minutes);
+            } else {
+                String suffix = hours >= 12 ? "PM" : "AM";
+                hours = hours % 12 == 0 ? 12 : hours % 12;
+                clockFormat = "%d:%02d %s".formatted(hours, minutes, suffix);
+            }
+
+            tooltip(tooltip, clockTime.textColor(), false, clockFormat);
+        }
+
         var signText = config.signText();
         if (signText.enabled()) {
             handleShowSignText(itemStack, tooltip, signText.textColor());

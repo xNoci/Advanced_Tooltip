@@ -22,6 +22,11 @@ public interface ItemHelper {
         }
 
         @Override
+        public boolean isClock(ItemStack itemStack) {
+            return false;
+        }
+
+        @Override
         public Optional<Integer> armorBars(ItemStack itemStack) {
             return Optional.empty();
         }
@@ -45,6 +50,8 @@ public interface ItemHelper {
     boolean isArmor(ItemStack itemStack);
 
     boolean isMiningTool(ItemStack itemStack);
+
+    boolean isClock(ItemStack itemStack);
 
     Optional<Integer> armorBars(ItemStack itemStack);
 
