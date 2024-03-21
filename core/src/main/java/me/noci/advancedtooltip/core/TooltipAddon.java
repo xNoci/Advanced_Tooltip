@@ -1,5 +1,6 @@
 package me.noci.advancedtooltip.core;
 
+import lombok.Setter;
 import me.noci.advancedtooltip.core.config.TooltipConfiguration;
 import me.noci.advancedtooltip.core.generated.DefaultReferenceStorage;
 import me.noci.advancedtooltip.core.listener.ItemStackTooltipListener;
@@ -12,6 +13,8 @@ import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.models.addon.annotation.AddonMain;
 import net.labymod.api.revision.SimpleRevision;
 import net.labymod.api.util.version.SemanticVersion;
+
+import java.util.function.Consumer;
 
 @AddonMain
 public class TooltipAddon extends LabyAddon<TooltipConfiguration> {
@@ -42,10 +45,10 @@ public class TooltipAddon extends LabyAddon<TooltipConfiguration> {
         return instance.componentHelper;
     }
 
-    private FoodItems foodItems = FoodItems.DEFAULT;
-    private ItemHelper itemHelper = ItemHelper.DEFAULT;
-    private InventoryHelper inventoryHelper = InventoryHelper.DEFAULT;
-    private ComponentHelper componentHelper = ComponentHelper.DEFAULT;
+    @Setter private FoodItems foodItems = FoodItems.DEFAULT;
+    @Setter private ItemHelper itemHelper = ItemHelper.DEFAULT;
+    @Setter private InventoryHelper inventoryHelper = InventoryHelper.DEFAULT;
+    @Setter private ComponentHelper componentHelper = ComponentHelper.DEFAULT;
 
     public TooltipAddon() {
         instance = this;
@@ -65,26 +68,10 @@ public class TooltipAddon extends LabyAddon<TooltipConfiguration> {
 
     private void initialiseReferences() {
         DefaultReferenceStorage referenceStorage = this.referenceStorageAccessor();
-
-        FoodItems foodItems = referenceStorage.getFoodItems();
-        if (foodItems != null) {
-            this.foodItems = foodItems;
-        }
-
-        ItemHelper itemHelper = referenceStorage.getItemHelper();
-        if (itemHelper != null) {
-            this.itemHelper = itemHelper;
-        }
-
-        InventoryHelper inventoryManager = referenceStorage.getInventoryHelper();
-        if (inventoryManager != null) {
-            this.inventoryHelper = inventoryManager;
-        }
-
-        ComponentHelper componentHelper = referenceStorage.getComponentHelper();
-        if (componentHelper != null) {
-            this.componentHelper = componentHelper;
-        }
+        setVersionedReference(referenceStorage.getFoodItems(), this::foodItems);
+        setVersionedReference(referenceStorage.getItemHelper(), this::itemHelper);
+        setVersionedReference(referenceStorage.getInventoryHelper(), this::inventoryHelper);
+        setVersionedReference(referenceStorage.getComponentHelper(), this::componentHelper);
     }
 
     private void registerListener() {
@@ -95,4 +82,10 @@ public class TooltipAddon extends LabyAddon<TooltipConfiguration> {
     protected Class<TooltipConfiguration> configurationClass() {
         return TooltipConfiguration.class;
     }
+
+    private static <T> void setVersionedReference(T reference, Consumer<T> setter) {
+        if (reference == null) return;
+        setter.accept(reference);
+    }
+
 }
