@@ -1,13 +1,12 @@
-package me.noci.advancedtooltip.v24w11a.items;
+package me.noci.advancedtooltip.v24w12a.items;
 
 import me.noci.advancedtooltip.core.referenceable.items.FoodItems;
-import me.noci.advancedtooltip.v24w11a.utils.ItemCast;
+import me.noci.advancedtooltip.v24w12a.utils.ItemCast;
 import net.labymod.api.client.world.effect.PotionEffect;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.SuspiciousStewEffects;
 
 import javax.inject.Singleton;
@@ -32,10 +31,8 @@ public class VersionedFoodItems extends FoodItems.DefaultFoodItems {
 
     @Override
     public Optional<FoodProperties> foodProperties(ItemStack itemStack) {
-        Item item = ItemCast.toMinecraftItem(itemStack);
-        var foodProperties = item.getFoodProperties();
-        if (foodProperties == null) return Optional.empty();
-        return Optional.of(new FoodProperties(foodProperties.getNutrition(), foodProperties.getSaturationModifier()));
+        return ItemCast.typedDataComponent(itemStack, DataComponents.FOOD)
+                .map(properties -> new FoodProperties(properties.nutrition(), properties.saturationModifier()));
     }
 
 }

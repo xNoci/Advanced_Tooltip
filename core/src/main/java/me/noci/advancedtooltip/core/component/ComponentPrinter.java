@@ -23,35 +23,35 @@ public interface ComponentPrinter {
         return new StringComponentPrinter(text);
     }
 
-    static ComponentPrinter object(String name, ComponentPrinter... values) {
+    static ObjectComponentPrinter object(String name, ComponentPrinter... values) {
         return object(name, List.of(values));
     }
 
-    static ComponentPrinter object(String name, List<ComponentPrinter> values) {
+    static ObjectComponentPrinter object(String name, List<ComponentPrinter> values) {
         return new ObjectPrinter(name, values, false);
     }
 
-    static ComponentPrinter expandableObject(String name, ComponentPrinter... values) {
+    static ObjectComponentPrinter expandableObject(String name, ComponentPrinter... values) {
         return expandableObject(name, List.of(values));
     }
 
-    static ComponentPrinter expandableObject(String name, List<ComponentPrinter> values) {
+    static ObjectComponentPrinter expandableObject(String name, List<ComponentPrinter> values) {
         return new ObjectPrinter(name, values, true);
     }
 
-    static ComponentPrinter object(ComponentPrinter... values) {
+    static ObjectComponentPrinter object(ComponentPrinter... values) {
         return object(List.of(values));
     }
 
-    static ComponentPrinter object(List<ComponentPrinter> values) {
+    static ObjectComponentPrinter object(List<ComponentPrinter> values) {
         return new ObjectPrinter(null, values, false);
     }
 
-    static ComponentPrinter expandableObject(ComponentPrinter... values) {
+    static ObjectComponentPrinter expandableObject(ComponentPrinter... values) {
         return expandableObject(List.of(values));
     }
 
-    static ComponentPrinter expandableObject(List<ComponentPrinter> values) {
+    static ObjectComponentPrinter expandableObject(List<ComponentPrinter> values) {
         return new ObjectPrinter(null, values, true);
     }
 

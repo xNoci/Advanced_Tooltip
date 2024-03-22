@@ -1,9 +1,10 @@
-package me.noci.advancedtooltip.v24w11a.items;
+package me.noci.advancedtooltip.v24w12a.items;
 
 import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
-import me.noci.advancedtooltip.v24w11a.utils.ItemCast;
+import me.noci.advancedtooltip.v24w12a.utils.ItemCast;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -37,7 +38,7 @@ public class VersionedItemHelper implements ItemHelper {
 
     @Override
     public Optional<Integer> miningLevel(ItemStack itemStack) {
-        return ItemCast.asItem(itemStack, TieredItem.class).map(TieredItem::getTier).map(Tier::getLevel);
+        return Optional.empty();
     }
 
     @Override

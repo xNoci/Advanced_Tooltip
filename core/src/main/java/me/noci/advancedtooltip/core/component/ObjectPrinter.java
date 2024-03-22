@@ -6,7 +6,7 @@ import net.labymod.api.util.I18n;
 import java.util.List;
 import java.util.Optional;
 
-public class ObjectPrinter implements ComponentPrinter {
+public class ObjectPrinter implements ObjectComponentPrinter {
 
     private final static ListComponentPrinter.ValueHandler<ComponentPrinter> HANDLER = value -> value != null ? value.print() : "NULL";
 
@@ -14,6 +14,7 @@ public class ObjectPrinter implements ComponentPrinter {
     private final boolean expandable;
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType") private final Optional<String> name;
     private int indentLevel = 0;
+    private boolean inline = false;
 
     protected ObjectPrinter(String name, List<ComponentPrinter> values, boolean expandable) {
         this.name = Optional.ofNullable(name).map(s -> s.isBlank() ? null : s);
@@ -38,15 +39,18 @@ public class ObjectPrinter implements ComponentPrinter {
             return builder.toString();
         }
 
-        builder.append("{\n");
+        builder.append("{");
+        if (!inline) builder.append("\n");
         for (int i = 0; i < values.size(); i++) {
             ComponentPrinter value = values.get(i);
-            indent(builder, 1).append(HANDLER.apply(value));
+            if (!inline) indent(builder, 1);
+            builder.append(HANDLER.apply(value));
             if (i + 1 != values.size()) builder.append(",");
-            builder.append("\n");
+            if (!inline) builder.append("\n");
         }
 
-        indent(builder).append("}");
+        if (!inline) indent(builder);
+        builder.append("}");
         return builder.toString();
     }
 
@@ -61,7 +65,14 @@ public class ObjectPrinter implements ComponentPrinter {
         updateIndentLevel();
     }
 
+    @Override
+    public ObjectComponentPrinter inline(boolean inline) {
+        this.inline = inline;
+        return this;
+    }
+
     private void updateIndentLevel() {
         values.forEach(component -> component.setIndentLevel(indentLevel + 1));
     }
+
 }

@@ -1,6 +1,6 @@
-package me.noci.advancedtooltip.v24w11a.mixins.component.accessor;
+package me.noci.advancedtooltip.v24w12a.mixins.component.accessor;
 
-import me.noci.advancedtooltip.v24w11a.components.accessor.AdventureModePredicateAccessor;
+import me.noci.advancedtooltip.v24w12a.components.accessor.AdventureModePredicateAccessor;
 import net.minecraft.advancements.critereon.BlockPredicate;
 import net.minecraft.world.item.AdventureModePredicate;
 import org.spongepowered.asm.mixin.Final;

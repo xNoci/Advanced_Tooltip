@@ -222,6 +222,7 @@
         "taiga_village": "Taiga Village (X: %s, Z: %s)",
         "jungle_explorer": "Jungle Temple (X: %s, Z: %s)",
         "swamp_village": "Swamp Village (X: %s, Z: %s)",
+        "trial_chamber": "Trial Chamber (X: %s, Z: %s)",
         "unknown": "Unknown map type (X: %s, Z: %s)"
       },
       "sign_text": {

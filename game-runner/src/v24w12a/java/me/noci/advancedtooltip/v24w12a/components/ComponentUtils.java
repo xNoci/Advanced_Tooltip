@@ -1,12 +1,12 @@
-package me.noci.advancedtooltip.v24w11a.components;
+package me.noci.advancedtooltip.v24w12a.components;
 
 import com.google.common.collect.Lists;
 import com.mojang.authlib.properties.Property;
 import me.noci.advancedtooltip.core.component.ComponentPrinter;
-import me.noci.advancedtooltip.v24w11a.components.accessor.AdventureModePredicateAccessor;
-import me.noci.advancedtooltip.v24w11a.components.accessor.ArmorTrimAccessor;
-import me.noci.advancedtooltip.v24w11a.components.accessor.ItemContainerContentsAccessor;
-import me.noci.advancedtooltip.v24w11a.components.accessor.ItemEnchantmentsAccessor;
+import me.noci.advancedtooltip.v24w12a.components.accessor.AdventureModePredicateAccessor;
+import me.noci.advancedtooltip.v24w12a.components.accessor.ArmorTrimAccessor;
+import me.noci.advancedtooltip.v24w12a.components.accessor.ItemContainerContentsAccessor;
+import me.noci.advancedtooltip.v24w12a.components.accessor.ItemEnchantmentsAccessor;
 import net.labymod.api.util.I18n;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
@@ -18,9 +18,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Unit;
 import net.minecraft.world.LockCode;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Instrument;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.armortrim.ArmorTrim;
@@ -125,8 +127,10 @@ public class ComponentUtils {
                 return ComponentPrinter.object(attributeKeyComponent, equipmentSlotComponent, attributeModifierComponent);
             }).toList();
 
+            boolean hasModifiers = !modifiers.modifiers().isEmpty();
             var modifierListComponent = ComponentPrinter.expandableList("modifiers", modifierObjects).handler(ComponentPrinter::print);
-            return ComponentPrinter.component(component, ComponentPrinter.expandableObject(showInTooltipComponent, modifierListComponent));
+
+            return ComponentPrinter.component(component, ComponentPrinter.object(showInTooltipComponent, modifierListComponent).inline(!hasModifiers));
         }
 
         if (component.value() instanceof ChargedProjectiles chargedProjectiles) {
@@ -165,7 +169,14 @@ public class ComponentUtils {
             return ComponentPrinter.component(component, ComponentPrinter.expandableMap("decorations", decorations.decorations())
                     .handler(key -> key,
                             decoration -> {
-                                var typeComponent = ComponentPrinter.value("type", decoration.type().getSerializedName());
+                                var decorationType = decoration.type().value();
+                                var typeComponent = ComponentPrinter.expandableObject("type",
+                                        ComponentPrinter.value("assetId", decorationType.assetId().toString()),
+                                        ComponentPrinter.value("show_on_item_frame", decorationType.showOnItemFrame()),
+                                        ComponentPrinter.value("map_color", toHexInt(decorationType.mapColor())),
+                                        ComponentPrinter.value("exploration_map_element", decorationType.explorationMapElement()),
+                                        ComponentPrinter.value("track_count", decorationType.trackCount())
+                                );
                                 var xComponent = ComponentPrinter.value("x", decoration.x());
                                 var zComponent = ComponentPrinter.value("y", decoration.z());
                                 var rotationComponent = ComponentPrinter.value("rotation", decoration.rotation());
@@ -399,6 +410,31 @@ public class ComponentUtils {
 
         if (component.value() instanceof MapPostProcessing mapPostProcessing) {
             return ComponentPrinter.component(component, ComponentPrinter.value("post_processing", mapPostProcessing.name().toLowerCase()));
+        }
+
+        if (component.value() instanceof FoodProperties foodProperties) {
+            var effectComponents = foodProperties.effects().stream().map(possibleEffect -> ComponentPrinter.expandableObject(
+                    ComponentPrinter.value("effect", potionEffectToString(possibleEffect.effect())),
+                    ComponentPrinter.value("probability", possibleEffect.probability())
+            )).toList();
+
+            var foodComponent = ComponentPrinter.object(
+                    ComponentPrinter.value("nutrition", foodProperties.nutrition()),
+                    ComponentPrinter.value("saturation_modifier", foodProperties.saturationModifier()),
+                    ComponentPrinter.value("can_always_eat", foodProperties.canAlwaysEat()),
+                    ComponentPrinter.value("eat_seconds", foodProperties.eatSeconds()),
+                    ComponentPrinter.expandableList("effects", effectComponents).handler(ComponentPrinter::print)
+            );
+            return ComponentPrinter.component(component, foodComponent);
+        }
+
+        if (component.value() instanceof Rarity rarity) {
+            List<ComponentPrinter> components = Lists.newArrayList(ComponentPrinter.value("name", rarity.getSerializedName()));
+            if (rarity.color().getColor() != null) {
+                components.add(ComponentPrinter.value("color", toHexInt(rarity.color().getColor())));
+            }
+
+            return ComponentPrinter.component(component, ComponentPrinter.object("rarity", components).inline());
         }
 
         return ComponentPrinter.component(component, ComponentPrinter.unsupported());

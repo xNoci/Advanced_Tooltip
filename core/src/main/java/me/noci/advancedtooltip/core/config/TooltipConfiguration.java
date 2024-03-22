@@ -32,6 +32,7 @@ public class TooltipConfiguration extends AddonConfig {
 
     private final TextTooltipConfig commandBlockCommand = new TextTooltipConfig();
 
+    @VersionCompatibility("1.8<1.20.4")
     @IntroducedIn(namespace = "advancedtooltip", value = "1.6.0")
     private final TextTooltipConfig miningLevel = new TextTooltipConfig(false);
 
