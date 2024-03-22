@@ -19,9 +19,9 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import java.util.List;
 
 @Mixin(AbstractContainerScreen.class)
-public abstract class AbstractContainerScreenTooltipRenderer extends Screen {
+public abstract class MixinAbstractContainerScreen extends Screen {
 
-    protected AbstractContainerScreenTooltipRenderer(Component $$0) {
+    protected MixinAbstractContainerScreen(Component $$0) {
         super($$0);
     }
 

@@ -5,6 +5,10 @@
       "enabled": {
         "name": "Enabled"
       },
+      "ignoreHideTooltip": {
+        "name": "Ignore Hide Tooltip",
+        "description": "When enabled the tooltip of an item will even show up when the item has the 'Hide Tooltip' component."
+      },
       "globalColor": {
         "name": "Global Color",
         "description": "When enabled the color in each setting will be ignored and this one will be used instead.",

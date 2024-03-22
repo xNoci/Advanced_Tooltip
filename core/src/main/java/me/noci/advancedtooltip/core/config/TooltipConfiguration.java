@@ -21,6 +21,11 @@ public class TooltipConfiguration extends AddonConfig {
     @SwitchSetting
     private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
 
+    @SwitchSetting
+    @VersionCompatibility("1.20.5<" + LATEST_SUPPORTED_VERSION)
+    @IntroducedIn(namespace = "advancedtooltip", value = "1.6.0")
+    private final ConfigProperty<Boolean> ignoreHideTooltip = new ConfigProperty<>(false);
+
     private final TextTooltipConfig globalColor = new TextTooltipConfig();
 
     @SettingSection("tooltip_text")
@@ -62,5 +67,9 @@ public class TooltipConfiguration extends AddonConfig {
 
     @VersionCompatibility("1.19.4<" + LATEST_SUPPORTED_VERSION)
     private final IconConfig armorIcons = new IconConfig();
+
+    public boolean ignoreHideTooltip() {
+        return this.ignoreHideTooltip.get();
+    }
 
 }
