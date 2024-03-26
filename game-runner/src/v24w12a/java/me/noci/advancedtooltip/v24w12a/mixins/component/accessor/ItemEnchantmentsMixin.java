@@ -14,8 +14,7 @@ import java.util.List;
 @Mixin(ItemEnchantments.class)
 public class ItemEnchantmentsMixin implements ItemEnchantmentsAccessor {
 
-    @Final
-    @Shadow boolean showInTooltip;
+    @Final @Shadow boolean showInTooltip;
 
     @Final @Shadow Object2IntLinkedOpenHashMap<Holder<Enchantment>> enchantments;
 

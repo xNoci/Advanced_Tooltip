@@ -11,14 +11,18 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Mixin(GuiGraphics.class)
 public class MixinGuiGraphics {
 
-    @ModifyVariable(method = "renderTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V", at = @At(value = "STORE"), index = 6)
+    @ModifyVariable(
+            method = "renderTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V",
+            at = @At(
+                    value = "STORE"
+            ),
+            index = 6
+    )
     private List<ClientTooltipComponent> alterComponentList(List<ClientTooltipComponent> original, Font font, List<Component> components) {
         if (!TooltipAddon.enabled()) return original;
 
@@ -27,7 +31,7 @@ public class MixinGuiGraphics {
                 return iconComponent;
             }
             return new ClientTextTooltip(component.getVisualOrderText());
-        }).collect(Collectors.toCollection(ArrayList::new));
+        }).toList();
     }
 
 }

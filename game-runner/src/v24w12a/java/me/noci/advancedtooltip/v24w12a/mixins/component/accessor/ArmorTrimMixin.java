@@ -9,8 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(ArmorTrim.class)
 public class ArmorTrimMixin implements ArmorTrimAccessor {
 
-    @Final
-    @Shadow boolean showInTooltip;
+    @Final @Shadow boolean showInTooltip;
 
     @Override
     public boolean isShownInTooltip() {

@@ -14,7 +14,7 @@ import java.util.List;
 @Mixin(ItemContainerContents.class)
 public class ItemContainerContentsMixin implements ItemContainerContentsAccessor {
 
-    @Shadow @Final private NonNullList<ItemStack> items;
+    @Final @Shadow private NonNullList<ItemStack> items;
 
 
     @Override

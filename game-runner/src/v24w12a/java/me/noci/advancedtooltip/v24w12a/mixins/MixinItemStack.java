@@ -15,9 +15,19 @@ public abstract class MixinItemStack {
     @Shadow
     public abstract DataComponentMap getComponents();
 
-    @Redirect(method = "getTooltipLines", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;has(Lnet/minecraft/core/component/DataComponentType;)Z", ordinal = 0))
+    @Redirect(
+            method = "getTooltipLines",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/item/ItemStack;has(Lnet/minecraft/core/component/DataComponentType;)Z",
+                    ordinal = 0
+            )
+    )
     private boolean injected(ItemStack instance, DataComponentType<?> dataComponentType) {
-        if(!TooltipAddon.enabled() || !TooltipAddon.get().configuration().ignoreHideTooltip()) return this.getComponents().has(dataComponentType);
+        if (!TooltipAddon.enabled() || !TooltipAddon.get().configuration().ignoreHideTooltip()) {
+            return this.getComponents().has(dataComponentType);
+        }
+
         return false;
     }
 

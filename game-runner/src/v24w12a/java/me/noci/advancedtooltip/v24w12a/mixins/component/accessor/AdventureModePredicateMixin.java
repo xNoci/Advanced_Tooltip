@@ -12,8 +12,7 @@ import java.util.List;
 @Mixin(AdventureModePredicate.class)
 public class AdventureModePredicateMixin implements AdventureModePredicateAccessor {
 
-    @Final
-    @Shadow boolean showInTooltip;
+    @Final @Shadow boolean showInTooltip;
 
     @Final @Shadow List<BlockPredicate> predicates;
 
