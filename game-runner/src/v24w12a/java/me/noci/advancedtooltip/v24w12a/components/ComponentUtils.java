@@ -142,7 +142,7 @@ public class ComponentUtils {
         }
 
         if (component.value() instanceof Unit) {
-            return ComponentPrinter.component(component, ComponentPrinter.object());
+            return ComponentPrinter.unit(component);
         }
 
         if (component.value() instanceof BundleContents bundleContents) {

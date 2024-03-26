@@ -75,6 +75,10 @@ public interface ComponentPrinter {
         return new DataComponentPrinter(component, printer);
     }
 
+    static ComponentPrinter unit(Object component) {
+        return new UnitComponentPrinter(component);
+    }
+
     static ComponentPrinter unsupported() {
         return UnsupportedComponentPrinter.PRINTER;
     }
