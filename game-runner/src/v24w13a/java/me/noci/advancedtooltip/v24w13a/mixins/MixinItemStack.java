@@ -1,4 +1,4 @@
-package me.noci.advancedtooltip.v24w12a.mixins;
+package me.noci.advancedtooltip.v24w13a.mixins;
 
 import me.noci.advancedtooltip.core.TooltipAddon;
 import net.minecraft.core.component.DataComponentMap;

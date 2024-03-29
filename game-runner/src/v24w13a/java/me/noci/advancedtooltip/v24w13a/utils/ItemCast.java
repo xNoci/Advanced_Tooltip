@@ -1,4 +1,4 @@
-package me.noci.advancedtooltip.v24w12a.utils;
+package me.noci.advancedtooltip.v24w13a.utils;
 
 import net.labymod.api.client.world.item.ItemStack;
 import net.minecraft.core.component.DataComponentType;

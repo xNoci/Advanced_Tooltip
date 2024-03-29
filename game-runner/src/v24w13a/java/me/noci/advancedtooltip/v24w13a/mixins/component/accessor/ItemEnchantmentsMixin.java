@@ -1,7 +1,7 @@
-package me.noci.advancedtooltip.v24w12a.mixins.component.accessor;
+package me.noci.advancedtooltip.v24w13a.mixins.component.accessor;
 
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
-import me.noci.advancedtooltip.v24w12a.components.accessor.ItemEnchantmentsAccessor;
+import me.noci.advancedtooltip.v24w13a.components.accessor.ItemEnchantmentsAccessor;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;

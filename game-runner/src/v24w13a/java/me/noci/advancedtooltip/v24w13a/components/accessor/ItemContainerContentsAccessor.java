@@ -1,4 +1,4 @@
-package me.noci.advancedtooltip.v24w12a.components.accessor;
+package me.noci.advancedtooltip.v24w13a.components.accessor;
 
 import net.minecraft.world.item.ItemStack;
 

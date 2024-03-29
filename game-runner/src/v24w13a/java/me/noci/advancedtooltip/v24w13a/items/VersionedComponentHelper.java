@@ -1,4 +1,4 @@
-package me.noci.advancedtooltip.v24w12a.items;
+package me.noci.advancedtooltip.v24w13a.items;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -6,8 +6,8 @@ import com.google.gson.JsonObject;
 import me.noci.advancedtooltip.core.referenceable.items.ComponentHelper;
 import me.noci.advancedtooltip.core.utils.MapDecoration;
 import me.noci.advancedtooltip.core.utils.SignText;
-import me.noci.advancedtooltip.v24w12a.components.ComponentUtils;
-import me.noci.advancedtooltip.v24w12a.utils.ItemCast;
+import me.noci.advancedtooltip.v24w13a.components.ComponentUtils;
+import me.noci.advancedtooltip.v24w13a.utils.ItemCast;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
 import net.minecraft.core.component.DataComponents;

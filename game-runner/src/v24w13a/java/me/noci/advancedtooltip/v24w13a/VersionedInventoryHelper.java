@@ -1,4 +1,4 @@
-package me.noci.advancedtooltip.v24w12a;
+package me.noci.advancedtooltip.v24w13a;
 
 import me.noci.advancedtooltip.core.referenceable.InventoryHelper;
 import net.labymod.api.models.Implements;

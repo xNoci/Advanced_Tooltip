@@ -1,7 +1,7 @@
-package me.noci.advancedtooltip.v24w12a.items;
+package me.noci.advancedtooltip.v24w13a.items;
 
 import me.noci.advancedtooltip.core.referenceable.items.FoodItems;
-import me.noci.advancedtooltip.v24w12a.utils.ItemCast;
+import me.noci.advancedtooltip.v24w13a.utils.ItemCast;
 import net.labymod.api.client.world.effect.PotionEffect;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;

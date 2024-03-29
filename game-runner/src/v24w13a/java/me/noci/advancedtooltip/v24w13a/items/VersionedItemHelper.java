@@ -1,10 +1,9 @@
-package me.noci.advancedtooltip.v24w12a.items;
+package me.noci.advancedtooltip.v24w13a.items;
 
 import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
-import me.noci.advancedtooltip.v24w12a.utils.ItemCast;
+import me.noci.advancedtooltip.v24w13a.utils.ItemCast;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;

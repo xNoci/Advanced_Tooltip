@@ -1,6 +1,6 @@
-package me.noci.advancedtooltip.v24w12a.mixins.component.accessor;
+package me.noci.advancedtooltip.v24w13a.mixins.component.accessor;
 
-import me.noci.advancedtooltip.v24w12a.components.accessor.ItemContainerContentsAccessor;
+import me.noci.advancedtooltip.v24w13a.components.accessor.ItemContainerContentsAccessor;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
