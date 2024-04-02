@@ -7,6 +7,7 @@ import net.labymod.api.models.Implements;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 
 import javax.inject.Singleton;
 import java.util.Optional;
@@ -28,6 +29,11 @@ public class VersionedItemHelper implements ItemHelper {
     @Override
     public boolean isClock(ItemStack itemStack) {
         return ItemCast.toMinecraftItem(itemStack) == Items.CLOCK;
+    }
+
+    @Override
+    public boolean isFuel(ItemStack itemStack) {
+        return AbstractFurnaceBlockEntity.isFuel(ItemCast.toMinecraftItemStack(itemStack));
     }
 
     @Override
@@ -56,6 +62,14 @@ public class VersionedItemHelper implements ItemHelper {
     @Override
     public Optional<Integer> discSignalStrengt(ItemStack itemStack) {
         return ItemCast.asItem(itemStack, RecordItem.class).map(RecordItem::getAnalogOutput);
+    }
+
+    @Override
+    public int burnDuration(ItemStack itemStack) {
+        var mcItemStack = ItemCast.toMinecraftItemStack(itemStack);
+        if (mcItemStack.isEmpty()) return 0;
+        var item = mcItemStack.getItem();
+        return AbstractFurnaceBlockEntity.getFuel().getOrDefault(item, 0);
     }
 
 }

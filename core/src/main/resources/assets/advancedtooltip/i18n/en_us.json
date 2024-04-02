@@ -58,6 +58,14 @@
           "description": "The color for 'Command Block Command' when 'Global Color' is disabled."
         }
       },
+      "burnDuration": {
+        "name": "Burn Duration",
+        "description": "Display the furnace burn duration of an item.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Burn Duration' when 'Global Color' is disabled."
+        }
+      },
       "miningLevel": {
         "name": "Mining Level",
         "description": "Display the mining level of a tool.",
@@ -211,6 +219,7 @@
       "mining.level.4": "Mining Level V",
       "mining.level.5": "Mining Level VI",
       "mining_speed": "Mining Speed: %s",
+      "burn_duration": "Burn Duration: %s ticks",
       "potion_effect": {
         "display": "%s (%s)",
         "duration_infinity": "∞"

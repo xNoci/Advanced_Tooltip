@@ -107,6 +107,11 @@ public class ItemStackTooltipListener {
             tooltip(tooltip, clockTime.textColor(), false, clockFormat);
         }
 
+        var burnDuration = config.burnDuration();
+        if (burnDuration.enabled() && itemHelper.isFuel(itemStack)) {
+            tooltip(tooltip, burnDuration.textColor(), "burn_duration", itemHelper.burnDuration(itemStack));
+        }
+
         var signText = config.signText();
         if (signText.enabled()) {
             handleShowSignText(itemStack, tooltip, signText.textColor());

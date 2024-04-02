@@ -27,6 +27,11 @@ public interface ItemHelper {
         }
 
         @Override
+        public boolean isFuel(ItemStack itemStack) {
+            return false;
+        }
+
+        @Override
         public Optional<Integer> armorBars(ItemStack itemStack) {
             return Optional.empty();
         }
@@ -45,6 +50,11 @@ public interface ItemHelper {
         public Optional<Integer> discSignalStrengt(ItemStack itemStack) {
             return Optional.empty();
         }
+
+        @Override
+        public int burnDuration(ItemStack itemStack) {
+            return 0;
+        }
     };
 
     boolean isArmor(ItemStack itemStack);
@@ -53,6 +63,8 @@ public interface ItemHelper {
 
     boolean isClock(ItemStack itemStack);
 
+    boolean isFuel(ItemStack itemStack);
+
     Optional<Integer> armorBars(ItemStack itemStack);
 
     Optional<Integer> miningLevel(ItemStack itemStack);
@@ -60,5 +72,7 @@ public interface ItemHelper {
     Optional<Float> miningSpeed(ItemStack itemStack, boolean applyEnchantments);
 
     Optional<Integer> discSignalStrengt(ItemStack itemStack);
+
+    int burnDuration(ItemStack itemStack);
 
 }

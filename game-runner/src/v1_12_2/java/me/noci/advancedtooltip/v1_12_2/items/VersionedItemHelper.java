@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemTool;
+import net.minecraft.tileentity.TileEntityFurnace;
 
 import javax.inject.Singleton;
 import java.util.Optional;
@@ -35,6 +36,12 @@ public class VersionedItemHelper implements ItemHelper {
     @Override
     public boolean isClock(ItemStack itemStack) {
         return ItemCast.toMinecraftItem(itemStack) == Items.CLOCK;
+    }
+
+    @Override
+    public boolean isFuel(ItemStack itemStack) {
+        var mcItemStack = ItemCast.toMinecraftItemStack(itemStack);
+        return TileEntityFurnace.isItemFuel(mcItemStack) || mcItemStack.getItem() == Items.LAVA_BUCKET ;
     }
 
     @Override
@@ -69,5 +76,10 @@ public class VersionedItemHelper implements ItemHelper {
         Item item = ItemCast.toMinecraftItem(itemStack);
         if (!(item instanceof ItemRecord)) return Optional.empty();
         return Optional.of(Item.getIdFromItem(item) + 1 - ITEM_RECORD_13_ID);
+    }
+
+    @Override
+    public int burnDuration(ItemStack itemStack) {
+        return TileEntityFurnace.getItemBurnTime(ItemCast.toMinecraftItemStack(itemStack));
     }
 }
