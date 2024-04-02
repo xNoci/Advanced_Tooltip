@@ -8,8 +8,10 @@ import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.util.collection.Lists;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValidator itemValidator,
                         ShowFunction showFunction, LevelFunction levelFunction) {
@@ -25,12 +27,12 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValida
     public static <T extends IconComponent> List<T> iconComponents(ItemStack itemStack, VersionedIconComponentMapper<T> mapper) {
         TooltipAddon addon = TooltipAddon.get();
         TooltipConfiguration config = addon.configuration();
-        if (config.displayComponent().displayItemData()) return List.of();
+        if (config.displayComponent().displayItemData()) return new ArrayList<>();
 
         List<T> iconComponents = iconQueries.stream()
                 .map(iconQuery -> iconQuery.itemIcons(itemStack, mapper))
                 .flatMap(Optional::stream)
-                .toList();
+                .collect(Collectors.toCollection(ArrayList::new));
 
         if (!iconComponents.isEmpty()) {
             iconComponents.get(0).setFirstComponent();

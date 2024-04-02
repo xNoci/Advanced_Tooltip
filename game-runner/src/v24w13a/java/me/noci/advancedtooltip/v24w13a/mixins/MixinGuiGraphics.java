@@ -11,7 +11,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mixin(GuiGraphics.class)
 public class MixinGuiGraphics {
@@ -31,7 +33,7 @@ public class MixinGuiGraphics {
                 return iconComponent;
             }
             return new ClientTextTooltip(component.getVisualOrderText());
-        }).toList();
+        }).collect(Collectors.toCollection(ArrayList::new));
     }
 
 }
