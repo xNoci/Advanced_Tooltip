@@ -15,8 +15,8 @@ dependencies {
     // other repository has to be specified with their url. Example:
     // maven(mavenCentral(), "org.apache.httpcomponents:httpclient:4.5.13")
 
-    compileOnly("org.projectlombok:lombok:1.18.28")
-    annotationProcessor("org.projectlombok:lombok:1.18.28")
+    compileOnly("org.projectlombok:lombok:1.18.32")
+    annotationProcessor("org.projectlombok:lombok:1.18.32")
 }
 
 labyModProcessor {
@@ -24,6 +24,6 @@ labyModProcessor {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
