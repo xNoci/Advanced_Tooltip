@@ -21,7 +21,6 @@ public class ComponentFormatter {
         }
 
         if (Arrays.stream(types).noneMatch(componentType -> component.type() == componentType)) {
-            System.out.println(4);
             return (ComponentApplier<T>) ComponentApplier.EMPTY_APPLIER;
         }
 

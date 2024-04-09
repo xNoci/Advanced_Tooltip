@@ -79,8 +79,8 @@ public interface ComponentPrinter {
         return new UnitComponentPrinter(component);
     }
 
-    static ComponentPrinter unsupported() {
-        return UnsupportedComponentPrinter.PRINTER;
+    static ComponentPrinter unsupported(Object component) {
+        return ComponentPrinter.component(component, UnsupportedComponentPrinter.PRINTER);
     }
 
     static String print(List<ComponentPrinter> components) {

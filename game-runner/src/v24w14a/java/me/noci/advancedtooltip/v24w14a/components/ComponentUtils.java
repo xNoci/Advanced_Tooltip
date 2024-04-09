@@ -445,7 +445,7 @@ public class ComponentUtils {
                             .inline(tool.rules().isEmpty());
                 });
 
-        return formatter.getOr(ComponentPrinter.component(component, ComponentPrinter.unsupported()));
+        return formatter.getOr(ComponentPrinter.unsupported(component));
     }
 
     private static String potionEffectToString(MobEffectInstance effect) {
