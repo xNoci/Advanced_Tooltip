@@ -63,11 +63,11 @@ public interface ComponentPrinter {
         return new MapPrinter<>(name, map, true);
     }
 
-    static <T> ListComponentPrinter<T> list(String name, List<T> values) {
+    static <T> ListComponentPrinter<T> list(String name, Iterable<T> values) {
         return new ListPrinter<>(name, values, false);
     }
 
-    static <T> ListComponentPrinter<T> expandableList(String name, List<T> values) {
+    static <T> ListComponentPrinter<T> expandableList(String name, Iterable<T> values) {
         return new ListPrinter<>(name, values, true);
     }
 

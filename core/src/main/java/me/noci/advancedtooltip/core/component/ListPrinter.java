@@ -2,18 +2,19 @@ package me.noci.advancedtooltip.core.component;
 
 import me.noci.advancedtooltip.core.TooltipAddon;
 import net.labymod.api.util.I18n;
+import net.labymod.api.util.Streams;
 
-import java.util.List;
+import java.util.Iterator;
 
 public class ListPrinter<T> implements ListComponentPrinter<T> {
 
     private final String name;
-    private final List<T> values;
+    private final Iterable<T> values;
     private final boolean expandable;
     private int indentLevel = 0;
     @SuppressWarnings("unchecked") private ValueHandler<T> handler = (ValueHandler<T>) ValueHandler.DEFAULT;
 
-    protected ListPrinter(String name, List<T> values, boolean expandable) {
+    protected ListPrinter(String name, Iterable<T> values, boolean expandable) {
         this.name = name;
         this.values = values;
         this.expandable = expandable;
@@ -22,7 +23,9 @@ public class ListPrinter<T> implements ListComponentPrinter<T> {
 
     @Override
     public String print() {
-        if (values.isEmpty()) {
+        Iterator<T> iterator = values.iterator();
+
+        if (!iterator.hasNext()) {
             return name + ": []";
         }
 
@@ -35,10 +38,10 @@ public class ListPrinter<T> implements ListComponentPrinter<T> {
         StringBuilder builder = new StringBuilder();
         builder.append(name).append(": [\n");
 
-        for (int i = 0; i < values.size(); i++) {
-            T value = values.get(i);
+        while (iterator.hasNext()) {
+            T value = iterator.next();
             indent(builder, 1).append(handler.apply(value));
-            if (i + 1 != values.size()) builder.append(",");
+            if (iterator.hasNext()) builder.append(",");
             builder.append("\n");
         }
 
@@ -58,7 +61,7 @@ public class ListPrinter<T> implements ListComponentPrinter<T> {
     }
 
     private void updateIndentLevel() {
-        values.stream().filter(value -> value instanceof ComponentPrinter).forEach(component -> ((ComponentPrinter) component).setIndentLevel(indentLevel + 1));
+        Streams.stream(values).filter(value -> value instanceof ComponentPrinter).forEach(component -> ((ComponentPrinter) component).setIndentLevel(indentLevel + 1));
     }
 
     @Override

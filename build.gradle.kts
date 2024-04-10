@@ -7,8 +7,6 @@ plugins {
 group = "me.noci"
 version = "1.5.3"
 
-java.toolchain.languageVersion.set(JavaLanguageVersion.of(21))
-
 labyMod {
     defaultPackageName = "me.noci.advancedtooltip"
     addonInfo {
@@ -17,7 +15,7 @@ labyMod {
         author = "Noci"
         description = "Add more information to the tooltip of an item."
         minecraftVersion = "*"
-        version = System.getenv().getOrDefault("VERSION", version)
+        version = getVersion() as String
     }
 
     minecraft {
@@ -29,7 +27,7 @@ labyMod {
             "1.18.2",
             "1.19.2", "1.19.3", "1.19.4",
             "1.20.1", "1.20.2", "1.20.4",
-            "24w14a"
+            "1.20.5-pre1"
         ) { version, provider ->
             configureRun(provider, version)
         }
