@@ -5,127 +5,221 @@
       "enabled": {
         "name": "Enabled"
       },
-      "showAnvilUses": {
-        "name": "Show anvil uses",
-        "description": "Displays the amount of anvils uses of an item in its tooltip."
+      "ignoreHideTooltip": {
+        "name": "Ignore Hide Tooltip",
+        "description": "When enabled the tooltip of an item will even show up when the item has the 'Hide Tooltip' component."
       },
-      "discSignalStrength": {
-        "name": "Disc signal strength",
-        "description": "Displays the redstone strength of the disc."
-      },
-      "explorerMapCoordinates": {
-        "name": "Show explorer map coordinates",
-        "description": "Displays the coordinates of a explorer map."
-      },
-      "showSuspiciousStewEffect": {
-        "name": "Show suspicious stew effect",
-        "description": "Displays the effect type and duration of a suspicious stew."
-      },
-      "showDurability": {
-        "name": "Show durability",
-        "description": "Shows the durability of an item when advanced tooltip is turned off."
-      },
-      "showCommandBlockCommand": {
-        "name": "Show command block command",
-        "description": "When the command block was saved with nbt data, it will display the saved command."
-      },
-      "showSignText": {
-        "name": "Show sign text lines",
-        "description": "When enabled shows the lines of an sign, if nbt data is saved."
-      },
-      "tooltipTextColor": {
-        "name": "Text color",
-        "description": "Set the color of the tooltip text."
-      },
-      "foodLevel": {
-        "name": "Show food level",
-        "description": "Displays the nutrition of a food item in its tooltip."
-      },
-      "showArmorBarIcons": {
-        "name": "Show armor bar icons",
-        "description": "Displays the armor bars of a armor item in its tooltip."
-      },
-      "saturationLevel": {
-        "name": "Show saturation level",
-        "description": "Displays the saturation of a food item in its tooltip.\n\nCurrent: Displays the level of saturation reached after eating.\nMaximum: Displays the maximum possible saturation level of a food.",
-        "entries": {
-          "hidden": "Off",
-          "currentSaturation": "Current",
-          "maxSaturation": "Maximum"
+      "globalColor": {
+        "name": "Global Color",
+        "description": "When enabled the color in each setting will be ignored and this one will be used instead.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for every tooltip when 'Global Color' is enabled."
         }
       },
-      "iconSubSetting": {
-        "name": "Icon settings",
-        "foodSize": {
-          "name": "Icon size"
+      "itemDurability": {
+        "name": "Item Durability",
+        "description": "Shows the durability of an item when advanced tooltip is turned off.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Item Durability' when 'Global Color' is disabled."
         },
-        "foodSpacing": {
-          "name": "Icon spacing"
-        },
-        "armorSize": {
-          "name": "Icon size"
-        },
-        "armorSpacing": {
-          "name": "Icon spacing"
-        },
-        "paddingTop": {
-          "name": "Top padding"
-        },
-        "paddingBottom": {
-          "name": "Bottom padding"
-        },
-        "paddingLeft": {
-          "name": "Left padding"
-        },
-        "paddingRight": {
-          "name": "Right padding"
-        },
-        "header": {
-          "food_icons": {
-            "name": "Food icons"
-          },
-          "armor_icons": {
-            "name": "Armor icons"
-          },
-          "padding": {
-            "name": "Icon padding"
+        "durabilityType": {
+          "name": "Durability Type",
+          "description": "Display type for the item durability.\n\nVanilla: Normal Minecraft durability format.\nPercentage: Display the durability in percentage.\nCombined: Display Minecraft format and percentage.",
+          "entries": {
+            "vanilla": "Vanilla",
+            "percentage": "Percentage",
+            "combined": "Combined"
           }
         }
       },
-      "developerSettings": {
-        "name": "Developer settings",
-        "debugMode": {
-          "name": "Debug Mode"
+      "anvilUsages": {
+        "name": "Anvil Uses",
+        "description": "Displays the amount of anvils uses of an item in its tooltip.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Anvil Uses' when 'Global Color' is disabled."
+        }
+      },
+      "discSignalStrength": {
+        "name": "Disc Signal Strength",
+        "description": "Displays the redstone strength of the disc.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Disc Signal Strength' when 'Global Color' is disabled."
+        }
+      },
+      "commandBlockCommand": {
+        "name": "Command Block Command",
+        "description": "When the command block was saved with nbt data, it will display the saved command.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Command Block Command' when 'Global Color' is disabled."
+        }
+      },
+      "burnDuration": {
+        "name": "Burn Duration",
+        "description": "Display the furnace burn duration of an item.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Burn Duration' when 'Global Color' is disabled."
+        }
+      },
+      "miningLevel": {
+        "name": "Mining Level",
+        "description": "Display the mining level of a tool.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Mining Level' when 'Global Color' is disabled."
+        }
+      },
+      "miningSpeed": {
+        "name": "Mining Speed",
+        "description": "Display the mining speed of a tool.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Mining Speed' when 'Global Color' is disabled."
         },
-        "togglePrettyPrintNBT": {
-          "name": "Toggle show item nbt data"
+        "applyEnchantments": {
+          "name": "Apply Enchantments",
+          "description": "When enabled will add the speed of the current efficiency when available."
+        }
+      },
+      "clockTime": {
+        "name": "Clock Time",
+        "description": "Display the current world time in the tooltip of a clock.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Clock Time' when 'Global Color' is disabled."
         },
-        "prettyPrintNBT": {
-          "name": "Show item nbt data"
+        "format24Hours": {
+          "name": "24h Format",
+          "description": "When enabled use 24h Format instead of the 12h Format."
+        }
+      },
+      "displayComponent": {
+        "name": "Item Data",
+        "description": "Allows you to display the item data of an item.\n\n<= 1.20.4: Displays NBT data of an item stack.\n>= 1.20.5: Displays components of an item stack.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Item Data' when 'Global Color' is disabled."
         },
-        "printWithArrayData": {
-          "name": "Show nbt array data"
+        "toggleDisplayItemData": {
+          "name": "Toggle 'Item Data'",
+          "description:": "When enabled the key for 'Show Item Data' will toggle the tooltip.\nWhen disabled the tooltip will be shown as long as 'Show Item Data' key is pressed."
+        },
+        "displayItemData": {
+          "name": "Show Item Data",
+          "description": "Key to toggle or show the 'Item Data'."
+        },
+        "printWithNbtArrayData": {
+          "name": "Show NBT Array Data",
+          "description": "Display values inside of an NBT array."
+        },
+        "expandComponents": {
+          "name": "Expand Components",
+          "description": "Expand lists/objects of a component when they are collapsed."
+        }
+      },
+      "signText": {
+        "name": "Sign Text Lines",
+        "description": "When enabled shows the lines of an sign, if nbt/component data is saved.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Sign Text Lines' when 'Global Color' is disabled."
+        }
+      },
+      "mapDecoration": {
+        "name": "Explorer Map Coordinates",
+        "description": "Displays the coordinates of a map. For example the location of a mansion or ocean monument.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Explorer Map Coordinates' when 'Global Color' is disabled."
+        }
+      },
+      "suspiciousStewEffect": {
+        "name": "Suspicious Stew Effect",
+        "description": "Displays the effect type and duration of a suspicious stew.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Suspicious Stew Effect' when 'Global Color' is disabled."
+        }
+      },
+      "saturationIcons": {
+        "name": "Saturation Level Icons",
+        "description": "Display the saturation of an item when enabled.",
+        "saturationType": {
+          "name": "Saturation Type",
+          "description": "Displays the saturation of a food item in its tooltip.\n\nCurrent: Displays the level of saturation reached after eating.\nMaximum: Displays the maximum possible saturation level of a food.",
+          "entries": {
+            "currentSaturation": "Current",
+            "maxSaturation": "Maximum"
+          }
+        }
+      },
+      "nutritionIcons": {
+        "name": "Food Level Icons",
+        "description": "Displays the nutrition of a food item in its tooltip."
+      },
+      "armorIcons": {
+        "name": "Armor Icons",
+        "description": "Displays the armor bars of a armor item in its tooltip."
+      },
+      "iconConfig": {
+        "iconSize": {
+          "name": "Icon Size"
+        },
+        "iconSpacing": {
+          "name": "Icon Spacing"
+        },
+        "paddingTop": {
+          "name": "Top Padding"
+        },
+        "paddingBottom": {
+          "name": "Bottom Padding"
+        },
+        "paddingLeft": {
+          "name": "Left Padding"
+        },
+        "paddingRight": {
+          "name": "Right Padding"
+        },
+        "header": {
+          "icon": {
+            "name": "Icon Settings"
+          },
+          "padding": {
+            "name": "Icon Padding"
+          }
         }
       },
       "header": {
         "tooltip_text": {
-          "name": "Tooltip text"
+          "name": "Text"
         },
         "tooltip_icon": {
-          "name": "Tooltip icons"
-        },
-        "developer": {
-          "name": "Developer Section"
+          "name": "Icons"
         }
       }
     },
     "tooltip": {
-      "no_nbt_data": "No nbt data found.",
+      "no_nbt_data": "No data found.",
       "anvil_usages": "Anvil usages (%s)",
       "disc_signal_strength": "Disc signal strength (%s)",
-      "durability": "Durability: %s/%s",
+      "durability.type.vanilla": "Durability: %s/%s",
+      "durability.type.percentage": "Durability (%s%%)",
+      "durability.type.combined": "Durability: %s/%s (%s%%)",
       "command_block_command": "Command: /%s",
       "command_block_no_command": "No command saved",
+      "mining.level.0": "Mining Level I",
+      "mining.level.1": "Mining Level II",
+      "mining.level.2": "Mining Level III",
+      "mining.level.3": "Mining Level IV",
+      "mining.level.4": "Mining Level V",
+      "mining.level.5": "Mining Level VI",
+      "mining_speed": "Mining Speed: %s",
+      "burn_duration": "Burn Duration: %s ticks",
       "potion_effect": {
         "display": "%s (%s)",
         "duration_infinity": "∞"
@@ -141,6 +235,7 @@
         "taiga_village": "Taiga Village (X: %s, Z: %s)",
         "jungle_explorer": "Jungle Temple (X: %s, Z: %s)",
         "swamp_village": "Swamp Village (X: %s, Z: %s)",
+        "trial_chamber": "Trial Chamber (X: %s, Z: %s)",
         "unknown": "Unknown map type (X: %s, Z: %s)"
       },
       "sign_text": {
@@ -148,6 +243,15 @@
         "back_text": "Back text:",
         "line": "'%s'"
       }
+    },
+    "components": {
+      "count": "%s component(s)",
+      "pressToShowObject": "{ ... } // press '%s' to show",
+      "pressToShowList": "[ ... ] // press '%s' to show",
+      "currentlyNotSupported": "[ // not yet supported ]",
+      "potion.effect.amplified": "'%s':%s (%s)",
+      "potion.effect.not_amplified": "'%s':%s",
+      "no_lock_set": "no lock set"
     }
   }
 }

@@ -1,26 +1,30 @@
 package me.noci.advancedtooltip.core.icons;
 
-import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
-import me.noci.advancedtooltip.core.config.IconSubSetting;
+import lombok.Getter;
+import me.noci.advancedtooltip.core.TooltipAddon;
+import me.noci.advancedtooltip.core.config.icon.IconConfig;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.render.matrix.Stack;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 public enum TooltipIcon {
 
-    FULL_FOOD(IconType.FOOD, IconLocation.FOOD_FULL),
-    HALF_FOOD(IconType.FOOD, IconLocation.FOOD_HALF),
-    FULL_SATURATION(IconType.FOOD, IconLocation.SATURATION_FULL),
-    HALF_SATURATION(IconType.FOOD, IconLocation.SATURATION_HALF),
-    FULL_ARMOR(IconType.ARMOR, IconLocation.ARMOR_FULL),
-    HALF_ARMOR(IconType.ARMOR, IconLocation.ARMOR_HALF);
+    FULL_FOOD(TooltipAddon.get().configuration().nutritionIcons(), IconLocation.FOOD_FULL),
+    HALF_FOOD(TooltipAddon.get().configuration().nutritionIcons(), IconLocation.FOOD_HALF),
+    FULL_SATURATION(TooltipAddon.get().configuration().saturationIcons(), IconLocation.SATURATION_FULL),
+    HALF_SATURATION(TooltipAddon.get().configuration().saturationIcons(), IconLocation.SATURATION_HALF),
+    FULL_ARMOR(TooltipAddon.get().configuration().armorIcons(), IconLocation.ARMOR_FULL),
+    HALF_ARMOR(TooltipAddon.get().configuration().armorIcons(), IconLocation.ARMOR_HALF);
 
-    private final IconType iconType;
+    @Getter
+    private final IconConfig iconConfig;
     private final Icon icon;
 
-    TooltipIcon(IconType iconType, IconLocation location) {
-        this.iconType = iconType;
+    TooltipIcon(IconConfig iconConfig, IconLocation location) {
+        this.iconConfig = iconConfig;
         this.icon = location.icon();
     }
 
@@ -28,56 +32,26 @@ public enum TooltipIcon {
         icon.render(stack, x, y, size);
     }
 
-    public int getSize() {
-        IconSubSetting iconSubSetting = AdvancedTooltipAddon.getInstance().configuration().iconSubSetting();
-        return switch (iconType) {
-            case FOOD -> iconSubSetting.foodSize();
-            case ARMOR -> iconSubSetting.armorSize();
-        };
-    }
-
-    public int getSpacing() {
-        IconSubSetting iconSubSetting = AdvancedTooltipAddon.getInstance().configuration().iconSubSetting();
-        return switch (iconType) {
-            case FOOD -> iconSubSetting.foodSpacing();
-            case ARMOR -> iconSubSetting.armorSpacing();
-        };
-    }
-
     public static void drawRow(List<TooltipIcon> icons, Stack stack, int x, int y) {
         int cx = x;
         for (TooltipIcon icon : icons) {
-            int size = icon.getSize();
-            int spacing = icon.getSpacing();
+            int size = icon.iconConfig().iconSize();
+            int spacing = icon.iconConfig.iconSpacing();
 
             icon.draw(stack, cx, y, size);
             cx += size + spacing;
         }
     }
 
-    public static int getSize(List<TooltipIcon> icons) {
-        int size = 0;
-        for (TooltipIcon icon : icons) {
-            int temp = icon.getSize();
-            if (temp > size) size = temp;
-        }
-        return size;
+    public static Optional<Integer> maximum(List<TooltipIcon> icons, Function<IconConfig, Integer> comparedValue) {
+        return icons.stream().map(TooltipIcon::iconConfig).map(comparedValue).max(Integer::compareTo);
     }
 
-    public static int getWidth(List<TooltipIcon> icons) {
-        int width = 0;
-        for (TooltipIcon icon : icons) {
-            int size = icon.getSize();
-            int spacing = icon.getSpacing();
-
-            width += size + spacing;
-        }
-        return width;
-    }
-
-    protected enum IconType {
-        FOOD,
-        ARMOR;
+    public static int width(List<TooltipIcon> icons) {
+        return icons.stream()
+                .map(icon -> icon.iconConfig.iconSize() + icon.iconConfig.iconSpacing())
+                .mapToInt(Integer::intValue)
+                .sum();
     }
 
 }

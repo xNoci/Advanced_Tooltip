@@ -5,9 +5,7 @@ plugins {
 }
 
 group = "me.noci"
-version = "1.5.4"
-
-java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+version = "1.6.0"
 
 labyMod {
     defaultPackageName = "me.noci.advancedtooltip"
@@ -17,7 +15,7 @@ labyMod {
         author = "Noci"
         description = "Add more information to the tooltip of an item."
         minecraftVersion = "*"
-        version = System.getenv().getOrDefault("VERSION", version)
+        version = getVersion() as String
     }
 
     minecraft {
@@ -29,6 +27,7 @@ labyMod {
             "1.18.2",
             "1.19.2", "1.19.3", "1.19.4",
             "1.20.1", "1.20.2", "1.20.4",
+            "1.20.5"
         ) { version, provider ->
             configureRun(provider, version)
         }
@@ -69,11 +68,7 @@ fun configureRun(provider: net.labymod.gradle.core.minecraft.provider.VersionPro
         args("--addon-dev-environment", "true")
     }
 
-    provider.javaVersion = when (gameVersion) {
-        else -> {
-            JavaVersion.VERSION_17
-        }
-    }
+    provider.javaVersion = JavaVersion.VERSION_21
 
     provider.mixin {
         val mixinMinVersion = when (gameVersion) {

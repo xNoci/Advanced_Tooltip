@@ -1,9 +1,9 @@
 package me.noci.advancedtooltip.v1_20_4.mixins;
 
-import me.noci.advancedtooltip.core.AdvancedTooltipAddon;
+import me.noci.advancedtooltip.core.TooltipAddon;
 import me.noci.advancedtooltip.core.icons.IconQuery;
-import me.noci.advancedtooltip.v1_20_4.util.ItemCast;
-import me.noci.advancedtooltip.v1_20_4.util.VersionedClientIconComponent;
+import me.noci.advancedtooltip.v1_20_4.utils.ItemCast;
+import me.noci.advancedtooltip.v1_20_4.utils.VersionedClientIconComponent;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -38,13 +38,13 @@ public abstract class AbstractContainerScreenTooltipRenderer extends Screen {
             cancellable = true
     )
     private void injectIcons(GuiGraphics graphics, int x, int y, CallbackInfo ci, ItemStack itemStack) {
-        if (!AdvancedTooltipAddon.enabled()) {
+        if (!TooltipAddon.enabled()) {
             return;
         }
 
         List<Component> tooltip = getTooltipFromContainerItem(itemStack);
         net.labymod.api.client.world.item.ItemStack labyItemStack = ItemCast.toLabyItemStack(itemStack);
-        List<VersionedClientIconComponent> icons = IconQuery.getIcons(labyItemStack, VersionedClientIconComponent::new);
+        List<VersionedClientIconComponent> icons = IconQuery.iconComponents(labyItemStack, VersionedClientIconComponent::new);
 
         tooltip.addAll(icons);
 
