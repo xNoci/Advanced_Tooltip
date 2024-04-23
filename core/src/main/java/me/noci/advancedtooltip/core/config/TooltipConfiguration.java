@@ -16,7 +16,7 @@ import net.labymod.api.configuration.settings.annotation.SettingSection;
 @ConfigName("settings")
 public class TooltipConfiguration extends AddonConfig {
 
-    public static final String LATEST_SUPPORTED_VERSION = "1.20.4";
+    public static final String LATEST_SUPPORTED_VERSION = "1.20.5";
 
     @SwitchSetting
     private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);

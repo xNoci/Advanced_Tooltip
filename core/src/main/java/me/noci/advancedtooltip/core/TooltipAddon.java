@@ -57,6 +57,7 @@ public class TooltipAddon extends LabyAddon<TooltipConfiguration> {
     @Override
     protected void preConfigurationLoad() {
         Laby.references().revisionRegistry().register(new SimpleRevision("advancedtooltip", new SemanticVersion("1.5.0"), "2023-10-13"));
+        Laby.references().revisionRegistry().register(new SimpleRevision("advancedtooltip", new SemanticVersion("1.6.0"), "2024-04-23"));
     }
 
     @Override
