@@ -36,10 +36,9 @@ public class TooltipConfiguration extends AddonConfig {
     private final TextTooltipConfig discSignalStrength = new TextTooltipConfig();
 
     private final TextTooltipConfig commandBlockCommand = new TextTooltipConfig();
-    
-    //TODO Add option to change duration display time unit (Ticks, Seconds, Seconds and Minutes)
+
     @IntroducedIn(namespace = "advancedtooltip", value = "1.6.0")
-    private final TextTooltipConfig burnDuration = new TextTooltipConfig();
+    private final BurnDurationTextTooltipConfig burnDuration = new BurnDurationTextTooltipConfig();
 
     @VersionCompatibility("1.8<1.20.4")
     @IntroducedIn(namespace = "advancedtooltip", value = "1.6.0")

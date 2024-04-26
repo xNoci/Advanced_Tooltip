@@ -109,7 +109,26 @@ public class ItemStackTooltipListener {
 
         var burnDuration = config.burnDuration();
         if (burnDuration.enabled() && itemHelper.isFuel(itemStack)) {
-            tooltip(tooltip, burnDuration.textColor(), "burn_duration", itemHelper.burnDuration(itemStack));
+            switch (burnDuration.burnDurationTimeUnit()) {
+                case TICKS ->
+                        tooltip(tooltip, burnDuration.textColor(), "burn_duration_ticks", itemHelper.burnDuration(itemStack));
+                case SECONDS ->
+                        tooltip(tooltip, burnDuration.textColor(), "burn_duration_seconds", itemHelper.burnDuration(itemStack) / 20);
+                case MINUTES -> {
+                    int burnTime = itemHelper.burnDuration(itemStack);
+
+                    int seconds = (burnTime / 20) % 60;
+                    int minutes = burnTime / 1200;
+
+                    if (minutes > 0 && seconds > 0) {
+                        tooltip(tooltip, burnDuration.textColor(), "burn_duration_minutes_seconds", minutes, seconds);
+                    } else if (minutes == 0) {
+                        tooltip(tooltip, burnDuration.textColor(), "burn_duration_seconds", seconds);
+                    } else {
+                        tooltip(tooltip, burnDuration.textColor(), "burn_duration_minutes", minutes);
+                    }
+                }
+            }
         }
 
         var signText = config.signText();

@@ -64,6 +64,15 @@
         "textColor": {
           "name": "Color",
           "description": "The color for 'Burn Duration' when 'Global Color' is disabled."
+        },
+        "burnDurationTimeUnit": {
+          "name": "Time Unit",
+          "description": "Time Unit used to display item burn duration.\n\nTicks: Display in ticks.\nSeconds: Display in seconds.\nMinutes: Display in minutes and seconds.",
+          "entries": {
+            "ticks": "Ticks",
+            "seconds": "Seconds",
+            "minutes": "Minutes"
+          }
         }
       },
       "miningLevel": {
@@ -219,7 +228,10 @@
       "mining.level.4": "Mining Level V",
       "mining.level.5": "Mining Level VI",
       "mining_speed": "Mining Speed: %s",
-      "burn_duration": "Burn Duration: %s ticks",
+      "burn_duration_ticks": "Burn Duration: %s ticks",
+      "burn_duration_seconds": "Burn Duration: %ss",
+      "burn_duration_minutes": "Burn Duration: %sm",
+      "burn_duration_minutes_seconds": "Burn Duration: %sm %ss",
       "potion_effect": {
         "display": "%s (%s)",
         "duration_infinity": "∞"
