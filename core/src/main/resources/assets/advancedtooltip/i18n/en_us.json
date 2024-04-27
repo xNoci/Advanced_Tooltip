@@ -25,6 +25,10 @@
             "name": "Durability Settings"
           }
         },
+        "textColorReflectsDurability": {
+          "name": "Reflect Durability Color",
+          "description": "When enabled, the text color will reflect the durability level."
+        },
         "durabilityType": {
           "name": "Durability Type",
           "description": "Display type for the item durability.\n\nVanilla: Normal Minecraft durability format.\nPercentage: Display the durability in percentage.\nCombined: Display Minecraft format and percentage.",
