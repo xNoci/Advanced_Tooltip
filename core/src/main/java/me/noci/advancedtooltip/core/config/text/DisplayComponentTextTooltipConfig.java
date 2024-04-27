@@ -9,9 +9,11 @@ import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.Switc
 import net.labymod.api.configuration.loader.annotation.IntroducedIn;
 import net.labymod.api.configuration.loader.annotation.VersionCompatibility;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
+import net.labymod.api.configuration.settings.annotation.SettingSection;
 
 public class DisplayComponentTextTooltipConfig extends TextTooltipConfig {
 
+    @SettingSection("itemDataSection")
     @SwitchSetting
     private final ConfigProperty<Boolean> toggleDisplayItemData = new ConfigProperty<>(false).addChangeListener(isToggle -> {
         if (isToggle) return;

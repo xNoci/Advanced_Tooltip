@@ -5,10 +5,12 @@ import net.labymod.api.client.gui.screen.widget.widgets.input.dropdown.DropdownW
 import net.labymod.api.configuration.loader.annotation.IntroducedIn;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.annotation.SettingRequires;
+import net.labymod.api.configuration.settings.annotation.SettingSection;
 
 public class DurabilityTextTooltipConfig extends TextTooltipConfig {
 
 
+    @SettingSection("durabilitySection")
     @DropdownSetting
     @SettingRequires("enabled")
     @IntroducedIn(namespace = "advancedtooltip", value = "1.6.0")
@@ -17,6 +19,5 @@ public class DurabilityTextTooltipConfig extends TextTooltipConfig {
     public DurabilityType durabilityType() {
         return this.durabilityType.get();
     }
-
 
 }

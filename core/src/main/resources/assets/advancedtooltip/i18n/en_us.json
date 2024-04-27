@@ -66,6 +66,11 @@
           "name": "Color",
           "description": "The color for 'Burn Duration' when 'Use Global Color' is disabled."
         },
+        "header": {
+          "burnDurationSection": {
+            "name": "Burn Duration Settings"
+          }
+        },
         "burnDurationTimeUnit": {
           "name": "Time Unit",
           "description": "Time Unit used to display item burn duration.\n\nTicks: Display in ticks.\nSeconds: Display in seconds.\nMinutes: Display in minutes and seconds.",
@@ -91,6 +96,11 @@
           "name": "Color",
           "description": "The color for 'Mining Speed' when 'Use Global Color' is disabled."
         },
+        "header": {
+          "miningSpeedSection": {
+            "name": "Mining Speed Settings"
+          }
+        },
         "applyEnchantments": {
           "name": "Apply Enchantments",
           "description": "When enabled will add the speed of the current efficiency when available."
@@ -103,6 +113,11 @@
           "name": "Color",
           "description": "The color for 'Clock Time' when 'Use Global Color' is disabled."
         },
+        "header": {
+          "clockTimeSection": {
+            "name": "Clock Time Settings"
+          }
+        },
         "format24Hours": {
           "name": "24h Format",
           "description": "When enabled use 24h Format instead of the 12h Format."
@@ -114,6 +129,11 @@
         "textColor": {
           "name": "Color",
           "description": "The color for 'Item Data' when 'Use Global Color' is disabled."
+        },
+        "header": {
+          "itemDataSection": {
+            "name": "Item Data Settings"
+          }
         },
         "toggleDisplayItemData": {
           "name": "Toggle 'Item Data'",
