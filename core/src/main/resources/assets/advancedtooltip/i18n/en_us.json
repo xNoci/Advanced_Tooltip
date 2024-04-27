@@ -11,18 +11,19 @@
       },
       "globalColor": {
         "name": "Global Color",
-        "description": "When enabled the color in each setting will be ignored and this one will be used instead.",
-        "textColor": {
-          "name": "Color",
-          "description": "The color for every tooltip when 'Global Color' is enabled."
-        }
+        "description": "The color used when 'Use Global Color' is enabled in a setting."
       },
       "itemDurability": {
         "name": "Item Durability",
         "description": "Shows the durability of an item when advanced tooltip is turned off.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Item Durability' when 'Global Color' is disabled."
+          "description": "The color for 'Item Durability' when 'Use Global Color' is disabled."
+        },
+        "header": {
+          "durabilitySection": {
+            "name": "Durability Settings"
+          }
         },
         "durabilityType": {
           "name": "Durability Type",
@@ -39,7 +40,7 @@
         "description": "Displays the amount of anvils uses of an item in its tooltip.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Anvil Uses' when 'Global Color' is disabled."
+          "description": "The color for 'Anvil Uses' when 'Use Global Color' is disabled."
         }
       },
       "discSignalStrength": {
@@ -47,7 +48,7 @@
         "description": "Displays the redstone strength of the disc.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Disc Signal Strength' when 'Global Color' is disabled."
+          "description": "The color for 'Disc Signal Strength' when 'Use Global Color' is disabled."
         }
       },
       "commandBlockCommand": {
@@ -55,7 +56,7 @@
         "description": "When the command block was saved with nbt data, it will display the saved command.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Command Block Command' when 'Global Color' is disabled."
+          "description": "The color for 'Command Block Command' when 'Use Global Color' is disabled."
         }
       },
       "burnDuration": {
@@ -63,7 +64,7 @@
         "description": "Display the furnace burn duration of an item.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Burn Duration' when 'Global Color' is disabled."
+          "description": "The color for 'Burn Duration' when 'Use Global Color' is disabled."
         },
         "burnDurationTimeUnit": {
           "name": "Time Unit",
@@ -80,7 +81,7 @@
         "description": "Display the mining level of a tool.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Mining Level' when 'Global Color' is disabled."
+          "description": "The color for 'Mining Level' when 'Use Global Color' is disabled."
         }
       },
       "miningSpeed": {
@@ -88,7 +89,7 @@
         "description": "Display the mining speed of a tool.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Mining Speed' when 'Global Color' is disabled."
+          "description": "The color for 'Mining Speed' when 'Use Global Color' is disabled."
         },
         "applyEnchantments": {
           "name": "Apply Enchantments",
@@ -100,7 +101,7 @@
         "description": "Display the current world time in the tooltip of a clock.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Clock Time' when 'Global Color' is disabled."
+          "description": "The color for 'Clock Time' when 'Use Global Color' is disabled."
         },
         "format24Hours": {
           "name": "24h Format",
@@ -112,7 +113,7 @@
         "description": "Allows you to display the item data of an item.\n\n<= 1.20.4: Displays NBT data of an item stack.\n>= 1.20.5: Displays components of an item stack.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Item Data' when 'Global Color' is disabled."
+          "description": "The color for 'Item Data' when 'Use Global Color' is disabled."
         },
         "toggleDisplayItemData": {
           "name": "Toggle 'Item Data'",
@@ -136,7 +137,7 @@
         "description": "When enabled shows the lines of an sign, if nbt/component data is saved.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Sign Text Lines' when 'Global Color' is disabled."
+          "description": "The color for 'Sign Text Lines' when 'Use Global Color' is disabled."
         }
       },
       "mapDecoration": {
@@ -144,7 +145,7 @@
         "description": "Displays the coordinates of a map. For example the location of a mansion or ocean monument.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Explorer Map Coordinates' when 'Global Color' is disabled."
+          "description": "The color for 'Explorer Map Coordinates' when 'Use Global Color' is disabled."
         }
       },
       "suspiciousStewEffect": {
@@ -152,7 +153,7 @@
         "description": "Displays the effect type and duration of a suspicious stew.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Suspicious Stew Effect' when 'Global Color' is disabled."
+          "description": "The color for 'Suspicious Stew Effect' when 'Use Global Color' is disabled."
         }
       },
       "saturationIcons": {
@@ -209,6 +210,17 @@
         },
         "tooltip_icon": {
           "name": "Icons"
+        }
+      },
+      "textSetting": {
+        "useGlobalColor": {
+          "name": "Use Global Color",
+          "description": "Will use 'Global Color' instead of 'Color' when enabled."
+        },
+        "header": {
+          "colorSection": {
+            "name": "Color"
+          }
         }
       }
     },

@@ -6,11 +6,13 @@ import me.noci.advancedtooltip.core.config.icon.SaturationIconConfig;
 import me.noci.advancedtooltip.core.config.text.*;
 import net.labymod.api.addon.AddonConfig;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
+import net.labymod.api.client.gui.screen.widget.widgets.input.color.ColorPickerWidget;
 import net.labymod.api.configuration.loader.annotation.ConfigName;
 import net.labymod.api.configuration.loader.annotation.IntroducedIn;
 import net.labymod.api.configuration.loader.annotation.VersionCompatibility;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.annotation.SettingSection;
+import net.labymod.api.util.Color;
 
 @Getter
 @ConfigName("settings")
@@ -26,7 +28,8 @@ public class TooltipConfiguration extends AddonConfig {
     @IntroducedIn(namespace = "advancedtooltip", value = "1.6.0")
     private final ConfigProperty<Boolean> ignoreHideTooltip = new ConfigProperty<>(false);
 
-    private final TextTooltipConfig globalColor = new TextTooltipConfig();
+    @ColorPickerWidget.ColorPickerSetting(chroma = true)
+    private final ConfigProperty<Color> globalColor = new ConfigProperty<>(Color.WHITE);
 
     @SettingSection("tooltip_text")
     private final DurabilityTextTooltipConfig itemDurability = new DurabilityTextTooltipConfig();
