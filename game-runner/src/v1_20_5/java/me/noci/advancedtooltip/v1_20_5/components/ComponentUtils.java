@@ -419,7 +419,7 @@ public class ComponentUtils {
 
         formatter.forComponents(component, DataComponents.RARITY)
                 .handle(rarity -> {
-                    List<ComponentPrinter> components = Lists.newArrayList(ComponentPrinter.value("fullName", rarity.getSerializedName()));
+                    List<ComponentPrinter> components = Lists.newArrayList(ComponentPrinter.value("name", rarity.getSerializedName()));
                     if (rarity.color().getColor() != null) {
                         components.add(ComponentPrinter.value("color", toHexInt(rarity.color().getColor())));
                     }
