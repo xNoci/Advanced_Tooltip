@@ -1,12 +1,12 @@
-package me.noci.advancedtooltip.v1_20_5.components;
+package me.noci.advancedtooltip.v1_20_6.components;
 
 import com.google.common.collect.Lists;
 import com.mojang.authlib.properties.Property;
 import me.noci.advancedtooltip.core.component.ComponentPrinter;
-import me.noci.advancedtooltip.v1_20_5.components.accessor.AdventureModePredicateAccessor;
-import me.noci.advancedtooltip.v1_20_5.components.accessor.ArmorTrimAccessor;
-import me.noci.advancedtooltip.v1_20_5.components.accessor.ItemContainerContentsAccessor;
-import me.noci.advancedtooltip.v1_20_5.components.accessor.ItemEnchantmentsAccessor;
+import me.noci.advancedtooltip.v1_20_6.components.accessor.AdventureModePredicateAccessor;
+import me.noci.advancedtooltip.v1_20_6.components.accessor.ArmorTrimAccessor;
+import me.noci.advancedtooltip.v1_20_6.components.accessor.ItemContainerContentsAccessor;
+import me.noci.advancedtooltip.v1_20_6.components.accessor.ItemEnchantmentsAccessor;
 import net.labymod.api.util.I18n;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;

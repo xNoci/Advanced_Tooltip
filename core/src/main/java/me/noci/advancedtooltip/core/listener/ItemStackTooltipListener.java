@@ -18,6 +18,7 @@ import net.labymod.api.util.time.TimeUtil;
 
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.function.Function;
 
 public class ItemStackTooltipListener {
 
@@ -48,7 +49,7 @@ public class ItemStackTooltipListener {
 
         var durability = config.itemDurability();
         if (durability.enabled() && event.type() != ItemStackTooltipEvent.TooltipType.ADVANCED) {
-            handleShowDurability(itemStack, tooltip, durability.textColor(), durability.durabilityType());
+            handleShowDurability(itemStack, tooltip, durability::textColor, durability.durabilityType());
         }
 
         var anvilUses = config.anvilUsages();
@@ -109,12 +110,40 @@ public class ItemStackTooltipListener {
 
         var burnDuration = config.burnDuration();
         if (burnDuration.enabled() && itemHelper.isFuel(itemStack)) {
-            tooltip(tooltip, burnDuration.textColor(), "burn_duration", itemHelper.burnDuration(itemStack));
+            switch (burnDuration.burnDurationTimeUnit()) {
+                case TICKS ->
+                        tooltip(tooltip, burnDuration.textColor(), "burn_duration_ticks", itemHelper.burnDuration(itemStack));
+                case SECONDS ->
+                        tooltip(tooltip, burnDuration.textColor(), "burn_duration_seconds", itemHelper.burnDuration(itemStack) / 20);
+                case MINUTES -> {
+                    int burnTime = itemHelper.burnDuration(itemStack);
+
+                    int seconds = (burnTime / 20) % 60;
+                    int minutes = burnTime / 1200;
+
+                    if (minutes > 0 && seconds > 0) {
+                        tooltip(tooltip, burnDuration.textColor(), "burn_duration_minutes_seconds", minutes, seconds);
+                    } else if (minutes == 0) {
+                        tooltip(tooltip, burnDuration.textColor(), "burn_duration_seconds", seconds);
+                    } else {
+                        tooltip(tooltip, burnDuration.textColor(), "burn_duration_minutes", minutes);
+                    }
+                }
+            }
         }
 
         var signText = config.signText();
         if (signText.enabled()) {
             handleShowSignText(itemStack, tooltip, signText.textColor());
+        }
+
+        var compassTarget = config.compassTarget();
+        if (compassTarget.enabled()) {
+            itemHelper.compassTarget(itemStack)
+                    .ifPresent(target -> {
+                        String key = "compass_target." + (target.correctDimension() ? "valid" : "wrong_target_dimension");
+                        tooltip(tooltip, compassTarget.textColor(), key, target.x(), target.y(), target.z());
+                    });
         }
 
     }
@@ -130,7 +159,7 @@ public class ItemStackTooltipListener {
                 }, () -> tooltip(tooltip, color, "no_nbt_data"));
     }
 
-    private void handleShowDurability(ItemStack itemStack, List<Component> tooltip, TextColor color, DurabilityType durabilityType) {
+    private void handleShowDurability(ItemStack itemStack, List<Component> tooltip, Function<Float, TextColor> textColor, DurabilityType durabilityType) {
         if (itemStack.getMaximumDamage() <= 0) return;
         if (componentHelper.unbreakable(itemStack)) return;
 
@@ -139,9 +168,9 @@ public class ItemStackTooltipListener {
         String percentage = PERCENTAGE_FORMAT.format(((float) currentDamage / maxDamage) * 100);
 
         switch (durabilityType) {
-            case VANILLA -> tooltip(tooltip, color, "durability.type.vanilla", currentDamage, maxDamage);
-            case PERCENTAGE -> tooltip(tooltip, color, "durability.type.percentage", percentage);
-            case COMBINED -> tooltip(tooltip, color, "durability.type.combined", currentDamage, maxDamage, percentage);
+            case VANILLA -> tooltip(tooltip, textColor.apply((float) currentDamage / maxDamage), "durability.type.vanilla", currentDamage, maxDamage);
+            case PERCENTAGE -> tooltip(tooltip, textColor.apply((float) currentDamage / maxDamage), "durability.type.percentage", percentage);
+            case COMBINED -> tooltip(tooltip, textColor.apply((float) currentDamage / maxDamage), "durability.type.combined", currentDamage, maxDamage, percentage);
         }
     }
 

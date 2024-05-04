@@ -1,14 +1,17 @@
-package me.noci.advancedtooltip.v1_20_1.items;
+package me.noci.advancedtooltip.v1_20_6.items;
 
 import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
 import me.noci.advancedtooltip.core.utils.CompassTarget;
-import me.noci.advancedtooltip.v1_20_1.utils.ItemCast;
+import me.noci.advancedtooltip.v1_20_6.utils.ItemCast;
+import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.LodestoneTracker;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -48,7 +51,7 @@ public class VersionedItemHelper implements ItemHelper {
 
     @Override
     public Optional<Integer> miningLevel(ItemStack itemStack) {
-        return ItemCast.asItem(itemStack, TieredItem.class).map(TieredItem::getTier).map(Tier::getLevel);
+        return Optional.empty();
     }
 
     @Override
@@ -56,7 +59,7 @@ public class VersionedItemHelper implements ItemHelper {
         var speed = ItemCast.asItem(itemStack, TieredItem.class).map(TieredItem::getTier).map(Tier::getSpeed);
 
         if (applyEnchantments) {
-            int efficiency = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY, ItemCast.toMinecraftItemStack(itemStack));
+            int efficiency = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.EFFICIENCY, ItemCast.toMinecraftItemStack(itemStack));
             int modifier = efficiency > 0 ? efficiency * efficiency + 1 : 0;
             speed = speed.map(speedValue -> speedValue + modifier);
         }
@@ -87,8 +90,10 @@ public class VersionedItemHelper implements ItemHelper {
         Level level = player.level();
 
         GlobalPos pos = switch (item) {
-            case Item i when i == Items.COMPASS ->
-                    CompassItem.isLodestoneCompass(itemStack) ? CompassItem.getLodestonePosition(itemStack.getOrCreateTag()) : CompassItem.getSpawnPosition(level);
+            case Item i when i == Items.COMPASS -> {
+                LodestoneTracker tracker = itemStack.get(DataComponents.LODESTONE_TRACKER);
+                yield tracker != null ? tracker.target().orElse(null) : CompassItem.getSpawnPosition(level);
+            }
             case Item i when i == Items.RECOVERY_COMPASS -> player.getLastDeathLocation().orElse(null);
             default -> null;
         };
@@ -98,5 +103,4 @@ public class VersionedItemHelper implements ItemHelper {
         CompassTarget target = new CompassTarget(correctDimension, pos.pos().getX(), pos.pos().getY(), pos.pos().getZ());
         return Optional.of(target);
     }
-
 }

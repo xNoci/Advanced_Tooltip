@@ -6,20 +6,31 @@ import net.labymod.api.client.component.format.TextColor;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.color.ColorPickerWidget.ColorPickerSetting;
 import net.labymod.api.configuration.loader.Config;
+import net.labymod.api.configuration.loader.annotation.IntroducedIn;
 import net.labymod.api.configuration.loader.annotation.ParentSwitch;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
-import net.labymod.api.configuration.settings.Setting;
-import net.labymod.api.configuration.settings.SettingHandler;
+import net.labymod.api.configuration.settings.annotation.CustomTranslation;
+import net.labymod.api.configuration.settings.annotation.SettingRequires;
+import net.labymod.api.configuration.settings.annotation.SettingSection;
 import net.labymod.api.util.Color;
 
 public class TextTooltipConfig extends Config {
+
+    private static final String TRANSLATION_KEY_PREFIX = "advancedtooltip.settings.textSetting";
 
     @ParentSwitch
     @SwitchSetting
     private final ConfigProperty<Boolean> enabled;
 
+    @SettingSection(value = "colorSection", translation = TRANSLATION_KEY_PREFIX)
+    @SwitchSetting
+    @CustomTranslation(TRANSLATION_KEY_PREFIX + ".useGlobalColor")
+    @IntroducedIn(namespace = "advancedtooltip", value = "1.7.0")
+    private final ConfigProperty<Boolean> useGlobalColor = new ConfigProperty<>(true);
+
     @ColorPickerSetting(chroma = true)
-    private final ConfigProperty<Color> textColor = new ConfigProperty<>(Color.WHITE).withHandler(new TextColorEnabledHandler(this));
+    @SettingRequires(value = "useGlobalColor", invert = true)
+    private final ConfigProperty<Color> textColor = new ConfigProperty<>(Color.WHITE);
 
     public TextTooltipConfig() {
         this(true);
@@ -34,31 +45,11 @@ public class TextTooltipConfig extends Config {
     }
 
     public TextColor textColor() {
-        TooltipConfiguration config = TooltipAddon.get().configuration();
-        TextTooltipConfig globalColor = config.globalColor();
-        if (globalColor.enabled()) return TextColor.color(globalColor.textColor.get().get());
+        if (useGlobalColor.get()) {
+            TooltipConfiguration config = TooltipAddon.get().configuration();
+            return TextColor.color(config.globalColor().get().get());
+        }
         return TextColor.color(textColor.get().get());
     }
 
-    private record TextColorEnabledHandler(TextTooltipConfig setting) implements SettingHandler {
-        @Override
-        public void created(Setting setting) {
-
-        }
-
-        @Override
-        public void initialized(Setting setting) {
-
-        }
-
-        @Override
-        public boolean isEnabled(Setting setting) {
-            TooltipConfiguration config = TooltipAddon.get().configuration();
-            TextTooltipConfig globalColor = config.globalColor();
-            if (this.setting == globalColor) {
-                return globalColor.enabled();
-            }
-            return !globalColor.enabled();
-        }
-    }
 }

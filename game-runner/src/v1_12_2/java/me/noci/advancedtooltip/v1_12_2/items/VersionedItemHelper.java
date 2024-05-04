@@ -1,10 +1,13 @@
 package me.noci.advancedtooltip.v1_12_2.items;
 
 import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
+import me.noci.advancedtooltip.core.utils.CompassTarget;
 import me.noci.advancedtooltip.v1_12_2.items.accessors.ItemToolAccessor;
 import me.noci.advancedtooltip.v1_12_2.utils.ItemCast;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
@@ -13,6 +16,8 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemTool;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import javax.inject.Singleton;
 import java.util.Optional;
@@ -41,7 +46,7 @@ public class VersionedItemHelper implements ItemHelper {
     @Override
     public boolean isFuel(ItemStack itemStack) {
         var mcItemStack = ItemCast.toMinecraftItemStack(itemStack);
-        return TileEntityFurnace.isItemFuel(mcItemStack) || mcItemStack.getItem() == Items.LAVA_BUCKET ;
+        return TileEntityFurnace.isItemFuel(mcItemStack) || mcItemStack.getItem() == Items.LAVA_BUCKET;
     }
 
     @Override
@@ -82,4 +87,22 @@ public class VersionedItemHelper implements ItemHelper {
     public int burnDuration(ItemStack itemStack) {
         return TileEntityFurnace.getItemBurnTime(ItemCast.toMinecraftItemStack(itemStack));
     }
+
+    @Override
+    public Optional<CompassTarget> compassTarget(ItemStack labyItemStack) {
+        var itemStack = ItemCast.toMinecraftItemStack(labyItemStack);
+        var item = itemStack.getItem();
+
+        if (item != Items.COMPASS) return Optional.empty();
+
+        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        if (player == null) return Optional.empty();
+        World world = player.world;
+
+        BlockPos targetLocation = world.getSpawnPoint();
+        if (targetLocation == null) return Optional.empty();
+        CompassTarget target = new CompassTarget(world.provider.isSurfaceWorld(), targetLocation.getX(), targetLocation.getY(), targetLocation.getZ());
+        return Optional.of(target);
+    }
+
 }

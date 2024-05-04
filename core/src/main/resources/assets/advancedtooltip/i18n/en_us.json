@@ -11,18 +11,23 @@
       },
       "globalColor": {
         "name": "Global Color",
-        "description": "When enabled the color in each setting will be ignored and this one will be used instead.",
-        "textColor": {
-          "name": "Color",
-          "description": "The color for every tooltip when 'Global Color' is enabled."
-        }
+        "description": "The color used when 'Use Global Color' is enabled in a setting."
       },
       "itemDurability": {
         "name": "Item Durability",
         "description": "Shows the durability of an item when advanced tooltip is turned off.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Item Durability' when 'Global Color' is disabled."
+          "description": "The color for 'Item Durability' when 'Use Global Color' is disabled."
+        },
+        "header": {
+          "durabilitySection": {
+            "name": "Durability Settings"
+          }
+        },
+        "textColorReflectsDurability": {
+          "name": "Reflect Durability Color",
+          "description": "When enabled, the text color will reflect the durability level."
         },
         "durabilityType": {
           "name": "Durability Type",
@@ -39,7 +44,7 @@
         "description": "Displays the amount of anvils uses of an item in its tooltip.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Anvil Uses' when 'Global Color' is disabled."
+          "description": "The color for 'Anvil Uses' when 'Use Global Color' is disabled."
         }
       },
       "discSignalStrength": {
@@ -47,7 +52,7 @@
         "description": "Displays the redstone strength of the disc.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Disc Signal Strength' when 'Global Color' is disabled."
+          "description": "The color for 'Disc Signal Strength' when 'Use Global Color' is disabled."
         }
       },
       "commandBlockCommand": {
@@ -55,7 +60,7 @@
         "description": "When the command block was saved with nbt data, it will display the saved command.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Command Block Command' when 'Global Color' is disabled."
+          "description": "The color for 'Command Block Command' when 'Use Global Color' is disabled."
         }
       },
       "burnDuration": {
@@ -63,7 +68,29 @@
         "description": "Display the furnace burn duration of an item.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Burn Duration' when 'Global Color' is disabled."
+          "description": "The color for 'Burn Duration' when 'Use Global Color' is disabled."
+        },
+        "header": {
+          "burnDurationSection": {
+            "name": "Burn Duration Settings"
+          }
+        },
+        "burnDurationTimeUnit": {
+          "name": "Time Unit",
+          "description": "Time Unit used to display item burn duration.\n\nTicks: Display in ticks.\nSeconds: Display in seconds.\nMinutes: Display in minutes and seconds.",
+          "entries": {
+            "ticks": "Ticks",
+            "seconds": "Seconds",
+            "minutes": "Minutes"
+          }
+        }
+      },
+      "compassTarget": {
+        "name": "Compass Target",
+        "description": "Display the target location of a compass",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Compass Target' when 'Use Global Color' is disabled."
         }
       },
       "miningLevel": {
@@ -71,7 +98,7 @@
         "description": "Display the mining level of a tool.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Mining Level' when 'Global Color' is disabled."
+          "description": "The color for 'Mining Level' when 'Use Global Color' is disabled."
         }
       },
       "miningSpeed": {
@@ -79,7 +106,12 @@
         "description": "Display the mining speed of a tool.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Mining Speed' when 'Global Color' is disabled."
+          "description": "The color for 'Mining Speed' when 'Use Global Color' is disabled."
+        },
+        "header": {
+          "miningSpeedSection": {
+            "name": "Mining Speed Settings"
+          }
         },
         "applyEnchantments": {
           "name": "Apply Enchantments",
@@ -91,7 +123,12 @@
         "description": "Display the current world time in the tooltip of a clock.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Clock Time' when 'Global Color' is disabled."
+          "description": "The color for 'Clock Time' when 'Use Global Color' is disabled."
+        },
+        "header": {
+          "clockTimeSection": {
+            "name": "Clock Time Settings"
+          }
         },
         "format24Hours": {
           "name": "24h Format",
@@ -103,7 +140,12 @@
         "description": "Allows you to display the item data of an item.\n\n<= 1.20.4: Displays NBT data of an item stack.\n>= 1.20.5: Displays components of an item stack.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Item Data' when 'Global Color' is disabled."
+          "description": "The color for 'Item Data' when 'Use Global Color' is disabled."
+        },
+        "header": {
+          "itemDataSection": {
+            "name": "Item Data Settings"
+          }
         },
         "toggleDisplayItemData": {
           "name": "Toggle 'Item Data'",
@@ -127,7 +169,7 @@
         "description": "When enabled shows the lines of an sign, if nbt/component data is saved.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Sign Text Lines' when 'Global Color' is disabled."
+          "description": "The color for 'Sign Text Lines' when 'Use Global Color' is disabled."
         }
       },
       "mapDecoration": {
@@ -135,7 +177,7 @@
         "description": "Displays the coordinates of a map. For example the location of a mansion or ocean monument.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Explorer Map Coordinates' when 'Global Color' is disabled."
+          "description": "The color for 'Explorer Map Coordinates' when 'Use Global Color' is disabled."
         }
       },
       "suspiciousStewEffect": {
@@ -143,7 +185,7 @@
         "description": "Displays the effect type and duration of a suspicious stew.",
         "textColor": {
           "name": "Color",
-          "description": "The color for 'Suspicious Stew Effect' when 'Global Color' is disabled."
+          "description": "The color for 'Suspicious Stew Effect' when 'Use Global Color' is disabled."
         }
       },
       "saturationIcons": {
@@ -201,6 +243,17 @@
         "tooltip_icon": {
           "name": "Icons"
         }
+      },
+      "textSetting": {
+        "useGlobalColor": {
+          "name": "Use Global Color",
+          "description": "Will use 'Global Color' instead of 'Color' when enabled."
+        },
+        "header": {
+          "colorSection": {
+            "name": "Color"
+          }
+        }
       }
     },
     "tooltip": {
@@ -212,6 +265,10 @@
       "durability.type.combined": "Durability: %s/%s (%s%%)",
       "command_block_command": "Command: /%s",
       "command_block_no_command": "No command saved",
+      "compass_target": {
+        "valid": "Target (X: %s Y: %s Z: %s)",
+        "wrong_target_dimension": "Target location is in a different dimension"
+      },
       "mining.level.0": "Mining Level I",
       "mining.level.1": "Mining Level II",
       "mining.level.2": "Mining Level III",
@@ -219,7 +276,10 @@
       "mining.level.4": "Mining Level V",
       "mining.level.5": "Mining Level VI",
       "mining_speed": "Mining Speed: %s",
-      "burn_duration": "Burn Duration: %s ticks",
+      "burn_duration_ticks": "Burn Duration: %s ticks",
+      "burn_duration_seconds": "Burn Duration: %ss",
+      "burn_duration_minutes": "Burn Duration: %sm",
+      "burn_duration_minutes_seconds": "Burn Duration: %sm %ss",
       "potion_effect": {
         "display": "%s (%s)",
         "duration_infinity": "∞"
