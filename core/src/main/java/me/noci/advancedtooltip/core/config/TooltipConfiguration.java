@@ -53,6 +53,7 @@ public class TooltipConfiguration extends AddonConfig {
     @IntroducedIn(namespace = "advancedtooltip", value = "1.6.0")
     private final ClockTextTooltipConfig clockTime = new ClockTextTooltipConfig();
 
+    @VersionCompatibility("1.8.9<" + LATEST_SUPPORTED_VERSION)
     private final DisplayComponentTextTooltipConfig displayComponent = new DisplayComponentTextTooltipConfig();
 
     @IntroducedIn(namespace = "advancedtooltip", value = "1.5.0")
