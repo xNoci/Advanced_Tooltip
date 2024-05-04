@@ -39,7 +39,11 @@ public class VersionedItemHelper implements ItemHelper {
 
     @Override
     public boolean isFuel(ItemStack itemStack) {
-        return AbstractFurnaceBlockEntity.isFuel(ItemCast.toMinecraftItemStack(itemStack));
+        try {
+            return AbstractFurnaceBlockEntity.isFuel(ItemCast.toMinecraftItemStack(itemStack));
+        } catch (IllegalStateException e) {
+            return false;
+        }
     }
 
     @Override
