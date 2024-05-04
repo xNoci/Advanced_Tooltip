@@ -17,6 +17,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 
 import java.util.List;
 import java.util.Objects;
@@ -59,9 +61,9 @@ public class ComponentUtils {
                         return tooltipComponent;
                     }
 
-                    ComponentPrinter enchantments = ComponentPrinter.list("levels", ((ItemEnchantmentsAccessor) itemEnchantments).enchantments())
+                    ComponentPrinter enchantments = ComponentPrinter.list("enchantments", ((ItemEnchantmentsAccessor) itemEnchantments).enchantments())
                             .handler(enchantment -> {
-                                String enchantmentKey = Util.getRegisteredName(BuiltInRegistries.ENCHANTMENT, enchantment);
+                                String enchantmentKey = enchantment.unwrapKey().map(key -> key.location().toString()).orElse("unknown");;
                                 int level = itemEnchantments.getLevel(enchantment);
                                 return "'%s':%s".formatted(enchantmentKey, level);
                             });

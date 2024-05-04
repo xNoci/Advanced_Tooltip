@@ -24,7 +24,8 @@ public class ItemEnchantmentsMixin implements ItemEnchantmentsAccessor {
     }
 
     @Override
-    public List<Enchantment> enchantments() {
-        return enchantments.keySet().stream().map(Holder::value).toList();
+    public List<Holder<Enchantment>> enchantments() {
+        return enchantments.keySet().stream().toList();
     }
+
 }

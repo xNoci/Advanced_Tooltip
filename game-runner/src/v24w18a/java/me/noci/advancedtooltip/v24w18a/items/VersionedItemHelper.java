@@ -2,7 +2,7 @@ package me.noci.advancedtooltip.v24w18a.items;
 
 import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
 import me.noci.advancedtooltip.core.utils.CompassTarget;
-import net.labymod.api.client.resources.ResourceLocation;
+import me.noci.advancedtooltip.v24w18a.components.accessor.ItemEnchantmentsAccessor;
 import me.noci.advancedtooltip.v24w18a.utils.ItemCast;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
@@ -12,7 +12,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.LodestoneTracker;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
@@ -55,11 +54,12 @@ public class VersionedItemHelper implements ItemHelper {
     }
 
     @Override
-    public Optional<Float> miningSpeed(ItemStack itemStack, boolean applyEnchantments) {
-        var speed = ItemCast.asItem(itemStack, TieredItem.class).map(TieredItem::getTier).map(Tier::getSpeed);
+    public Optional<Float> miningSpeed(ItemStack labyItemStack, boolean applyEnchantments) {
+        var speed = ItemCast.asItem(labyItemStack, TieredItem.class).map(TieredItem::getTier).map(Tier::getSpeed);
 
         if (applyEnchantments) {
-            int efficiency = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.EFFICIENCY, ItemCast.toMinecraftItemStack(itemStack));
+            var itemStack = ItemCast.toMinecraftItemStack(labyItemStack);
+            int efficiency = ((ItemEnchantmentsAccessor) itemStack.getEnchantments()).getLevel(itemStack, Enchantments.EFFICIENCY);
             int modifier = efficiency > 0 ? efficiency * efficiency + 1 : 0;
             speed = speed.map(speedValue -> speedValue + modifier);
         }
