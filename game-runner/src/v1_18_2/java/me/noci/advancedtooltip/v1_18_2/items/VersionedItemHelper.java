@@ -1,12 +1,18 @@
 package me.noci.advancedtooltip.v1_18_2.items;
 
 import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
+import me.noci.advancedtooltip.core.utils.CompassTarget;
+import me.noci.advancedtooltip.v1_18_2.utils.CompassLocationTarget;
 import me.noci.advancedtooltip.v1_18_2.utils.ItemCast;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 
 import javax.inject.Singleton;
@@ -72,4 +78,23 @@ public class VersionedItemHelper implements ItemHelper {
         return AbstractFurnaceBlockEntity.getFuel().getOrDefault(item, 0);
     }
 
+    @Override
+    public Optional<CompassTarget> compassTarget(ItemStack labyItemStack) {
+        var itemStack = ItemCast.toMinecraftItemStack(labyItemStack);
+        var item = itemStack.getItem();
+
+        if (item != Items.COMPASS) return Optional.empty();
+
+        Player player = Minecraft.getInstance().player;
+        if (player == null) return Optional.empty();
+        Level level = player.level;
+
+        CompassLocationTarget targetLocation = CompassLocationTarget.from(level, itemStack);
+
+        if (targetLocation == null) return Optional.empty();
+        ResourceLocation dimensionLocation = targetLocation.dimension() != null ? targetLocation.dimension().location() : null;
+        boolean correctDimension = level.dimension().location().equals(dimensionLocation);
+        CompassTarget target = new CompassTarget(correctDimension, targetLocation.x(), targetLocation.y(), targetLocation.z());
+        return Optional.of(target);
+    }
 }

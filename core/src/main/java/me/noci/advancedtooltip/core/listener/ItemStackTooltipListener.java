@@ -137,6 +137,15 @@ public class ItemStackTooltipListener {
             handleShowSignText(itemStack, tooltip, signText.textColor());
         }
 
+        var compassTarget = config.compassTarget();
+        if (compassTarget.enabled()) {
+            itemHelper.compassTarget(itemStack)
+                    .ifPresent(target -> {
+                        String key = "compass_target." + (target.correctDimension() ? "valid" : "wrong_target_dimension");
+                        tooltip(tooltip, compassTarget.textColor(), key, target.x(), target.y(), target.z());
+                    });
+        }
+
     }
 
     private void handleShowNbtData(ItemStack itemStack, List<Component> tooltip, TextColor color) {

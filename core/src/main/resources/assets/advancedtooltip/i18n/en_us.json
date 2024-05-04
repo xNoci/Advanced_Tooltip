@@ -85,6 +85,14 @@
           }
         }
       },
+      "compassTarget": {
+        "name": "Compass Target",
+        "description": "Display the target location of a compass",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Compass Target' when 'Use Global Color' is disabled."
+        }
+      },
       "miningLevel": {
         "name": "Mining Level",
         "description": "Display the mining level of a tool.",
@@ -257,6 +265,10 @@
       "durability.type.combined": "Durability: %s/%s (%s%%)",
       "command_block_command": "Command: /%s",
       "command_block_no_command": "No command saved",
+      "compass_target": {
+        "valid": "Target (X: %s Y: %s Z: %s)",
+        "wrong_target_dimension": "Target location is in a different dimension"
+      },
       "mining.level.0": "Mining Level I",
       "mining.level.1": "Mining Level II",
       "mining.level.2": "Mining Level III",

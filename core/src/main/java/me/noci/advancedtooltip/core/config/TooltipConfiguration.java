@@ -43,6 +43,9 @@ public class TooltipConfiguration extends AddonConfig {
     @IntroducedIn(namespace = "advancedtooltip", value = "1.6.0")
     private final BurnDurationTextTooltipConfig burnDuration = new BurnDurationTextTooltipConfig();
 
+    @IntroducedIn(namespace = "advancedtooltip", value = "1.7.0")
+    private final TextTooltipConfig compassTarget = new TextTooltipConfig(false);
+
     @VersionCompatibility("1.8<1.20.4")
     @IntroducedIn(namespace = "advancedtooltip", value = "1.6.0")
     private final TextTooltipConfig miningLevel = new TextTooltipConfig(false);

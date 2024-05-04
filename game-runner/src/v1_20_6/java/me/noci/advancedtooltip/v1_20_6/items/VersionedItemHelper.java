@@ -1,12 +1,20 @@
 package me.noci.advancedtooltip.v1_20_6.items;
 
 import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
+import me.noci.advancedtooltip.core.utils.CompassTarget;
 import me.noci.advancedtooltip.v1_20_6.utils.ItemCast;
+import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.GlobalPos;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.LodestoneTracker;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 
 import javax.inject.Singleton;
@@ -72,4 +80,27 @@ public class VersionedItemHelper implements ItemHelper {
         return AbstractFurnaceBlockEntity.getFuel().getOrDefault(item, 0);
     }
 
+    @Override
+    public Optional<CompassTarget> compassTarget(ItemStack labyItemStack) {
+        var itemStack = ItemCast.toMinecraftItemStack(labyItemStack);
+        var item = itemStack.getItem();
+
+        Player player = Minecraft.getInstance().player;
+        if (player == null) return Optional.empty();
+        Level level = player.level();
+
+        GlobalPos pos = switch (item) {
+            case Item i when i == Items.COMPASS -> {
+                LodestoneTracker tracker = itemStack.get(DataComponents.LODESTONE_TRACKER);
+                yield tracker != null ? tracker.target().orElse(null) : CompassItem.getSpawnPosition(level);
+            }
+            case Item i when i == Items.RECOVERY_COMPASS -> player.getLastDeathLocation().orElse(null);
+            default -> null;
+        };
+
+        if (pos == null) return Optional.empty();
+        boolean correctDimension = level.dimension().location().equals(pos.dimension().location());
+        CompassTarget target = new CompassTarget(correctDimension, pos.pos().getX(), pos.pos().getY(), pos.pos().getZ());
+        return Optional.of(target);
+    }
 }

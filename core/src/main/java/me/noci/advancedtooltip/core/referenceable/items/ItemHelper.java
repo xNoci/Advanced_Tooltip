@@ -1,5 +1,6 @@
 package me.noci.advancedtooltip.core.referenceable.items;
 
+import me.noci.advancedtooltip.core.utils.CompassTarget;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.reference.annotation.Referenceable;
 import org.jetbrains.annotations.Nullable;
@@ -55,6 +56,11 @@ public interface ItemHelper {
         public int burnDuration(ItemStack itemStack) {
             return 0;
         }
+
+        @Override
+        public Optional<CompassTarget> compassTarget(ItemStack itemStack) {
+            return Optional.empty();
+        }
     };
 
     boolean isArmor(ItemStack itemStack);
@@ -75,4 +81,5 @@ public interface ItemHelper {
 
     int burnDuration(ItemStack itemStack);
 
+    Optional<CompassTarget> compassTarget(ItemStack itemStack);
 }
