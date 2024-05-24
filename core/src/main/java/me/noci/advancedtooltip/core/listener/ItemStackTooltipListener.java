@@ -18,8 +18,6 @@ import net.labymod.api.util.I18n;
 import net.labymod.api.util.time.TimeUtil;
 
 import java.text.DecimalFormat;
-import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class ItemStackTooltipListener {
@@ -41,56 +39,58 @@ public class ItemStackTooltipListener {
     @Subscribe
     public void onToolTip(ItemStackTooltipEvent event) {
         ItemStack itemStack = event.itemStack();
-        List<Component> tooltip = event.getTooltipLines();
-        Consumer<Component> addToTooltip = tooltip::add;
+        TooltipRenderer renderer = (color, useTranslation, key, values) -> {
+            String text = useTranslation ? I18n.translate("advancedtooltip.tooltip." + key, values) : key;
+            event.getTooltipLines().add(Component.text(text, color));
+        };
 
         var displayComponent = config.displayComponent();
         if (displayComponent.displayItemData()) {
-            handleShowNbtData(addToTooltip, itemStack, displayComponent.textColor());
+            handleShowNbtData(renderer, itemStack, displayComponent.textColor());
             return;
         }
 
         var durability = config.itemDurability();
         if (durability.enabled() && event.type() != ItemStackTooltipEvent.TooltipType.ADVANCED) {
-            handleShowDurability(addToTooltip, itemStack, durability::textColor, durability.durabilityType());
+            handleShowDurability(renderer, itemStack, durability::textColor, durability.durabilityType());
         }
 
         var anvilUses = config.anvilUsages();
         if (anvilUses.enabled()) {
-            handleAnvilUses(addToTooltip, itemStack, anvilUses.textColor());
+            handleAnvilUses(renderer, itemStack, anvilUses.textColor());
         }
 
         var discSignalStrength = config.discSignalStrength();
         if (discSignalStrength.enabled()) {
-            handleDiscSignalStrength(addToTooltip, itemStack, discSignalStrength.textColor());
+            handleDiscSignalStrength(renderer, itemStack, discSignalStrength.textColor());
         }
 
         var mapDecoration = config.mapDecoration();
         if (mapDecoration.enabled()) {
-            handleExplorerMap(addToTooltip, itemStack, mapDecoration.textColor());
+            handleExplorerMap(renderer, itemStack, mapDecoration.textColor());
         }
 
         var suspiciousStewEffect = config.suspiciousStewEffect();
         if (suspiciousStewEffect.enabled() && !event.isCreative()) {
-            handleSuspiciousStewEffect(addToTooltip, itemStack, suspiciousStewEffect.textColor());
+            handleSuspiciousStewEffect(renderer, itemStack, suspiciousStewEffect.textColor());
         }
 
         var commandBlockCommand = config.commandBlockCommand();
         if (commandBlockCommand.enabled()) {
-            handleCommandBlockCommand(addToTooltip, itemStack, commandBlockCommand.textColor());
+            handleCommandBlockCommand(renderer, itemStack, commandBlockCommand.textColor());
         }
 
         boolean miningItem = itemHelper.isMiningTool(itemStack);
         var miningLevel = config.miningLevel();
         if (miningLevel.enabled() && miningItem) {
             itemHelper.miningLevel(itemStack)
-                    .ifPresent(level -> tooltip(addToTooltip, miningLevel.textColor(), "mining.level." + level));
+                    .ifPresent(level -> renderer.render(miningLevel.textColor(), "mining.level." + level));
         }
 
         var miningSpeed = config.miningSpeed();
         if (miningSpeed.enabled() && miningItem) {
             itemHelper.miningSpeed(itemStack, miningSpeed.applyEnchantments())
-                    .ifPresent(speed -> tooltip(addToTooltip, miningLevel.textColor(), "mining_speed", speed));
+                    .ifPresent(speed -> renderer.render(miningLevel.textColor(), "mining_speed", speed));
         }
 
         var clockTime = config.clockTime();
@@ -108,22 +108,22 @@ public class ItemStackTooltipListener {
                 clockFormat = "%d:%02d %s".formatted(hours, minutes, suffix);
             }
 
-            tooltip(addToTooltip, clockTime.textColor(), false, clockFormat);
+            renderer.render(clockTime.textColor(), false, clockFormat);
         }
 
         var burnDuration = config.burnDuration();
         if (burnDuration.enabled() && itemHelper.isFuel(itemStack)) {
-            handleDuration(burnDuration, addToTooltip, itemHelper.burnDuration(itemStack));
+            handleDuration(burnDuration, renderer, itemHelper.burnDuration(itemStack));
         }
 
         var recordDuration = config.recordDuration();
         if (recordDuration.enabled()) {
-            handleDuration(recordDuration, addToTooltip, itemHelper.discTickLength(itemStack).orElse(0));
+            handleDuration(recordDuration, renderer, itemHelper.discTickLength(itemStack).orElse(0));
         }
 
         var signText = config.signText();
         if (signText.enabled()) {
-            handleShowSignText(addToTooltip, itemStack, signText.textColor());
+            handleShowSignText(renderer, itemStack, signText.textColor());
         }
 
         var compassTarget = config.compassTarget();
@@ -131,47 +131,47 @@ public class ItemStackTooltipListener {
             itemHelper.compassTarget(itemStack)
                     .ifPresent(target -> {
                         String key = "compass_target." + (target.correctDimension() ? "valid" : "wrong_target_dimension");
-                        tooltip(addToTooltip, compassTarget.textColor(), key, target.x(), target.y(), target.z());
+                        renderer.render(compassTarget.textColor(), key, target.x(), target.y(), target.z());
                     });
         }
 
     }
 
-    private void handleDuration(DurationTextTooltipConfig durationConfig, Consumer<Component> addToTooltip, int duration) {
+    private void handleDuration(DurationTextTooltipConfig durationConfig, TooltipRenderer renderer, int duration) {
         if (duration <= 0) return;
 
         switch (durationConfig.durationUnit()) {
             case TICKS ->
-                    tooltip(addToTooltip, durationConfig.textColor(), "duration_unit." + durationConfig.configKey() + ".ticks", duration);
+                    renderer.render(durationConfig.textColor(), "duration_unit." + durationConfig.configKey() + ".ticks", duration);
             case SECONDS ->
-                    tooltip(addToTooltip, durationConfig.textColor(), "duration_unit." + durationConfig.configKey() + ".seconds", duration);
+                    renderer.render(durationConfig.textColor(), "duration_unit." + durationConfig.configKey() + ".seconds", duration);
             case MINUTES -> {
                 int seconds = (duration / 20) % 60;
                 int minutes = duration / 1200;
 
                 if (minutes > 0 && seconds > 0) {
-                    tooltip(addToTooltip, durationConfig.textColor(), "duration_unit." + durationConfig.configKey() + ".minutes_seconds", minutes, seconds);
+                    renderer.render(durationConfig.textColor(), "duration_unit." + durationConfig.configKey() + ".minutes_seconds", minutes, seconds);
                 } else if (minutes == 0) {
-                    tooltip(addToTooltip, durationConfig.textColor(), "duration_unit." + durationConfig.configKey() + ".seconds", seconds);
+                    renderer.render(durationConfig.textColor(), "duration_unit." + durationConfig.configKey() + ".seconds", seconds);
                 } else {
-                    tooltip(addToTooltip, durationConfig.textColor(), "duration_unit." + durationConfig.configKey() + ".minutes", minutes);
+                    renderer.render(durationConfig.textColor(), "duration_unit." + durationConfig.configKey() + ".minutes", minutes);
                 }
             }
         }
     }
 
-    private void handleShowNbtData(Consumer<Component> addToTooltip, ItemStack itemStack, TextColor color) {
+    private void handleShowNbtData(TooltipRenderer renderer, ItemStack itemStack, TextColor color) {
         boolean withNbtArrayData = config.displayComponent().printWithNbtArrayData().isPressed();
         componentHelper.displayItemData(itemStack, withNbtArrayData)
                 .ifPresentOrElse(data -> {
-                    tooltip(addToTooltip, color, false, "");
+                    renderer.render(color, false, "");
                     for (String s : data.split("\n")) {
-                        tooltip(addToTooltip, color, false, s);
+                        renderer.render(color, false, s);
                     }
-                }, () -> tooltip(addToTooltip, color, "no_nbt_data"));
+                }, () -> renderer.render(color, "no_nbt_data"));
     }
 
-    private void handleShowDurability(Consumer<Component> addToTooltip, ItemStack itemStack, Function<Float, TextColor> textColor, DurabilityType durabilityType) {
+    private void handleShowDurability(TooltipRenderer renderer, ItemStack itemStack, Function<Float, TextColor> textColor, DurabilityType durabilityType) {
         if (itemStack.getMaximumDamage() <= 0) return;
         if (componentHelper.unbreakable(itemStack)) return;
 
@@ -181,26 +181,26 @@ public class ItemStackTooltipListener {
 
         switch (durabilityType) {
             case VANILLA ->
-                    tooltip(addToTooltip, textColor.apply((float) currentDamage / maxDamage), "durability.type.vanilla", currentDamage, maxDamage);
+                    renderer.render(textColor.apply((float) currentDamage / maxDamage), "durability.type.vanilla", currentDamage, maxDamage);
             case PERCENTAGE ->
-                    tooltip(addToTooltip, textColor.apply((float) currentDamage / maxDamage), "durability.type.percentage", percentage);
+                    renderer.render(textColor.apply((float) currentDamage / maxDamage), "durability.type.percentage", percentage);
             case COMBINED ->
-                    tooltip(addToTooltip, textColor.apply((float) currentDamage / maxDamage), "durability.type.combined", currentDamage, maxDamage, percentage);
+                    renderer.render(textColor.apply((float) currentDamage / maxDamage), "durability.type.combined", currentDamage, maxDamage, percentage);
         }
     }
 
-    private void handleAnvilUses(Consumer<Component> addToTooltip, ItemStack itemStack, TextColor color) {
+    private void handleAnvilUses(TooltipRenderer renderer, ItemStack itemStack, TextColor color) {
         int usages = componentHelper.anvilUsages(itemStack).orElse(0);
         if (usages == 0) return;
-        tooltip(addToTooltip, color, "anvil_usages", usages);
+        renderer.render(color, "anvil_usages", usages);
     }
 
-    private void handleDiscSignalStrength(Consumer<Component> addToTooltip, ItemStack itemStack, TextColor color) {
+    private void handleDiscSignalStrength(TooltipRenderer renderer, ItemStack itemStack, TextColor color) {
         itemHelper.discSignalStrengt(itemStack)
-                .ifPresent(strength -> tooltip(addToTooltip, color, "disc_signal_strength", strength));
+                .ifPresent(strength -> renderer.render(color, "disc_signal_strength", strength));
     }
 
-    private void handleExplorerMap(Consumer<Component> addToTooltip, ItemStack itemStack, TextColor color) {
+    private void handleExplorerMap(TooltipRenderer renderer, ItemStack itemStack, TextColor color) {
         componentHelper.mapDecorations(itemStack)
                 .ifPresent(mapLocations -> mapLocations
                         .stream()
@@ -209,11 +209,11 @@ public class ItemStackTooltipListener {
                             String translationKey = mapLocation.type().translationKey();
                             double x = mapLocation.x();
                             double z = mapLocation.z();
-                            tooltip(addToTooltip, color, translationKey, x, z);
+                            renderer.render(color, translationKey, x, z);
                         }));
     }
 
-    private void handleSuspiciousStewEffect(Consumer<Component> addToTooltip, ItemStack itemStack, TextColor color) {
+    private void handleSuspiciousStewEffect(TooltipRenderer renderer, ItemStack itemStack, TextColor color) {
         foodItems.stewEffect(itemStack)
                 .ifPresent(stewEffects -> {
                     for (PotionEffect stewEffect : stewEffects) {
@@ -223,23 +223,23 @@ public class ItemStackTooltipListener {
                             duration = I18n.translate("advancedtooltip.tooltip.potion_effect.duration_infinity");
                         }
 
-                        tooltip(addToTooltip, color, false, I18n.translate("advancedtooltip.tooltip.potion_effect.display", name, duration));
+                        renderer.render(color, false, I18n.translate("advancedtooltip.tooltip.potion_effect.display", name, duration));
                     }
                 });
     }
 
-    private void handleCommandBlockCommand(Consumer<Component> addToTooltip, ItemStack itemStack, TextColor color) {
+    private void handleCommandBlockCommand(TooltipRenderer renderer, ItemStack itemStack, TextColor color) {
         componentHelper.commandBlockCommand(itemStack)
                 .ifPresent(command -> {
                     if (command.isEmpty()) {
-                        tooltip(addToTooltip, color, "command_block_no_command");
+                        renderer.render(color, "command_block_no_command");
                     } else {
-                        tooltip(addToTooltip, color, "command_block_command", command);
+                        renderer.render(color, "command_block_command", command);
                     }
                 });
     }
 
-    private void handleShowSignText(Consumer<Component> addToTooltip, ItemStack itemStack, TextColor color) {
+    private void handleShowSignText(TooltipRenderer renderer, ItemStack itemStack, TextColor color) {
         componentHelper.signText(itemStack)
                 .ifPresent(signText -> {
                     boolean hasFrontText = signText.hasFrontText();
@@ -247,30 +247,33 @@ public class ItemStackTooltipListener {
 
                     if (!hasFrontText && !hasBackText) return;
                     if (hasFrontText) {
-                        tooltip(addToTooltip, color, "sign_text.front_text");
+                        renderer.render(color, "sign_text.front_text");
                         for (int i = 0; i < signText.frontText().length; i++) {
-                            tooltip(addToTooltip, color, "sign_text.line", signText.frontText()[i]);
+                            renderer.render(color, "sign_text.line", signText.frontText()[i]);
                         }
-                        if (hasBackText) tooltip(addToTooltip, color, false, "");
+                        if (hasBackText) {
+                            renderer.render(color, false, "");
+                        }
                     }
 
                     if (hasBackText) {
-                        tooltip(addToTooltip, color, "sign_text.back_text");
+                        renderer.render(color, "sign_text.back_text");
                         for (int i = 0; i < signText.backText().length; i++) {
-                            tooltip(addToTooltip, color, "sign_text.line", signText.backText()[i]);
+                            renderer.render(color, "sign_text.line", signText.backText()[i]);
                         }
                     }
                 });
     }
 
+    @FunctionalInterface
+    private interface TooltipRenderer {
 
-    private void tooltip(Consumer<Component> addToTooltip, TextColor color, String key, Object... value) {
-        tooltip(addToTooltip, color, true, key, value);
-    }
+        default void render(TextColor color, String key, Object... values) {
+            render(color, true, key, values);
+        }
 
-    private void tooltip(Consumer<Component> addToTooltip, TextColor color, boolean useTranslation, String key, Object... value) {
-        String text = useTranslation ? I18n.translate("advancedtooltip.tooltip." + key, value) : key;
-        addToTooltip.accept(Component.text(text, color));
+        void render(TextColor color, boolean useTranslation, String key, Object... values);
+
     }
 
 
