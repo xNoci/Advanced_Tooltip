@@ -177,15 +177,15 @@ public class ItemStackTooltipListener {
 
         int currentDamage = itemStack.getMaximumDamage() - itemStack.getCurrentDamageValue();
         int maxDamage = itemStack.getMaximumDamage();
-        String percentage = PERCENTAGE_FORMAT.format(((float) currentDamage / maxDamage) * 100);
+        float durability = (float) currentDamage / maxDamage;
+
+        String percentage = PERCENTAGE_FORMAT.format(durability * 100);
+        TextColor color = textColor.apply(durability);
 
         switch (durabilityType) {
-            case VANILLA ->
-                    renderer.render(textColor.apply((float) currentDamage / maxDamage), "durability.type.vanilla", currentDamage, maxDamage);
-            case PERCENTAGE ->
-                    renderer.render(textColor.apply((float) currentDamage / maxDamage), "durability.type.percentage", percentage);
-            case COMBINED ->
-                    renderer.render(textColor.apply((float) currentDamage / maxDamage), "durability.type.combined", currentDamage, maxDamage, percentage);
+            case VANILLA -> renderer.render(color, "durability.type.vanilla", currentDamage, maxDamage);
+            case PERCENTAGE -> renderer.render(color, "durability.type.percentage", percentage);
+            case COMBINED -> renderer.render(color, "durability.type.combined", currentDamage, maxDamage, percentage);
         }
     }
 
