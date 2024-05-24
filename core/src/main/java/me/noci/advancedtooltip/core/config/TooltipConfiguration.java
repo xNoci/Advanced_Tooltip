@@ -38,6 +38,10 @@ public class TooltipConfiguration extends AddonConfig {
 
     private final TextTooltipConfig discSignalStrength = new TextTooltipConfig();
 
+    @VersionCompatibility("1.19.2<" + LATEST_SUPPORTED_VERSION)
+    @IntroducedIn(namespace = "advancedtooltip", value = "1.8.0")
+    private final RecordDurationTextTooltipConfig recordDuration = new RecordDurationTextTooltipConfig();
+
     private final TextTooltipConfig commandBlockCommand = new TextTooltipConfig();
 
     @IntroducedIn(namespace = "advancedtooltip", value = "1.6.0")

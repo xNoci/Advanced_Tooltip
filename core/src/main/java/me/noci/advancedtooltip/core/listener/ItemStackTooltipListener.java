@@ -3,6 +3,7 @@ package me.noci.advancedtooltip.core.listener;
 import me.noci.advancedtooltip.core.TooltipAddon;
 import me.noci.advancedtooltip.core.config.DurabilityType;
 import me.noci.advancedtooltip.core.config.TooltipConfiguration;
+import me.noci.advancedtooltip.core.config.text.DurationTextTooltipConfig;
 import me.noci.advancedtooltip.core.referenceable.items.ComponentHelper;
 import me.noci.advancedtooltip.core.referenceable.items.FoodItems;
 import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
@@ -112,26 +113,12 @@ public class ItemStackTooltipListener {
 
         var burnDuration = config.burnDuration();
         if (burnDuration.enabled() && itemHelper.isFuel(itemStack)) {
-            switch (burnDuration.burnDurationTimeUnit()) {
-                case TICKS ->
-                        tooltip(addToTooltip, burnDuration.textColor(), "burn_duration_ticks", itemHelper.burnDuration(itemStack));
-                case SECONDS ->
-                        tooltip(addToTooltip, burnDuration.textColor(), "burn_duration_seconds", itemHelper.burnDuration(itemStack) / 20);
-                case MINUTES -> {
-                    int burnTime = itemHelper.burnDuration(itemStack);
+            handleDuration(burnDuration, addToTooltip, itemHelper.burnDuration(itemStack));
+        }
 
-                    int seconds = (burnTime / 20) % 60;
-                    int minutes = burnTime / 1200;
-
-                    if (minutes > 0 && seconds > 0) {
-                        tooltip(addToTooltip, burnDuration.textColor(), "burn_duration_minutes_seconds", minutes, seconds);
-                    } else if (minutes == 0) {
-                        tooltip(addToTooltip, burnDuration.textColor(), "burn_duration_seconds", seconds);
-                    } else {
-                        tooltip(addToTooltip, burnDuration.textColor(), "burn_duration_minutes", minutes);
-                    }
-                }
-            }
+        var recordDuration = config.recordDuration();
+        if (recordDuration.enabled()) {
+            handleDuration(recordDuration, addToTooltip, itemHelper.discTickLength(itemStack).orElse(0));
         }
 
         var signText = config.signText();
@@ -148,6 +135,29 @@ public class ItemStackTooltipListener {
                     });
         }
 
+    }
+
+    private void handleDuration(DurationTextTooltipConfig durationConfig, Consumer<Component> addToTooltip, int duration) {
+        if (duration <= 0) return;
+
+        switch (durationConfig.durationUnit()) {
+            case TICKS ->
+                    tooltip(addToTooltip, durationConfig.textColor(), "duration_unit." + durationConfig.configKey() + ".ticks", duration);
+            case SECONDS ->
+                    tooltip(addToTooltip, durationConfig.textColor(), "duration_unit." + durationConfig.configKey() + ".seconds", duration);
+            case MINUTES -> {
+                int seconds = (duration / 20) % 60;
+                int minutes = duration / 1200;
+
+                if (minutes > 0 && seconds > 0) {
+                    tooltip(addToTooltip, durationConfig.textColor(), "duration_unit." + durationConfig.configKey() + ".minutes_seconds", minutes, seconds);
+                } else if (minutes == 0) {
+                    tooltip(addToTooltip, durationConfig.textColor(), "duration_unit." + durationConfig.configKey() + ".seconds", seconds);
+                } else {
+                    tooltip(addToTooltip, durationConfig.textColor(), "duration_unit." + durationConfig.configKey() + ".minutes", minutes);
+                }
+            }
+        }
     }
 
     private void handleShowNbtData(Consumer<Component> addToTooltip, ItemStack itemStack, TextColor color) {

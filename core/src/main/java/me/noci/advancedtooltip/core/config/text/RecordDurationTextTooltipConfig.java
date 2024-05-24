@@ -7,12 +7,11 @@ import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.annotation.SettingRequires;
 import net.labymod.api.configuration.settings.annotation.SettingSection;
 
-public class BurnDurationTextTooltipConfig extends TextTooltipConfig implements DurationTextTooltipConfig {
+public class RecordDurationTextTooltipConfig extends TextTooltipConfig implements DurationTextTooltipConfig {
 
-    @SettingSection("burnDurationSection")
+    @SettingSection("recordDurationSection")
     @DropdownSetting
     @SettingRequires("enabled")
-    @IntroducedIn(namespace = "advancedtooltip", value = "1.7.0")
     private final ConfigProperty<DurationTimeUnit> durationTimeUnit = new ConfigProperty<>(DurationTimeUnit.MINUTES);
 
     @Override
@@ -22,7 +21,7 @@ public class BurnDurationTextTooltipConfig extends TextTooltipConfig implements 
 
     @Override
     public String configKey() {
-        return "burn_time";
+        return "record_length";
     }
 
 }

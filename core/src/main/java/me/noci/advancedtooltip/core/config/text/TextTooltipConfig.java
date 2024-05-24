@@ -14,7 +14,7 @@ import net.labymod.api.configuration.settings.annotation.SettingRequires;
 import net.labymod.api.configuration.settings.annotation.SettingSection;
 import net.labymod.api.util.Color;
 
-public class TextTooltipConfig extends Config {
+public class TextTooltipConfig extends Config implements TooltipConfig {
 
     private static final String TRANSLATION_KEY_PREFIX = "advancedtooltip.settings.textSetting";
 
@@ -40,10 +40,12 @@ public class TextTooltipConfig extends Config {
         this.enabled = new ConfigProperty<>(enabled);
     }
 
+    @Override
     public boolean enabled() {
         return this.enabled.get();
     }
 
+    @Override
     public TextColor textColor() {
         if (useGlobalColor.get()) {
             TooltipConfiguration config = TooltipAddon.get().configuration();
