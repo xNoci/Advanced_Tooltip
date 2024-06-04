@@ -51,7 +51,7 @@ public class ItemStackTooltipListener {
         }
 
         var durability = config.itemDurability();
-        if (durability.enabled() && event.type() != ItemStackTooltipEvent.TooltipType.ADVANCED) {
+        if (durability.enabled()) {
             handleShowDurability(renderer, itemStack, durability::textColor, durability.durabilityType());
         }
 
