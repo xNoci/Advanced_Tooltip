@@ -4,6 +4,7 @@ import me.noci.advancedtooltip.core.TooltipAddon;
 import me.noci.advancedtooltip.core.config.DurabilityType;
 import me.noci.advancedtooltip.core.config.TooltipConfiguration;
 import me.noci.advancedtooltip.core.config.text.DurationTextTooltipConfig;
+import me.noci.advancedtooltip.core.referenceable.TickManager;
 import me.noci.advancedtooltip.core.referenceable.items.ComponentHelper;
 import me.noci.advancedtooltip.core.referenceable.items.FoodItems;
 import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
@@ -28,16 +29,19 @@ public class ItemStackTooltipListener {
     private final FoodItems foodItems;
     private final ItemHelper itemHelper;
     private final ComponentHelper componentHelper;
+    private final TickManager tickManager;
 
-    public ItemStackTooltipListener(TooltipAddon addon, FoodItems foodItems, ItemHelper itemHelper, ComponentHelper componentHelper) {
+    public ItemStackTooltipListener(TooltipAddon addon, FoodItems foodItems, ItemHelper itemHelper, ComponentHelper componentHelper, TickManager tickManager) {
         this.config = addon.configuration();
         this.foodItems = foodItems;
         this.itemHelper = itemHelper;
         this.componentHelper = componentHelper;
+        this.tickManager = tickManager;
     }
 
     @Subscribe
     public void onToolTip(ItemStackTooltipEvent event) {
+        //TODO Setting to disable when advanced tooltips are on
         ItemStack itemStack = event.itemStack();
         TooltipRenderer renderer = (color, useTranslation, key, values) -> {
             String text = useTranslation ? I18n.translate("advancedtooltip.tooltip." + key, values) : key;
@@ -113,12 +117,12 @@ public class ItemStackTooltipListener {
 
         var burnDuration = config.burnDuration();
         if (burnDuration.enabled() && itemHelper.isFuel(itemStack)) {
-            handleDuration(burnDuration, renderer, itemHelper.burnDuration(itemStack));
+            handleDuration(burnDuration, renderer, itemHelper.burnDuration(itemStack), true);
         }
 
         var recordDuration = config.recordDuration();
         if (recordDuration.enabled()) {
-            handleDuration(recordDuration, renderer, itemHelper.discTickLength(itemStack).orElse(0));
+            handleDuration(recordDuration, renderer, itemHelper.discTickLength(itemStack).orElse(0), false);
         }
 
         var signText = config.signText();
@@ -137,17 +141,17 @@ public class ItemStackTooltipListener {
 
     }
 
-    private void handleDuration(DurationTextTooltipConfig durationConfig, TooltipRenderer renderer, int duration) {
-        if (duration <= 0) return;
+    private void handleDuration(DurationTextTooltipConfig durationConfig, TooltipRenderer renderer, int ticks, boolean useTickRate) {
+        if (ticks <= 0) return;
 
         switch (durationConfig.durationUnit()) {
             case TICKS ->
-                    renderer.render(durationConfig.textColor(), "duration_unit." + durationConfig.configKey() + ".ticks", duration);
+                    renderer.render(durationConfig.textColor(), "duration_unit." + durationConfig.configKey() + ".ticks", ticks);
             case SECONDS ->
-                    renderer.render(durationConfig.textColor(), "duration_unit." + durationConfig.configKey() + ".seconds", duration);
+                    renderer.render(durationConfig.textColor(), "duration_unit." + durationConfig.configKey() + ".seconds", tickManager.seconds(ticks, useTickRate));
             case MINUTES -> {
-                int seconds = (duration / 20) % 60;
-                int minutes = duration / 1200;
+                int seconds = tickManager.seconds(ticks, useTickRate) % 60;
+                int minutes = tickManager.minutes(ticks, useTickRate);
 
                 if (minutes > 0 && seconds > 0) {
                     renderer.render(durationConfig.textColor(), "duration_unit." + durationConfig.configKey() + ".minutes_seconds", minutes, seconds);

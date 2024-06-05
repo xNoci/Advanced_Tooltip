@@ -5,6 +5,7 @@ import me.noci.advancedtooltip.core.config.TooltipConfiguration;
 import me.noci.advancedtooltip.core.generated.DefaultReferenceStorage;
 import me.noci.advancedtooltip.core.listener.ItemStackTooltipListener;
 import me.noci.advancedtooltip.core.referenceable.InventoryHelper;
+import me.noci.advancedtooltip.core.referenceable.TickManager;
 import me.noci.advancedtooltip.core.referenceable.items.ComponentHelper;
 import me.noci.advancedtooltip.core.referenceable.items.FoodItems;
 import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
@@ -14,6 +15,7 @@ import net.labymod.api.models.addon.annotation.AddonMain;
 import net.labymod.api.revision.SimpleRevision;
 import net.labymod.api.util.version.SemanticVersion;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
 @AddonMain
@@ -45,10 +47,15 @@ public class TooltipAddon extends LabyAddon<TooltipConfiguration> {
         return instance.componentHelper;
     }
 
+    public static TickManager tickManager() {
+        return instance.tickManager;
+    }
+
     @Setter private FoodItems foodItems = FoodItems.DEFAULT;
     @Setter private ItemHelper itemHelper = ItemHelper.DEFAULT;
     @Setter private InventoryHelper inventoryHelper = InventoryHelper.DEFAULT;
     @Setter private ComponentHelper componentHelper = ComponentHelper.DEFAULT;
+    @Setter private TickManager tickManager = TickManager.DEFAULT;
 
     public TooltipAddon() {
         instance = this;
@@ -70,14 +77,15 @@ public class TooltipAddon extends LabyAddon<TooltipConfiguration> {
 
     private void initialiseReferences() {
         DefaultReferenceStorage referenceStorage = this.referenceStorageAccessor();
-        setVersionedReference(referenceStorage.getFoodItems(), this::foodItems);
-        setVersionedReference(referenceStorage.getItemHelper(), this::itemHelper);
-        setVersionedReference(referenceStorage.getInventoryHelper(), this::inventoryHelper);
-        setVersionedReference(referenceStorage.getComponentHelper(), this::componentHelper);
+        versionedReference(referenceStorage.getFoodItems(), this::foodItems);
+        versionedReference(referenceStorage.getItemHelper(), this::itemHelper);
+        versionedReference(referenceStorage.getInventoryHelper(), this::inventoryHelper);
+        versionedReference(referenceStorage.getComponentHelper(), this::componentHelper);
+        versionedReference(referenceStorage.getTickManager(), this::tickManager);
     }
 
     private void registerListener() {
-        this.registerListener(new ItemStackTooltipListener(this, this.foodItems, this.itemHelper, this.componentHelper));
+        this.registerListener(new ItemStackTooltipListener(this, this.foodItems, this.itemHelper, this.componentHelper, this.tickManager));
     }
 
     @Override
@@ -85,9 +93,8 @@ public class TooltipAddon extends LabyAddon<TooltipConfiguration> {
         return TooltipConfiguration.class;
     }
 
-    private static <T> void setVersionedReference(T reference, Consumer<T> setter) {
-        if (reference == null) return;
-        setter.accept(reference);
+    private static <T> void versionedReference(T reference, Consumer<T> setter) {
+        Optional.ofNullable(reference).ifPresent(setter);
     }
 
 }
