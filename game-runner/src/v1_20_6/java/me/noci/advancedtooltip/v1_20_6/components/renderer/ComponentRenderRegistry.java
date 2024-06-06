@@ -11,17 +11,11 @@ public class ComponentRenderRegistry {
 
     private final static ComponentRenderer<?> FALLBACK = ComponentPrinter::unsupported;
 
-    private final HashMap<Class<?>, ComponentRenderer<?>> typeRendererMap = Maps.newHashMap();
     private final HashMap<DataComponentType<?>, ComponentRenderer<?>> componentTypeRenderMap = Maps.newHashMap();
 
     @SuppressWarnings("unchecked")
     public <T> ComponentPrinter printer(TypedDataComponent<T> component) {
-        ComponentRenderer<T> renderer = (ComponentRenderer<T>) typeRendererMap.get(component.value().getClass());
-
-        if (renderer == null) {
-            renderer = (ComponentRenderer<T>) componentTypeRenderMap.getOrDefault(component.type(), FALLBACK);
-        }
-
+        ComponentRenderer<T> renderer = (ComponentRenderer<T>) componentTypeRenderMap.getOrDefault(component.type(), FALLBACK);
         return renderer.apply(component);
     }
 
