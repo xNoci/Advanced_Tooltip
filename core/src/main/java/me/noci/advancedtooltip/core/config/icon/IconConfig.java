@@ -3,7 +3,7 @@ package me.noci.advancedtooltip.core.config.icon;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SliderWidget.SliderSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
 import net.labymod.api.configuration.loader.Config;
-import net.labymod.api.configuration.loader.annotation.ParentSwitch;
+import net.labymod.api.configuration.loader.annotation.ShowSettingInParent;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.annotation.CustomTranslation;
 import net.labymod.api.configuration.settings.annotation.SettingRequires;
@@ -17,7 +17,7 @@ public class IconConfig extends Config {
     public static final int DEFAULT_ICON_SIZE = 8;
     public static final int DEFAULT_PADDING = 2;
 
-    @ParentSwitch
+    @ShowSettingInParent
     @SwitchSetting
     private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
 
