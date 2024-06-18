@@ -84,6 +84,11 @@ public class VersionedItemHelper implements ItemHelper {
     }
 
     @Override
+    public Optional<Integer> discTickLength(ItemStack itemStack) {
+        return Optional.empty();
+    }
+
+    @Override
     public int burnDuration(ItemStack itemStack) {
         return TileEntityFurnace.getItemBurnTime(ItemCast.toMinecraftItemStack(itemStack));
     }

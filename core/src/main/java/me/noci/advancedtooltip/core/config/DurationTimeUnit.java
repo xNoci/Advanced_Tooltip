@@ -1,6 +1,6 @@
 package me.noci.advancedtooltip.core.config;
 
-public enum BurnDurationTimeUnit {
+public enum DurationTimeUnit {
 
     TICKS,
     SECONDS,

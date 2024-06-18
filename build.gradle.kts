@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "me.noci"
-version = "1.7.0"
+version = "1.8.0"
 
 labyMod {
     defaultPackageName = "me.noci.advancedtooltip"
@@ -26,7 +26,8 @@ labyMod {
             "1.17.1",
             "1.18.2",
             "1.19.2", "1.19.3", "1.19.4",
-            "1.20.1", "1.20.2", "1.20.4", "1.20.5", "1.20.6"
+            "1.20.1", "1.20.2", "1.20.4", "1.20.5", "1.20.6",
+            "1.21"
         ) { version, provider ->
             configureRun(provider, version)
         }

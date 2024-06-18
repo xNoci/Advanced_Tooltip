@@ -59,7 +59,7 @@ public class ComponentUtils {
                         return tooltipComponent;
                     }
 
-                    ComponentPrinter enchantments = ComponentPrinter.list("levels", ((ItemEnchantmentsAccessor) itemEnchantments).enchantments())
+                    ComponentPrinter enchantments = ComponentPrinter.list("enchantments", ((ItemEnchantmentsAccessor) itemEnchantments).enchantments())
                             .handler(enchantment -> {
                                 String enchantmentKey = Util.getRegisteredName(BuiltInRegistries.ENCHANTMENT, enchantment);
                                 int level = itemEnchantments.getLevel(enchantment);

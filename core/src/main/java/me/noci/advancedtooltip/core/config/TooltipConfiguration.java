@@ -18,7 +18,7 @@ import net.labymod.api.util.Color;
 @ConfigName("settings")
 public class TooltipConfiguration extends AddonConfig {
 
-    public static final String LATEST_SUPPORTED_VERSION = "1.20.6";
+    public static final String LATEST_SUPPORTED_VERSION = "1.21";
 
     @SwitchSetting
     private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
@@ -38,10 +38,16 @@ public class TooltipConfiguration extends AddonConfig {
 
     private final TextTooltipConfig discSignalStrength = new TextTooltipConfig();
 
+    @VersionCompatibility("1.19.2<" + LATEST_SUPPORTED_VERSION)
+    @IntroducedIn(namespace = "advancedtooltip", value = "1.8.0")
+    private final RecordDurationTextTooltipConfig recordDuration = new RecordDurationTextTooltipConfig();
+
     private final TextTooltipConfig commandBlockCommand = new TextTooltipConfig();
 
     @IntroducedIn(namespace = "advancedtooltip", value = "1.6.0")
     private final BurnDurationTextTooltipConfig burnDuration = new BurnDurationTextTooltipConfig();
+
+    //TODO Add smithing template clone material info
 
     @IntroducedIn(namespace = "advancedtooltip", value = "1.7.0")
     private final TextTooltipConfig compassTarget = new TextTooltipConfig(false);

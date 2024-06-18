@@ -55,6 +55,28 @@
           "description": "The color for 'Disc Signal Strength' when 'Use Global Color' is disabled."
         }
       },
+      "recordDuration": {
+        "name": "Record Disk Length",
+        "description": "Display the length of a record track.",
+        "textColor": {
+          "name": "Color",
+          "description": "The color for 'Record Disk Length' when 'Use Global Color' is disabled."
+        },
+        "header": {
+          "recordDurationSection": {
+            "name": "Record Disk Length Settings"
+          }
+        },
+        "durationTimeUnit": {
+          "name": "Time Unit",
+          "description": "Time Unit used to display record disk length.\n\nTicks: Display in ticks.\nSeconds: Display in seconds.\nMinutes: Display in minutes and seconds.",
+          "entries": {
+            "ticks": "Ticks",
+            "seconds": "Seconds",
+            "minutes": "Minutes"
+          }
+        }
+      },
       "commandBlockCommand": {
         "name": "Command Block Command",
         "description": "When the command block was saved with nbt data, it will display the saved command.",
@@ -75,7 +97,7 @@
             "name": "Burn Duration Settings"
           }
         },
-        "burnDurationTimeUnit": {
+        "durationTimeUnit": {
           "name": "Time Unit",
           "description": "Time Unit used to display item burn duration.\n\nTicks: Display in ticks.\nSeconds: Display in seconds.\nMinutes: Display in minutes and seconds.",
           "entries": {
@@ -276,10 +298,20 @@
       "mining.level.4": "Mining Level V",
       "mining.level.5": "Mining Level VI",
       "mining_speed": "Mining Speed: %s",
-      "burn_duration_ticks": "Burn Duration: %s ticks",
-      "burn_duration_seconds": "Burn Duration: %ss",
-      "burn_duration_minutes": "Burn Duration: %sm",
-      "burn_duration_minutes_seconds": "Burn Duration: %sm %ss",
+      "duration_unit": {
+        "burn_time": {
+          "ticks": "Burn Duration: %s ticks",
+          "seconds": "Burn Duration: %ss",
+          "minutes": "Burn Duration: %sm",
+          "minutes_seconds": "Burn Duration: %sm %ss"
+        },
+        "record_length": {
+          "ticks": "Record Length: %s ticks",
+          "seconds": "Record Length: %ss",
+          "minutes": "Record Length: %sm",
+          "minutes_seconds": "Record Length: %sm %ss"
+        }
+      },
       "potion_effect": {
         "display": "%s (%s)",
         "duration_infinity": "∞"

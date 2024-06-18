@@ -70,11 +70,13 @@ public class VersionedItemHelper implements ItemHelper {
     }
 
     @Override
+    public Optional<Integer> discTickLength(ItemStack itemStack) {
+        return ItemCast.asItem(itemStack, RecordItem.class).map(RecordItem::getLengthInTicks);
+    }
+
+    @Override
     public int burnDuration(ItemStack itemStack) {
-        var mcItemStack = ItemCast.toMinecraftItemStack(itemStack);
-        if (mcItemStack.isEmpty()) return 0;
-        var item = mcItemStack.getItem();
-        return AbstractFurnaceBlockEntity.getFuel().getOrDefault(item, 0);
+        return AbstractFurnaceBlockEntity.getFuel().getOrDefault(ItemCast.toMinecraftItem(itemStack), 0);
     }
 
     @Override

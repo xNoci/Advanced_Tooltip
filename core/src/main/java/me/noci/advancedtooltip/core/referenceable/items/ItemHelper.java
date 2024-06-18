@@ -53,6 +53,11 @@ public interface ItemHelper {
         }
 
         @Override
+        public Optional<Integer> discTickLength(ItemStack itemStack) {
+            return Optional.empty();
+        }
+
+        @Override
         public int burnDuration(ItemStack itemStack) {
             return 0;
         }
@@ -78,6 +83,8 @@ public interface ItemHelper {
     Optional<Float> miningSpeed(ItemStack itemStack, boolean applyEnchantments);
 
     Optional<Integer> discSignalStrengt(ItemStack itemStack);
+
+    Optional<Integer> discTickLength(ItemStack itemStack);
 
     int burnDuration(ItemStack itemStack);
 
