@@ -61,11 +61,14 @@ public class TooltipAddon extends LabyAddon<TooltipConfiguration> {
         instance = this;
     }
 
+    //TODO View Components separate and cycle through them (2.0)
+
     @Override
     protected void preConfigurationLoad() {
         Laby.references().revisionRegistry().register(new SimpleRevision("advancedtooltip", new SemanticVersion("1.5.0"), "2023-10-13"));
         Laby.references().revisionRegistry().register(new SimpleRevision("advancedtooltip", new SemanticVersion("1.6.0"), "2024-04-23"));
         Laby.references().revisionRegistry().register(new SimpleRevision("advancedtooltip", new SemanticVersion("1.7.0"), "2024-05-04"));
+        Laby.references().revisionRegistry().register(new SimpleRevision("advancedtooltip", new SemanticVersion("1.8.0"), "2024-06-18"));
     }
 
     @Override
