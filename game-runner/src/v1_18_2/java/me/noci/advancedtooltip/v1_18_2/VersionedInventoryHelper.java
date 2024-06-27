@@ -15,7 +15,7 @@ public class VersionedInventoryHelper implements InventoryHelper {
     @Override
     public boolean isInventoryOpen() {
         Screen screen = Minecraft.getInstance().screen;
-        if(screen == null) return false;
+        if (screen == null) return false;
         return screen instanceof AbstractContainerScreen<?>;
     }
 

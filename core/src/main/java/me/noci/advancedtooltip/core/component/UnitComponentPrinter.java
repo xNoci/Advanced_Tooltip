@@ -7,7 +7,8 @@ public class UnitComponentPrinter implements ComponentPrinter {
     private final String componentName;
 
     protected UnitComponentPrinter(Object component) {
-        this.componentName = TooltipAddon.componentHelper().componentName(component).orElse("UNKNOWN");
+        String name = TooltipAddon.componentHelper().componentName(component);
+        this.componentName = name != null ? name : "UNKNOWN";
     }
 
     @Override

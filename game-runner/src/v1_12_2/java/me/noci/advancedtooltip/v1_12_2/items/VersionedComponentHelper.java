@@ -10,38 +10,38 @@ import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Singleton;
 import java.util.List;
-import java.util.Optional;
 
 @Singleton
 @Implements(ComponentHelper.class)
 public class VersionedComponentHelper extends ComponentHelper.DefaultComponentHelper {
 
     @Override
-    public Optional<String> displayItemData(ItemStack labyItemStack, boolean withArrayContent) {
+    public @Nullable String displayItemData(ItemStack labyItemStack, boolean withArrayContent) {
         var itemStack = ItemCast.toMinecraftItemStack(labyItemStack);
-        return NBTPrinter.prettyPrint(itemStack.getTagCompound(), withArrayContent).describeConstable();
+        return NBTPrinter.prettyPrint(itemStack.getTagCompound(), withArrayContent);
     }
 
     @Override
     @SuppressWarnings("ConstantConditions")
-    public Optional<Integer> repairCost(ItemStack labyItemStack) {
+    public int repairCost(ItemStack labyItemStack) {
         var itemStack = ItemCast.toMinecraftItemStack(labyItemStack);
         NBTTagCompound compound = itemStack.getTagCompound();
 
-        if (!itemStack.hasTagCompound() || !compound.hasKey("RepairCost", 3 /*TAG_INT*/)) return Optional.empty();
-        return Optional.of(compound.getInteger("RepairCost"));
+        if (!itemStack.hasTagCompound() || !compound.hasKey("RepairCost", 3 /*TAG_INT*/)) return 0;
+        return compound.getInteger("RepairCost");
     }
 
     @Override
-    public Optional<List<MapDecoration>> mapDecorations(ItemStack labyItemStack) {
+    public @Nullable List<MapDecoration> mapDecorations(ItemStack labyItemStack) {
         var itemStack = ItemCast.toMinecraftItemStack(labyItemStack);
         NBTTagCompound tag = itemStack.getTagCompound();
-        if (tag == null || !tag.hasKey("Decorations", 9 /*TAG_LIST*/)) return Optional.empty();
+        if (tag == null || !tag.hasKey("Decorations", 9 /*TAG_LIST*/)) return null;
         NBTTagList decorationsListTag = tag.getTagList("Decorations", 10 /*TAG_COMPOUND*/);
-        if (decorationsListTag.isEmpty()) return Optional.empty();
+        if (decorationsListTag.isEmpty()) return null;
 
         List<MapDecoration> decorations = Lists.newArrayList();
         for (int i = 0; i < decorationsListTag.tagCount(); i++) {
@@ -53,31 +53,30 @@ public class VersionedComponentHelper extends ComponentHelper.DefaultComponentHe
             decorations.add(new MapDecoration(type, x, y));
         }
 
-        return Optional.of(decorations);
+        return decorations;
     }
 
     @Override
-    public Optional<String> commandBlockCommand(ItemStack itemStack) {
-        return blockEntityTag(itemStack)
-                .filter(compoundTag -> compoundTag.hasKey("Command", 8 /*TAG_STRING*/))
-                .map(compoundTag -> compoundTag.getString("Command"));
+    public @Nullable String commandBlockCommand(ItemStack itemStack) {
+        NBTTagCompound compound = blockEntityTag(itemStack);
+        if (compound == null || !compound.hasKey("Command", 8 /*TAG_STRING*/)) return null;
+        return compound.getString("Command");
     }
 
     @Override
-    public Optional<SignText> signText(ItemStack itemStack) {
-        Optional<NBTTagCompound> optionalCompound = blockEntityTag(itemStack);
-        if (optionalCompound.isEmpty()) return Optional.empty();
-        NBTTagCompound blockEntityTag = optionalCompound.get();
+    public @Nullable SignText signText(ItemStack itemStack) {
+        NBTTagCompound compound = blockEntityTag(itemStack);
+        if (compound == null) return null;
 
         String[] frontText = new String[4];
 
         for (int i = 1; i < 5; i++) {
             String tag = "Text" + i;
-            if (!blockEntityTag.hasKey(tag, 8 /*TAG_STRING*/)) continue;
-            frontText[i - 1] = blockEntityTag.getString(tag);
+            if (!compound.hasKey(tag, 8 /*TAG_STRING*/)) continue;
+            frontText[i - 1] = compound.getString(tag);
         }
 
-        return Optional.of(new SignText(frontText, null));
+        return new SignText(frontText, null);
     }
 
     @Override
@@ -86,11 +85,11 @@ public class VersionedComponentHelper extends ComponentHelper.DefaultComponentHe
         return compoundTag != null && compoundTag.hasKey("Unbreakable");
     }
 
-    private Optional<NBTTagCompound> blockEntityTag(ItemStack labyItemStack) {
+    private @Nullable NBTTagCompound blockEntityTag(ItemStack labyItemStack) {
         var itemStack = ItemCast.toMinecraftItemStack(labyItemStack);
         NBTTagCompound compoundTag = itemStack.getTagCompound();
-        if (compoundTag == null || !compoundTag.hasKey("BlockEntityTag", 10 /*TAG_COMPOUND*/)) return Optional.empty();
-        return Optional.of(compoundTag.getCompoundTag("BlockEntityTag"));
+        if (compoundTag == null || !compoundTag.hasKey("BlockEntityTag", 10 /*TAG_COMPOUND*/)) return null;
+        return compoundTag.getCompoundTag("BlockEntityTag");
     }
 
 }

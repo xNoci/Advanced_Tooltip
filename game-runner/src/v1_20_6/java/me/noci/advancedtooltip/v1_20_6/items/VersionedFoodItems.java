@@ -8,31 +8,30 @@ import net.labymod.api.models.Implements;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.component.SuspiciousStewEffects;
+import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Singleton;
 import java.util.List;
-import java.util.Optional;
 
 @Singleton
 @Implements(FoodItems.class)
 public class VersionedFoodItems extends FoodItems.DefaultFoodItems {
 
     @Override
-    public Optional<List<PotionEffect>> stewEffect(ItemStack labyItemStack) {
-        var itemStack = ItemCast.toMinecraftItemStack(labyItemStack);
-        SuspiciousStewEffects stewEffects = itemStack.get(DataComponents.SUSPICIOUS_STEW_EFFECTS);
-        if (stewEffects == null) return Optional.empty();
-        var effects = stewEffects.effects()
+    public @Nullable List<PotionEffect> stewEffect(ItemStack itemStack) {
+        SuspiciousStewEffects stewEffects = ItemCast.typedDataComponent(itemStack, DataComponents.SUSPICIOUS_STEW_EFFECTS);
+        if (stewEffects == null) return null;
+        return stewEffects.effects()
                 .stream()
                 .map(entry -> (PotionEffect) new MobEffectInstance(entry.effect(), entry.duration()))
                 .toList();
-        return Optional.of(effects);
     }
 
     @Override
-    public Optional<FoodProperties> foodProperties(ItemStack itemStack) {
-        return ItemCast.typedDataComponent(itemStack, DataComponents.FOOD)
-                .map(properties -> new FoodProperties(properties.nutrition(), properties.saturation()));
+    public @Nullable FoodProperties foodProperties(ItemStack itemStack) {
+        var properties = ItemCast.typedDataComponent(itemStack, DataComponents.FOOD);
+        if (properties == null) return null;
+        return new FoodProperties(properties.nutrition(), properties.saturation());
     }
 
 }

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "me.noci"
-version = "1.8.0"
+version = "1.8.1"
 
 labyMod {
     defaultPackageName = "me.noci.advancedtooltip"

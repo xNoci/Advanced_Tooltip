@@ -14,9 +14,9 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Singleton;
-import java.util.Optional;
 
 @Singleton
 @Implements(ItemHelper.class)
@@ -43,36 +43,41 @@ public class VersionedItemHelper implements ItemHelper {
     }
 
     @Override
-    public Optional<Integer> armorBars(ItemStack itemStack) {
-        return ItemCast.asItem(itemStack, ArmorItem.class).map(ArmorItem::getDefense);
+    public int armorBars(ItemStack itemStack) {
+        ArmorItem armor = ItemCast.asItem(itemStack, ArmorItem.class);
+        return armor != null ? armor.getDefense() : 0;
     }
 
     @Override
-    public Optional<Integer> miningLevel(ItemStack itemStack) {
-        return ItemCast.asItem(itemStack, TieredItem.class).map(TieredItem::getTier).map(Tier::getLevel);
+    public int miningLevel(ItemStack itemStack) {
+        TieredItem tieredItem = ItemCast.asItem(itemStack, TieredItem.class);
+        return tieredItem != null ? tieredItem.getTier().getLevel() : 0;
     }
 
     @Override
-    public Optional<Float> miningSpeed(ItemStack itemStack, boolean applyEnchantments) {
-        var speed = ItemCast.asItem(itemStack, TieredItem.class).map(TieredItem::getTier).map(Tier::getSpeed);
+    public float miningSpeed(ItemStack itemStack, boolean applyEnchantments) {
+        TieredItem tieredItem = ItemCast.asItem(itemStack, TieredItem.class);
+        if (tieredItem == null) return 0;
+        float speed = tieredItem.getTier().getSpeed();
 
         if (applyEnchantments) {
             int efficiency = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY, ItemCast.toMinecraftItemStack(itemStack));
             int modifier = efficiency > 0 ? efficiency * efficiency + 1 : 0;
-            speed = speed.map(speedValue -> speedValue + modifier);
+            speed += modifier;
         }
 
         return speed;
     }
 
     @Override
-    public Optional<Integer> discSignalStrengt(ItemStack itemStack) {
-        return ItemCast.asItem(itemStack, RecordItem.class).map(RecordItem::getAnalogOutput);
+    public int discSignalStrengt(ItemStack itemStack) {
+        RecordItem recordItem = ItemCast.asItem(itemStack, RecordItem.class);
+        return recordItem != null ? recordItem.getAnalogOutput() : 0;
     }
 
     @Override
-    public Optional<Integer> discTickLength(ItemStack itemStack) {
-        return Optional.empty();
+    public int discTickLength(ItemStack itemStack) {
+        return 0;
     }
 
     @Override
@@ -81,22 +86,21 @@ public class VersionedItemHelper implements ItemHelper {
     }
 
     @Override
-    public Optional<CompassTarget> compassTarget(ItemStack labyItemStack) {
+    public @Nullable CompassTarget compassTarget(ItemStack labyItemStack) {
         var itemStack = ItemCast.toMinecraftItemStack(labyItemStack);
         var item = itemStack.getItem();
 
-        if (item != Items.COMPASS) return Optional.empty();
+        if (item != Items.COMPASS) return null;
 
         Player player = Minecraft.getInstance().player;
-        if (player == null) return Optional.empty();
+        if (player == null) return null;
         Level level = player.level;
 
         CompassLocationTarget targetLocation = CompassLocationTarget.from(level, itemStack);
 
-        if (targetLocation == null) return Optional.empty();
+        if (targetLocation == null) return null;
         ResourceLocation dimensionLocation = targetLocation.dimension() != null ? targetLocation.dimension().location() : null;
         boolean correctDimension = level.dimension().location().equals(dimensionLocation);
-        CompassTarget target = new CompassTarget(correctDimension, targetLocation.x(), targetLocation.y(), targetLocation.z());
-        return Optional.of(target);
+        return new CompassTarget(correctDimension, targetLocation.x(), targetLocation.y(), targetLocation.z());
     }
 }

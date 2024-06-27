@@ -18,9 +18,9 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Singleton;
-import java.util.Optional;
 
 @Singleton
 @Implements(ItemHelper.class)
@@ -50,42 +50,45 @@ public class VersionedItemHelper implements ItemHelper {
     }
 
     @Override
-    public Optional<Integer> armorBars(ItemStack itemStack) {
-        return ItemCast.asItem(itemStack, ItemArmor.class).map(itemArmor -> itemArmor.getArmorMaterial().getDamageReductionAmount(itemArmor.armorType));
+    public int armorBars(ItemStack itemStack) {
+        ItemArmor armor = ItemCast.asItem(itemStack, ItemArmor.class);
+        if (armor == null) return 0;
+        return armor.getArmorMaterial().getDamageReductionAmount(armor.armorType);
     }
 
     @Override
-    public Optional<Integer> miningLevel(ItemStack itemStack) {
-        return ItemCast.asItem(itemStack, ItemTool.class)
-                .map(itemTool -> ((ItemToolAccessor) itemTool).toolMaterial())
-                .map(Item.ToolMaterial::getHarvestLevel);
+    public int miningLevel(ItemStack itemStack) {
+        ItemTool tool = ItemCast.asItem(itemStack, ItemTool.class);
+        if (tool == null) return 0;
+        return ((ItemToolAccessor) tool).toolMaterial().getHarvestLevel();
     }
 
     @Override
-    public Optional<Float> miningSpeed(ItemStack itemStack, boolean applyEnchantments) {
-        var speed = ItemCast.asItem(itemStack, ItemTool.class)
-                .map(itemTool -> ((ItemToolAccessor) itemTool).toolMaterial())
-                .map(Item.ToolMaterial::getEfficiencyOnProperMaterial);
+    public float miningSpeed(ItemStack itemStack, boolean applyEnchantments) {
+        ItemTool tool = ItemCast.asItem(itemStack, ItemTool.class);
+        if (tool == null) return 0;
+
+        float speed = ((ItemToolAccessor) tool).toolMaterial().getEfficiencyOnProperMaterial();
 
         if (applyEnchantments) {
             int efficiency = EnchantmentHelper.getEnchantmentLevel(Enchantment.efficiency.effectId, ItemCast.toMinecraftItemStack(itemStack));
             int modifier = efficiency > 0 ? efficiency * efficiency + 1 : 0;
-            speed = speed.map(speedValue -> speedValue + modifier);
+            speed += modifier;
         }
 
         return speed;
     }
 
     @Override
-    public Optional<Integer> discSignalStrengt(ItemStack itemStack) {
+    public int discSignalStrengt(ItemStack itemStack) {
         Item item = ItemCast.toMinecraftItem(itemStack);
-        if (!(item instanceof ItemRecord)) return Optional.empty();
-        return Optional.of(Item.getIdFromItem(item) + 1 - ITEM_RECORD_13_ID);
+        if (!(item instanceof ItemRecord)) return 0;
+        return Item.getIdFromItem(item) + 1 - ITEM_RECORD_13_ID;
     }
 
     @Override
-    public Optional<Integer> discTickLength(ItemStack itemStack) {
-        return Optional.empty();
+    public int discTickLength(ItemStack itemStack) {
+        return 0;
     }
 
     @Override
@@ -94,20 +97,19 @@ public class VersionedItemHelper implements ItemHelper {
     }
 
     @Override
-    public Optional<CompassTarget> compassTarget(ItemStack labyItemStack) {
+    public @Nullable CompassTarget compassTarget(ItemStack labyItemStack) {
         var itemStack = ItemCast.toMinecraftItemStack(labyItemStack);
         var item = itemStack.getItem();
 
-        if (item != Items.compass) return Optional.empty();
+        if (item != Items.compass) return null;
 
         EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-        if (player == null) return Optional.empty();
+        if (player == null) return null;
         World world = player.worldObj;
 
         BlockPos targetLocation = world.getSpawnPoint();
-        if (targetLocation == null) return Optional.empty();
-        CompassTarget target = new CompassTarget(world.provider.isSurfaceWorld(), targetLocation.getX(), targetLocation.getY(), targetLocation.getZ());
-        return Optional.of(target);
+        if (targetLocation == null) return null;
+        return new CompassTarget(world.provider.isSurfaceWorld(), targetLocation.getX(), targetLocation.getY(), targetLocation.getZ());
     }
 
 }

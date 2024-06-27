@@ -3,8 +3,7 @@ package me.noci.advancedtooltip.v1_20_6.utils;
 import net.labymod.api.client.world.item.ItemStack;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.item.Item;
-
-import java.util.Optional;
+import org.jetbrains.annotations.Nullable;
 
 public class ItemCast {
 
@@ -20,15 +19,14 @@ public class ItemCast {
         return toMinecraftItemStack(itemStack).getItem();
     }
 
-    public static <T extends Item> Optional<T> asItem(ItemStack itemStack, Class<T> clazz) {
+    public static <T extends Item> @Nullable T asItem(ItemStack itemStack, Class<T> clazz) {
         Item item = toMinecraftItem(itemStack);
-        if (!clazz.isInstance(item)) return Optional.empty();
-        return Optional.of(cast(item));
+        if (!clazz.isInstance(item)) return null;
+        return cast(item);
     }
 
-    public static <T> Optional<T> typedDataComponent(ItemStack itemStack, DataComponentType<T> component) {
-        var item = ItemCast.toMinecraftItemStack(itemStack);
-        return Optional.ofNullable(item.get(component));
+    public static <T> @Nullable T typedDataComponent(ItemStack itemStack, DataComponentType<T> component) {
+        return toMinecraftItemStack(itemStack).get(component);
     }
 
     @SuppressWarnings("unchecked")
