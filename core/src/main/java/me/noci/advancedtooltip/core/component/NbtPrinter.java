@@ -38,17 +38,19 @@ public class NbtPrinter implements ComponentPrinter {
         }
 
         boolean withNbtArrayData = settings.printWithNbtArrayData().isPressed();
-        Optional<StringBuilder> builderOptional = helper.prettyPrintCompound(compoundTag, indentLevel, withNbtArrayData);
+        StringBuilder nbtBuilder = helper.prettyPrintCompound(compoundTag, indentLevel, withNbtArrayData);
 
-        builderOptional.ifPresent(nbtBuilder -> {
+        if (nbtBuilder != null) {
             nbtBuilder.delete(0, nbtBuilder.indexOf("{"));
             nbtBuilder.delete(nbtBuilder.indexOf("{") + 1, nbtBuilder.indexOf("\""));
             nbtBuilder.insert(nbtBuilder.indexOf("{") + 1, new StringBuilder("\n").append(indentString(1)));
             nbtBuilder.delete(nbtBuilder.lastIndexOf("\n") + 1, nbtBuilder.lastIndexOf("}"));
             nbtBuilder.insert(nbtBuilder.lastIndexOf("}"), indentString(0));
-        });
+        } else {
+            nbtBuilder = FALLBACK_BUILDER;
+        }
 
-        builder.append(builderOptional.orElse(FALLBACK_BUILDER));
+        builder.append(nbtBuilder);
 
         return builder.toString();
     }

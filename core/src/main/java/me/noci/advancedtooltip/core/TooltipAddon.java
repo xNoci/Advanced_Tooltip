@@ -22,6 +22,15 @@ import java.util.function.Consumer;
 public class TooltipAddon extends LabyAddon<TooltipConfiguration> {
 
     private static TooltipAddon instance;
+    @Setter private FoodItems foodItems = FoodItems.DEFAULT;
+    @Setter private ItemHelper itemHelper = ItemHelper.DEFAULT;
+    @Setter private InventoryHelper inventoryHelper = InventoryHelper.DEFAULT;
+    @Setter private ComponentHelper componentHelper = ComponentHelper.DEFAULT;
+    @Setter private TickManager tickManager = TickManager.DEFAULT;
+
+    public TooltipAddon() {
+        instance = this;
+    }
 
     public static TooltipAddon get() {
         return instance;
@@ -51,14 +60,8 @@ public class TooltipAddon extends LabyAddon<TooltipConfiguration> {
         return instance.tickManager;
     }
 
-    @Setter private FoodItems foodItems = FoodItems.DEFAULT;
-    @Setter private ItemHelper itemHelper = ItemHelper.DEFAULT;
-    @Setter private InventoryHelper inventoryHelper = InventoryHelper.DEFAULT;
-    @Setter private ComponentHelper componentHelper = ComponentHelper.DEFAULT;
-    @Setter private TickManager tickManager = TickManager.DEFAULT;
-
-    public TooltipAddon() {
-        instance = this;
+    private static <T> void versionedReference(T reference, Consumer<T> setter) {
+        Optional.ofNullable(reference).ifPresent(setter);
     }
 
     //TODO View Components separate and cycle through them (2.0)
@@ -94,10 +97,6 @@ public class TooltipAddon extends LabyAddon<TooltipConfiguration> {
     @Override
     protected Class<TooltipConfiguration> configurationClass() {
         return TooltipConfiguration.class;
-    }
-
-    private static <T> void versionedReference(T reference, Consumer<T> setter) {
-        Optional.ofNullable(reference).ifPresent(setter);
     }
 
 }

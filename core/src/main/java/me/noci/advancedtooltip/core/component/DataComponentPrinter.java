@@ -9,7 +9,8 @@ public class DataComponentPrinter implements ComponentPrinter {
     private int indentLevel = 0;
 
     protected DataComponentPrinter(Object component, ComponentPrinter componentPrinter) {
-        this.componentName = TooltipAddon.componentHelper().componentName(component).orElse("UNKNOWN");
+        String name = TooltipAddon.componentHelper().componentName(component);
+        this.componentName = name != null ? name : "UNKNOWN";
         this.componentPrinter = componentPrinter;
     }
 

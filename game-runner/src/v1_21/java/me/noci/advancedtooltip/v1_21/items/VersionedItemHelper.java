@@ -8,7 +8,6 @@ import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.GlobalPos;
-import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -16,9 +15,9 @@ import net.minecraft.world.item.component.LodestoneTracker;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Singleton;
-import java.util.Optional;
 
 @Singleton
 @Implements(ItemHelper.class)
@@ -45,47 +44,50 @@ public class VersionedItemHelper implements ItemHelper {
     }
 
     @Override
-    public Optional<Integer> armorBars(ItemStack itemStack) {
-        return ItemCast.asItem(itemStack, ArmorItem.class).map(ArmorItem::getDefense);
+    public int armorBars(ItemStack itemStack) {
+        ArmorItem armor = ItemCast.asItem(itemStack, ArmorItem.class);
+        return armor != null ? armor.getDefense() : 0;
     }
 
     @Override
-    public Optional<Integer> miningLevel(ItemStack itemStack) {
-        return Optional.empty();
+    public int miningLevel(ItemStack itemStack) {
+        return 0;
     }
 
     @Override
-    public Optional<Float> miningSpeed(ItemStack labyItemStack, boolean applyEnchantments) {
-        var speed = ItemCast.asItem(labyItemStack, TieredItem.class).map(TieredItem::getTier).map(Tier::getSpeed);
+    public float miningSpeed(ItemStack labyItemStack, boolean applyEnchantments) {
+        TieredItem tieredItem = ItemCast.asItem(labyItemStack, TieredItem.class);
+        if (tieredItem == null) return 0;
+        float speed = tieredItem.getTier().getSpeed();
 
         if (applyEnchantments) {
             var itemStack = ItemCast.toMinecraftItemStack(labyItemStack);
             int efficiency = ((ItemEnchantmentsAccessor) itemStack.getEnchantments()).getLevel(itemStack, Enchantments.EFFICIENCY);
             int modifier = efficiency > 0 ? efficiency * efficiency + 1 : 0;
-            speed = speed.map(speedValue -> speedValue + modifier);
+            speed += modifier;
         }
 
         return speed;
     }
 
     @Override
-    public Optional<Integer> discSignalStrengt(ItemStack itemStack) {
+    public int discSignalStrengt(ItemStack itemStack) {
         Player player = Minecraft.getInstance().player;
-        if (player == null) return Optional.empty();
+        if (player == null) return 0;
 
-        return JukeboxSong.fromStack(player.level().registryAccess(), ItemCast.toMinecraftItemStack(itemStack))
-                .map(Holder::value)
-                .map(JukeboxSong::comparatorOutput);
+        var holder = JukeboxSong.fromStack(player.level().registryAccess(), ItemCast.toMinecraftItemStack(itemStack)).orElse(null);
+        if (holder == null) return 0;
+        return holder.value().comparatorOutput();
     }
 
     @Override
-    public Optional<Integer> discTickLength(ItemStack itemStack) {
+    public int discTickLength(ItemStack itemStack) {
         Player player = Minecraft.getInstance().player;
-        if (player == null) return Optional.empty();
+        if (player == null) return 0;
 
-        return JukeboxSong.fromStack(player.level().registryAccess(), ItemCast.toMinecraftItemStack(itemStack))
-                .map(Holder::value)
-                .map(JukeboxSong::lengthInTicks);
+        var holder = JukeboxSong.fromStack(player.level().registryAccess(), ItemCast.toMinecraftItemStack(itemStack)).orElse(null);
+        if (holder == null) return 0;
+        return holder.value().lengthInTicks();
     }
 
     @Override
@@ -94,12 +96,12 @@ public class VersionedItemHelper implements ItemHelper {
     }
 
     @Override
-    public Optional<CompassTarget> compassTarget(ItemStack labyItemStack) {
+    public @Nullable CompassTarget compassTarget(ItemStack labyItemStack) {
         var itemStack = ItemCast.toMinecraftItemStack(labyItemStack);
         var item = itemStack.getItem();
 
         Player player = Minecraft.getInstance().player;
-        if (player == null) return Optional.empty();
+        if (player == null) return null;
         Level level = player.level();
 
         GlobalPos pos = switch (item) {
@@ -111,9 +113,8 @@ public class VersionedItemHelper implements ItemHelper {
             default -> null;
         };
 
-        if (pos == null) return Optional.empty();
+        if (pos == null) return null;
         boolean correctDimension = level.dimension().location().equals(pos.dimension().location());
-        CompassTarget target = new CompassTarget(correctDimension, pos.pos().getX(), pos.pos().getY(), pos.pos().getZ());
-        return Optional.of(target);
+        return new CompassTarget(correctDimension, pos.pos().getX(), pos.pos().getY(), pos.pos().getZ());
     }
 }

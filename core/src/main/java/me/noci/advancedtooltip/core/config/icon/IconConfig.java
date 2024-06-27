@@ -13,7 +13,6 @@ import net.labymod.api.configuration.settings.annotation.SettingSection;
 public class IconConfig extends Config {
 
     private static final String TRANSLATION_KEY_PREFIX = "advancedtooltip.settings.iconConfig";
-
     public static final int DEFAULT_ICON_SIZE = 8;
     public static final int DEFAULT_PADDING = 2;
 
@@ -46,7 +45,6 @@ public class IconConfig extends Config {
     @SliderSetting(min = 0.0f, max = 16.0f)
     @CustomTranslation(TRANSLATION_KEY_PREFIX + ".paddingRight")
     protected final ConfigProperty<Integer> paddingRight = new ConfigProperty<>(DEFAULT_PADDING);
-
 
     public boolean enabled() {
         return this.enabled.get();

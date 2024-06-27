@@ -1,11 +1,9 @@
 package me.noci.advancedtooltip.v1_20_6.mixins;
 
 import me.noci.advancedtooltip.core.TooltipAddon;
-import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 

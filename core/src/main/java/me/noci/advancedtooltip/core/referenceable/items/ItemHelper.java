@@ -5,8 +5,6 @@ import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.reference.annotation.Referenceable;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-
 @Nullable
 @Referenceable
 public interface ItemHelper {
@@ -33,28 +31,28 @@ public interface ItemHelper {
         }
 
         @Override
-        public Optional<Integer> armorBars(ItemStack itemStack) {
-            return Optional.empty();
+        public int armorBars(ItemStack itemStack) {
+            return 0;
         }
 
         @Override
-        public Optional<Integer> miningLevel(ItemStack itemStack) {
-            return Optional.empty();
+        public int miningLevel(ItemStack itemStack) {
+            return 0;
         }
 
         @Override
-        public Optional<Float> miningSpeed(ItemStack itemStack, boolean applyEnchantments) {
-            return Optional.empty();
+        public float miningSpeed(ItemStack itemStack, boolean applyEnchantments) {
+            return 0;
         }
 
         @Override
-        public Optional<Integer> discSignalStrengt(ItemStack itemStack) {
-            return Optional.empty();
+        public int discSignalStrengt(ItemStack itemStack) {
+            return 0;
         }
 
         @Override
-        public Optional<Integer> discTickLength(ItemStack itemStack) {
-            return Optional.empty();
+        public int discTickLength(ItemStack itemStack) {
+            return 0;
         }
 
         @Override
@@ -63,8 +61,8 @@ public interface ItemHelper {
         }
 
         @Override
-        public Optional<CompassTarget> compassTarget(ItemStack itemStack) {
-            return Optional.empty();
+        public @Nullable CompassTarget compassTarget(ItemStack itemStack) {
+            return null;
         }
     };
 
@@ -76,17 +74,18 @@ public interface ItemHelper {
 
     boolean isFuel(ItemStack itemStack);
 
-    Optional<Integer> armorBars(ItemStack itemStack);
+    int armorBars(ItemStack itemStack);
 
-    Optional<Integer> miningLevel(ItemStack itemStack);
+    int miningLevel(ItemStack itemStack);
 
-    Optional<Float> miningSpeed(ItemStack itemStack, boolean applyEnchantments);
+    float miningSpeed(ItemStack itemStack, boolean applyEnchantments);
 
-    Optional<Integer> discSignalStrengt(ItemStack itemStack);
+    int discSignalStrengt(ItemStack itemStack);
 
-    Optional<Integer> discTickLength(ItemStack itemStack);
+    int discTickLength(ItemStack itemStack);
 
     int burnDuration(ItemStack itemStack);
 
-    Optional<CompassTarget> compassTarget(ItemStack itemStack);
+    @Nullable
+    CompassTarget compassTarget(ItemStack itemStack);
 }

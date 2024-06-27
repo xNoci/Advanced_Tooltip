@@ -35,8 +35,8 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValida
                 .collect(Collectors.toCollection(ArrayList::new));
 
         if (!iconComponents.isEmpty()) {
-            iconComponents.get(0).setFirstComponent();
-            iconComponents.get(iconComponents.size() - 1).setLastComponent();
+            iconComponents.getFirst().setFirstComponent();
+            iconComponents.getLast().setLastComponent();
         }
 
         return iconComponents;
@@ -50,7 +50,7 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValida
         if (!itemValidator.isValid(itemHelper, itemStack) || !showFunction.shouldShow(config)) return Optional.empty();
 
         List<TooltipIcon> itemIcons = Lists.newArrayList();
-        float level = levelFunction.get(config, foodItems, itemHelper, itemStack);
+        float level = Math.max(0, levelFunction.get(config, foodItems, itemHelper, itemStack));
         while (level >= 2) {
             level -= 2;
             itemIcons.add(full_icon);
@@ -80,11 +80,7 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValida
         LevelFunction SATURATION = (c, fi, ih, is) -> (c.saturationIcons().saturationType() == SaturationType.MAX_SATURATION) ? fi.saturationIncrement(is) : fi.addedSaturation(is);
         LevelFunction ARMOR_BARS = (c, fi, ih, is) -> ih.armorBars(is);
 
-        Optional<? extends Number> apply(TooltipConfiguration config, FoodItems foodItems, ItemHelper itemHelper, ItemStack itemStack);
-
-        default float get(TooltipConfiguration config, FoodItems foodItems, ItemHelper itemHelper, ItemStack itemStack) {
-            return apply(config, foodItems, itemHelper, itemStack).map(Number::floatValue).orElse(0F);
-        }
+        float get(TooltipConfiguration config, FoodItems foodItems, ItemHelper itemHelper, ItemStack itemStack);
     }
 
     @FunctionalInterface

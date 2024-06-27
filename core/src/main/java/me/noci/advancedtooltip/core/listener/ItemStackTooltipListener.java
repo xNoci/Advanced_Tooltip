@@ -1,13 +1,15 @@
 package me.noci.advancedtooltip.core.listener;
 
 import me.noci.advancedtooltip.core.TooltipAddon;
-import me.noci.advancedtooltip.core.config.DurabilityType;
 import me.noci.advancedtooltip.core.config.TooltipConfiguration;
 import me.noci.advancedtooltip.core.config.text.DurationTextTooltipConfig;
 import me.noci.advancedtooltip.core.referenceable.TickManager;
 import me.noci.advancedtooltip.core.referenceable.items.ComponentHelper;
 import me.noci.advancedtooltip.core.referenceable.items.FoodItems;
 import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
+import me.noci.advancedtooltip.core.utils.CompassTarget;
+import me.noci.advancedtooltip.core.utils.MapDecoration;
+import me.noci.advancedtooltip.core.utils.SignText;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.TextColor;
@@ -19,7 +21,7 @@ import net.labymod.api.util.I18n;
 import net.labymod.api.util.time.TimeUtil;
 
 import java.text.DecimalFormat;
-import java.util.function.Function;
+import java.util.List;
 
 public class ItemStackTooltipListener {
 
@@ -50,51 +52,119 @@ public class ItemStackTooltipListener {
 
         var displayComponent = config.displayComponent();
         if (displayComponent.displayItemData()) {
-            handleShowNbtData(renderer, itemStack, displayComponent.textColor());
+            TextColor color = displayComponent.textColor();
+            boolean withNbtArrayData = config.displayComponent().printWithNbtArrayData().isPressed();
+            String data = componentHelper.displayItemData(itemStack, withNbtArrayData);
+
+            if (data == null) {
+                renderer.render(color, "no_nbt_data");
+                return;
+            }
+
+            renderer.render(color, false, "");
+            for (String s : data.split("\n")) {
+                renderer.render(color, false, s);
+            }
             return;
         }
 
-        var durability = config.itemDurability();
-        if (durability.enabled()) {
-            handleShowDurability(renderer, itemStack, durability::textColor, durability.durabilityType());
+        var durabilityOption = config.itemDurability();
+        if (durabilityOption.enabled()) {
+            if (itemStack.getMaximumDamage() > 0 && !componentHelper.unbreakable(itemStack)) {
+                int currentDamage = itemStack.getMaximumDamage() - itemStack.getCurrentDamageValue();
+                int maxDamage = itemStack.getMaximumDamage();
+                float durability = (float) currentDamage / maxDamage;
+
+                String percentage = PERCENTAGE_FORMAT.format(durability * 100);
+                TextColor color = durabilityOption.textColor(durability);
+
+                switch (durabilityOption.durabilityType()) {
+                    case VANILLA -> renderer.render(color, "durability.type.vanilla", currentDamage, maxDamage);
+                    case PERCENTAGE -> renderer.render(color, "durability.type.percentage", percentage);
+                    case COMBINED ->
+                            renderer.render(color, "durability.type.combined", currentDamage, maxDamage, percentage);
+                }
+            }
+
         }
 
         var anvilUses = config.anvilUsages();
         if (anvilUses.enabled()) {
-            handleAnvilUses(renderer, itemStack, anvilUses.textColor());
+            int usages = componentHelper.anvilUsages(itemStack);
+            if (usages > 0) {
+                renderer.render(anvilUses.textColor(), "anvil_usages", usages);
+            }
         }
 
         var discSignalStrength = config.discSignalStrength();
         if (discSignalStrength.enabled()) {
-            handleDiscSignalStrength(renderer, itemStack, discSignalStrength.textColor());
+            int signalStrength = itemHelper.discSignalStrengt(itemStack);
+            if (signalStrength > 0) {
+                renderer.render(discSignalStrength.textColor(), "disc_signal_strength", signalStrength);
+            }
         }
 
         var mapDecoration = config.mapDecoration();
         if (mapDecoration.enabled()) {
-            handleExplorerMap(renderer, itemStack, mapDecoration.textColor());
+            List<MapDecoration> decorations = componentHelper.mapDecorations(itemStack);
+
+            if (decorations != null) {
+                TextColor color = mapDecoration.textColor();
+                decorations.stream()
+                        .filter(decoration -> decoration.type().showInTooltip())
+                        .forEach(mapLocation -> {
+                            String translationKey = mapLocation.type().translationKey();
+                            double x = mapLocation.x();
+                            double z = mapLocation.z();
+                            renderer.render(color, translationKey, x, z);
+                        });
+            }
+
         }
 
         var suspiciousStewEffect = config.suspiciousStewEffect();
         if (suspiciousStewEffect.enabled() && !event.isCreative()) {
-            handleSuspiciousStewEffect(renderer, itemStack, suspiciousStewEffect.textColor());
+            List<PotionEffect> effects = foodItems.stewEffect(itemStack);
+            if (effects != null) {
+                TextColor color = suspiciousStewEffect.textColor();
+                effects.forEach(potionEffect -> {
+                    String name = Laby.labyAPI().minecraft().getTranslation(potionEffect.getTranslationKey());
+                    String duration = TimeUtil.formatTickDuration(potionEffect.getDuration());
+                    if (potionEffect.isInfiniteDuration()) {
+                        duration = I18n.translate("advancedtooltip.tooltip.potion_effect.duration_infinity");
+                    }
+
+                    renderer.render(color, false, I18n.translate("advancedtooltip.tooltip.potion_effect.display", name, duration));
+                });
+            }
         }
 
         var commandBlockCommand = config.commandBlockCommand();
         if (commandBlockCommand.enabled()) {
-            handleCommandBlockCommand(renderer, itemStack, commandBlockCommand.textColor());
+            String command = componentHelper.commandBlockCommand(itemStack);
+            if (command != null) {
+                TextColor color = commandBlockCommand.textColor();
+
+                String key = command.isEmpty() ? "command_block_no_command" : "command_block_command";
+                renderer.render(color, key, command);
+            }
         }
 
         boolean miningItem = itemHelper.isMiningTool(itemStack);
         var miningLevel = config.miningLevel();
         if (miningLevel.enabled() && miningItem) {
-            itemHelper.miningLevel(itemStack)
-                    .ifPresent(level -> renderer.render(miningLevel.textColor(), "mining.level." + level));
+            int level = itemHelper.miningLevel(itemStack);
+            if (level > 0) {
+                renderer.render(miningLevel.textColor(), "mining.level." + level);
+            }
         }
 
         var miningSpeed = config.miningSpeed();
         if (miningSpeed.enabled() && miningItem) {
-            itemHelper.miningSpeed(itemStack, miningSpeed.applyEnchantments())
-                    .ifPresent(speed -> renderer.render(miningLevel.textColor(), "mining_speed", speed));
+            float speed = itemHelper.miningSpeed(itemStack, miningSpeed.applyEnchantments());
+            if (speed > 0) {
+                renderer.render(miningSpeed.textColor(), "mining_speed", speed);
+            }
         }
 
         var clockTime = config.clockTime();
@@ -122,21 +192,47 @@ public class ItemStackTooltipListener {
 
         var recordDuration = config.recordDuration();
         if (recordDuration.enabled()) {
-            handleDuration(recordDuration, renderer, itemHelper.discTickLength(itemStack).orElse(0), false);
+            handleDuration(recordDuration, renderer, itemHelper.discTickLength(itemStack), false);
         }
 
         var signText = config.signText();
         if (signText.enabled()) {
-            handleShowSignText(renderer, itemStack, signText.textColor());
+            SignText text = componentHelper.signText(itemStack);
+            if (text != null) {
+                boolean hasFrontText = text.hasFrontText();
+                boolean hasBackText = text.hasBackText();
+
+                TextColor color = signText.textColor();
+                String[] frontText = text.frontText();
+                String[] backText = text.backText();
+
+                if (hasFrontText) {
+                    renderer.render(color, "sign_text.front_text");
+                    for (String s : frontText) {
+                        renderer.render(color, "sign_text.line", s);
+                    }
+                    if (hasBackText) {
+                        renderer.render(color, false, "");
+                    }
+                }
+
+                if (hasBackText) {
+                    renderer.render(color, "sign_text.back_text");
+                    for (String s : backText) {
+                        renderer.render(color, "sign_text.line", s);
+                    }
+                }
+            }
+
         }
 
         var compassTarget = config.compassTarget();
         if (compassTarget.enabled()) {
-            itemHelper.compassTarget(itemStack)
-                    .ifPresent(target -> {
-                        String key = "compass_target." + (target.correctDimension() ? "valid" : "wrong_target_dimension");
-                        renderer.render(compassTarget.textColor(), key, target.x(), target.y(), target.z());
-                    });
+            CompassTarget target = itemHelper.compassTarget(itemStack);
+            if (target != null) {
+                String key = "compass_target." + (target.correctDimension() ? "valid" : "wrong_target_dimension");
+                renderer.render(compassTarget.textColor(), key, target.x(), target.y(), target.z());
+            }
         }
 
     }
@@ -162,111 +258,6 @@ public class ItemStackTooltipListener {
                 }
             }
         }
-    }
-
-    private void handleShowNbtData(TooltipRenderer renderer, ItemStack itemStack, TextColor color) {
-        boolean withNbtArrayData = config.displayComponent().printWithNbtArrayData().isPressed();
-        componentHelper.displayItemData(itemStack, withNbtArrayData)
-                .ifPresentOrElse(data -> {
-                    renderer.render(color, false, "");
-                    for (String s : data.split("\n")) {
-                        renderer.render(color, false, s);
-                    }
-                }, () -> renderer.render(color, "no_nbt_data"));
-    }
-
-    private void handleShowDurability(TooltipRenderer renderer, ItemStack itemStack, Function<Float, TextColor> textColor, DurabilityType durabilityType) {
-        if (itemStack.getMaximumDamage() <= 0) return;
-        if (componentHelper.unbreakable(itemStack)) return;
-
-        int currentDamage = itemStack.getMaximumDamage() - itemStack.getCurrentDamageValue();
-        int maxDamage = itemStack.getMaximumDamage();
-        float durability = (float) currentDamage / maxDamage;
-
-        String percentage = PERCENTAGE_FORMAT.format(durability * 100);
-        TextColor color = textColor.apply(durability);
-
-        switch (durabilityType) {
-            case VANILLA -> renderer.render(color, "durability.type.vanilla", currentDamage, maxDamage);
-            case PERCENTAGE -> renderer.render(color, "durability.type.percentage", percentage);
-            case COMBINED -> renderer.render(color, "durability.type.combined", currentDamage, maxDamage, percentage);
-        }
-    }
-
-    private void handleAnvilUses(TooltipRenderer renderer, ItemStack itemStack, TextColor color) {
-        int usages = componentHelper.anvilUsages(itemStack).orElse(0);
-        if (usages == 0) return;
-        renderer.render(color, "anvil_usages", usages);
-    }
-
-    private void handleDiscSignalStrength(TooltipRenderer renderer, ItemStack itemStack, TextColor color) {
-        itemHelper.discSignalStrengt(itemStack)
-                .ifPresent(strength -> renderer.render(color, "disc_signal_strength", strength));
-    }
-
-    private void handleExplorerMap(TooltipRenderer renderer, ItemStack itemStack, TextColor color) {
-        componentHelper.mapDecorations(itemStack)
-                .ifPresent(mapLocations -> mapLocations
-                        .stream()
-                        .filter(mapDecoration -> mapDecoration.type().showInTooltip())
-                        .forEach(mapLocation -> {
-                            String translationKey = mapLocation.type().translationKey();
-                            double x = mapLocation.x();
-                            double z = mapLocation.z();
-                            renderer.render(color, translationKey, x, z);
-                        }));
-    }
-
-    private void handleSuspiciousStewEffect(TooltipRenderer renderer, ItemStack itemStack, TextColor color) {
-        foodItems.stewEffect(itemStack)
-                .ifPresent(stewEffects -> {
-                    for (PotionEffect stewEffect : stewEffects) {
-                        String name = Laby.labyAPI().minecraft().getTranslation(stewEffect.getTranslationKey());
-                        String duration = TimeUtil.formatTickDuration(stewEffect.getDuration());
-                        if (stewEffect.isInfiniteDuration()) {
-                            duration = I18n.translate("advancedtooltip.tooltip.potion_effect.duration_infinity");
-                        }
-
-                        renderer.render(color, false, I18n.translate("advancedtooltip.tooltip.potion_effect.display", name, duration));
-                    }
-                });
-    }
-
-    private void handleCommandBlockCommand(TooltipRenderer renderer, ItemStack itemStack, TextColor color) {
-        componentHelper.commandBlockCommand(itemStack)
-                .ifPresent(command -> {
-                    if (command.isEmpty()) {
-                        renderer.render(color, "command_block_no_command");
-                    } else {
-                        renderer.render(color, "command_block_command", command);
-                    }
-                });
-    }
-
-    private void handleShowSignText(TooltipRenderer renderer, ItemStack itemStack, TextColor color) {
-        componentHelper.signText(itemStack)
-                .ifPresent(signText -> {
-                    boolean hasFrontText = signText.hasFrontText();
-                    boolean hasBackText = signText.hasBackText();
-
-                    if (!hasFrontText && !hasBackText) return;
-                    if (hasFrontText) {
-                        renderer.render(color, "sign_text.front_text");
-                        for (int i = 0; i < signText.frontText().length; i++) {
-                            renderer.render(color, "sign_text.line", signText.frontText()[i]);
-                        }
-                        if (hasBackText) {
-                            renderer.render(color, false, "");
-                        }
-                    }
-
-                    if (hasBackText) {
-                        renderer.render(color, "sign_text.back_text");
-                        for (int i = 0; i < signText.backText().length; i++) {
-                            renderer.render(color, "sign_text.line", signText.backText()[i]);
-                        }
-                    }
-                });
     }
 
     @FunctionalInterface

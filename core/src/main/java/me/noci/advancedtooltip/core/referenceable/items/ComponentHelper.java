@@ -7,7 +7,6 @@ import net.labymod.api.reference.annotation.Referenceable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 
 @Nullable
 @Referenceable
@@ -15,37 +14,45 @@ public interface ComponentHelper {
 
     ComponentHelper DEFAULT = new DefaultComponentHelper();
 
-    Optional<String> componentName(Object component);
+    @Nullable
+    String componentName(Object component);
 
-    Optional<StringBuilder> prettyPrintCompound(Object compoundTag, int indentLevel, boolean withNbtArrayData);
+    @Nullable
+    StringBuilder prettyPrintCompound(Object compoundTag, int indentLevel, boolean withNbtArrayData);
 
     boolean isEmptyCompound(Object compoundTag);
 
-    Optional<String> displayItemData(ItemStack itemStack, boolean withNbtArrayData);
+    @Nullable
+    String displayItemData(ItemStack itemStack, boolean withNbtArrayData);
 
-    Optional<Integer> repairCost(ItemStack itemStack);
+    int repairCost(ItemStack itemStack);
 
-    default Optional<Integer> anvilUsages(ItemStack itemStack) {
-        return repairCost(itemStack).map(integer -> log2(integer + 1));
+    default int anvilUsages(ItemStack itemStack) {
+        int repairCost = repairCost(itemStack);
+        if (repairCost == 0) return 0;
+        return log2(repairCost + 1);
     }
 
-    Optional<List<MapDecoration>> mapDecorations(ItemStack itemStack);
+    @Nullable
+    List<MapDecoration> mapDecorations(ItemStack itemStack);
 
-    Optional<String> commandBlockCommand(ItemStack itemStack);
+    @Nullable
+    String commandBlockCommand(ItemStack itemStack);
 
-    Optional<SignText> signText(ItemStack itemStack);
+    @Nullable
+    SignText signText(ItemStack itemStack);
 
     boolean unbreakable(ItemStack itemStack);
 
     class DefaultComponentHelper implements ComponentHelper {
         @Override
-        public Optional<String> componentName(Object component) {
-            return Optional.empty();
+        public @Nullable String componentName(Object component) {
+            return null;
         }
 
         @Override
-        public Optional<StringBuilder> prettyPrintCompound(Object compoundTag, int indentLevel, boolean withNbtArrayData) {
-            return Optional.empty();
+        public @Nullable StringBuilder prettyPrintCompound(Object compoundTag, int indentLevel, boolean withNbtArrayData) {
+            return null;
         }
 
         @Override
@@ -54,28 +61,28 @@ public interface ComponentHelper {
         }
 
         @Override
-        public Optional<String> displayItemData(ItemStack itemStack, boolean withNbtArrayData) {
-            return Optional.empty();
+        public @Nullable String displayItemData(ItemStack itemStack, boolean withNbtArrayData) {
+            return null;
         }
 
         @Override
-        public Optional<Integer> repairCost(ItemStack itemStack) {
-            return Optional.empty();
+        public int repairCost(ItemStack itemStack) {
+            return 0;
         }
 
         @Override
-        public Optional<List<MapDecoration>> mapDecorations(ItemStack itemStack) {
-            return Optional.empty();
+        public @Nullable List<MapDecoration> mapDecorations(ItemStack itemStack) {
+            return null;
         }
 
         @Override
-        public Optional<String> commandBlockCommand(ItemStack itemStack) {
-            return Optional.empty();
+        public @Nullable String commandBlockCommand(ItemStack itemStack) {
+            return null;
         }
 
         @Override
-        public Optional<SignText> signText(ItemStack itemStack) {
-            return Optional.empty();
+        public @Nullable SignText signText(ItemStack itemStack) {
+            return null;
         }
 
         @Override

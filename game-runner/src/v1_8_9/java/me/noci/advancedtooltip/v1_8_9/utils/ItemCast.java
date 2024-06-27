@@ -2,9 +2,7 @@ package me.noci.advancedtooltip.v1_8_9.utils;
 
 import net.labymod.api.client.world.item.ItemStack;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-
-import java.util.Optional;
+import org.jetbrains.annotations.Nullable;
 
 public class ItemCast {
 
@@ -16,10 +14,10 @@ public class ItemCast {
         return toMinecraftItemStack(itemStack).getItem();
     }
 
-    public static <T extends Item> Optional<T> asItem(ItemStack itemStack, Class<T> clazz) {
+    public static <T extends Item> @Nullable T asItem(ItemStack itemStack, Class<T> clazz) {
         Item item = toMinecraftItem(itemStack);
-        if (!clazz.isInstance(item)) return Optional.empty();
-        return Optional.of(cast(item));
+        if (!clazz.isInstance(item)) return null;
+        return cast(item);
     }
 
     @SuppressWarnings("unchecked")

@@ -9,7 +9,6 @@ import net.labymod.api.reference.annotation.Referenceable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 
 @Nullable
 @Referenceable
@@ -17,63 +16,67 @@ public interface FoodItems {
 
     FoodItems DEFAULT = new DefaultFoodItems();
 
-    Optional<List<PotionEffect>> stewEffect(ItemStack itemStack);
+    @Nullable
+    List<PotionEffect> stewEffect(ItemStack itemStack);
 
-    Optional<FoodProperties> foodProperties(ItemStack itemStack);
+    @Nullable
+    FoodProperties foodProperties(ItemStack itemStack);
 
-    Optional<Integer> nutrition(ItemStack itemStack);
+    int nutrition(ItemStack itemStack);
 
-    Optional<Float> saturationIncrement(ItemStack itemStack);
+    float saturationIncrement(ItemStack itemStack);
 
-    Optional<Float> addedSaturation(ItemStack itemStack);
+    float addedSaturation(ItemStack itemStack);
 
     class DefaultFoodItems implements FoodItems {
         @Override
-        public Optional<List<PotionEffect>> stewEffect(ItemStack itemStack) {
-            return Optional.empty();
+        public @Nullable List<PotionEffect> stewEffect(ItemStack itemStack) {
+            return null;
         }
 
         @Override
-        public Optional<FoodProperties> foodProperties(ItemStack itemStack) {
-            return Optional.empty();
+        public @Nullable FoodProperties foodProperties(ItemStack itemStack) {
+            return null;
         }
 
         @Override
-        public Optional<Integer> nutrition(ItemStack itemStack) {
-            Optional<FoodProperties> foodProperties = foodProperties(itemStack);
-            return foodProperties.map(FoodProperties::nutrition);
+        public int nutrition(ItemStack itemStack) {
+            FoodProperties foodProperties = foodProperties(itemStack);
+            if (foodProperties == null) return 0;
+            return foodProperties.nutrition();
         }
 
         @Override
-        public Optional<Float> saturationIncrement(ItemStack itemStack) {
-            Optional<Integer> nutrition = nutrition(itemStack);
-            Optional<Float> saturationModifier = saturationModifier(itemStack);
+        public float saturationIncrement(ItemStack itemStack) {
+            int nutrition = nutrition(itemStack);
+            float saturationModifier = saturationModifier(itemStack);
 
-            if (nutrition.isEmpty() || saturationModifier.isEmpty()) return Optional.empty();
-            return Optional.of(nutrition.get() * saturationModifier.get() * 2f);
+            if (nutrition <= 0 || saturationModifier <= 0) return 0;
+            return nutrition * saturationModifier * 2f;
         }
 
         @Override
-        public Optional<Float> addedSaturation(ItemStack itemStack) {
+        public float addedSaturation(ItemStack itemStack) {
             ClientPlayer clientPlayer = Laby.labyAPI().minecraft().getClientPlayer();
-            if (clientPlayer == null) return Optional.empty();
+            if (clientPlayer == null) return 0;
 
-            Optional<Integer> foodLevel = nutrition(itemStack);
-            Optional<Float> saturationModifier = saturationModifier(itemStack);
-            if (foodLevel.isEmpty() || saturationModifier.isEmpty()) return Optional.empty();
+            int foodLevel = nutrition(itemStack);
+            float saturationModifier = saturationModifier(itemStack);
+            if (foodLevel <= 0 || saturationModifier <= 0) return 0;
 
             FoodData foodData = clientPlayer.foodData();
 
-            int newFoodLevel = Math.min(foodData.getFoodLevel() + foodLevel.get(), 20);
+            int newFoodLevel = Math.min(foodData.getFoodLevel() + foodLevel, 20);
             float saturationLevel = foodData.getSaturationLevel();
-            float newSaturation = Math.min(saturationLevel + saturationModifier.get(), newFoodLevel);
+            float newSaturation = Math.min(saturationLevel + saturationModifier, newFoodLevel);
 
-            return Optional.of(newSaturation - saturationLevel);
+            return newSaturation - saturationLevel;
         }
 
-        private Optional<Float> saturationModifier(ItemStack itemStack) {
-            Optional<FoodProperties> foodProperties = foodProperties(itemStack);
-            return foodProperties.map(FoodProperties::saturationModifier);
+        private float saturationModifier(ItemStack itemStack) {
+            FoodProperties foodProperties = foodProperties(itemStack);
+            if (foodProperties == null) return 0;
+            return foodProperties.saturationModifier();
         }
 
     }
