@@ -28,10 +28,6 @@ public enum TooltipIcon {
         this.icon = location.icon();
     }
 
-    public void draw(Stack stack, int x, int y, int size) {
-        icon.render(stack, x, y, size);
-    }
-
     public static void drawRow(List<TooltipIcon> icons, Stack stack, int x, int y) {
         int cx = x;
         for (TooltipIcon icon : icons) {
@@ -52,6 +48,10 @@ public enum TooltipIcon {
                 .map(icon -> icon.iconConfig.iconSize() + icon.iconConfig.iconSpacing())
                 .mapToInt(Integer::intValue)
                 .sum();
+    }
+
+    public void draw(Stack stack, int x, int y, int size) {
+        icon.render(stack, x, y, size);
     }
 
 }
