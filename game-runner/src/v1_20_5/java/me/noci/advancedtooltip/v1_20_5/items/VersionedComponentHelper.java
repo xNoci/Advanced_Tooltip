@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 import me.noci.advancedtooltip.core.referenceable.items.ComponentHelper;
 import me.noci.advancedtooltip.core.utils.MapDecoration;
 import me.noci.advancedtooltip.core.utils.SignText;
-import me.noci.advancedtooltip.v1_20_5.components.ComponentUtils;
+import me.noci.advancedtooltip.v1_20_5.components.ComponentRenderRegistry;
 import me.noci.advancedtooltip.v1_20_5.utils.ItemCast;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
@@ -52,7 +52,7 @@ public class VersionedComponentHelper implements ComponentHelper {
     @Override
     public @Nullable String displayItemData(ItemStack labyItemStack, boolean withNbtArrayData) {
         var itemStack = ItemCast.toMinecraftItemStack(labyItemStack);
-        return ComponentUtils.prettyPrint(itemStack);
+        return ComponentRenderRegistry.prettyPrint(itemStack);
     }
 
     @Override
