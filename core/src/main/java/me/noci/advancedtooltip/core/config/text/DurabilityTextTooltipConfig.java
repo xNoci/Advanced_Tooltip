@@ -11,12 +11,6 @@ import net.labymod.api.configuration.settings.annotation.SettingSection;
 
 public class DurabilityTextTooltipConfig extends TextTooltipConfig {
 
-    private static final TextColor DARK_GREEN = TextColor.color(0x00AA00);
-    private static final TextColor GREEN = TextColor.color(0x55FF55);
-    private static final TextColor YELLOW = TextColor.color(0xFFFF55);
-    private static final TextColor RED = TextColor.color(0xFF5555);
-    private static final TextColor DARK_RED = TextColor.color(0xAA0000);
-
     @SettingSection("durabilitySection")
     @DropdownSetting
     @SettingRequires("enabled")
@@ -36,22 +30,29 @@ public class DurabilityTextTooltipConfig extends TextTooltipConfig {
             return textColor();
         }
 
-        if (durabilityPercentage >= 0.75) {
-            return DARK_GREEN;
+        for (DurabilityColor value : DurabilityColor.values()) {
+            if (durabilityPercentage >= value.durability) {
+                return value.color;
+            }
         }
 
-        if (durabilityPercentage >= 0.45) {
-            return GREEN;
-        }
-
-        if (durabilityPercentage >= 0.25) {
-            return YELLOW;
-        }
-
-        if (durabilityPercentage >= 0.15) {
-            return RED;
-        }
-
-        return DARK_RED;
+        return DurabilityColor.DARK_RED.color;
     }
+
+    private enum DurabilityColor {
+        DARK_GREEN(TextColor.color(0x00AA00), 0.75f),
+        GREEN(TextColor.color(0x55FF55), 0.45f),
+        YELLOW(TextColor.color(0xFFFF55), 0.25f),
+        RED(TextColor.color(0xFF5555), 0.15f),
+        DARK_RED(TextColor.color(0xAA0000), 0);
+
+        private final TextColor color;
+        private final float durability;
+
+        DurabilityColor(TextColor color, float durability) {
+            this.color = color;
+            this.durability = durability;
+        }
+    }
+
 }
