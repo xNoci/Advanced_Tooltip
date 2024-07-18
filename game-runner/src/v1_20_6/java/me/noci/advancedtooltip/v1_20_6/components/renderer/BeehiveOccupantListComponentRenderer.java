@@ -4,19 +4,22 @@ import me.noci.advancedtooltip.core.component.ComponentPrinter;
 import me.noci.advancedtooltip.core.component.ComponentRenderer;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BeehiveOccupantListComponentRenderer implements ComponentRenderer<List<BeehiveBlockEntity.Occupant>> {
     @Override
     public ComponentPrinter parse(List<BeehiveBlockEntity.Occupant> occupants) {
-        var bees = occupants.stream().map(occupant -> {
-            var ticksInHiveComponent = ComponentPrinter.value("ticks_in_hive", occupant.ticksInHive());
-            var minTicksInHiveComponent = ComponentPrinter.value("min_ticks_in_hive", occupant.minTicksInHive());
-            var customData = ComponentPrinter.nbt("entity_data", occupant.entityData().copyTag());
+        List<ComponentPrinter> beeComponents = new ArrayList<>();
 
-            return ComponentPrinter.object(ticksInHiveComponent, minTicksInHiveComponent, customData);
-        }).toList();
+        for (BeehiveBlockEntity.Occupant occupant : occupants) {
+            ComponentPrinter ticksInHive = ComponentPrinter.value("ticks_in_hive", occupant.ticksInHive());
+            ComponentPrinter minTicksInHive = ComponentPrinter.value("min_ticks_in_hive", occupant.minTicksInHive());
+            ComponentPrinter customData = ComponentPrinter.nbt("entity_data", occupant.entityData().copyTag());
 
-        return ComponentPrinter.list("bees", bees).handler(ComponentPrinter::print);
+            beeComponents.add(ComponentPrinter.object(ticksInHive, minTicksInHive, customData));
+        }
+
+        return ComponentPrinter.list("bees", beeComponents).handler(ComponentPrinter::print);
     }
 }

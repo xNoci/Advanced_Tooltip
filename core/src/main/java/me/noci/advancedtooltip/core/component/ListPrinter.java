@@ -2,7 +2,6 @@ package me.noci.advancedtooltip.core.component;
 
 import me.noci.advancedtooltip.core.TooltipAddon;
 import net.labymod.api.util.I18n;
-import net.labymod.api.util.Streams;
 
 import java.util.Iterator;
 
@@ -39,8 +38,7 @@ public class ListPrinter<T> implements ListComponentPrinter<T> {
         builder.append(name).append(": [\n");
 
         while (iterator.hasNext()) {
-            T value = iterator.next();
-            indent(builder, 1).append(handler.apply(value));
+            indent(builder, 1).append(handler.apply(iterator.next()));
             if (iterator.hasNext()) builder.append(",");
             builder.append("\n");
         }
@@ -61,7 +59,11 @@ public class ListPrinter<T> implements ListComponentPrinter<T> {
     }
 
     private void updateIndentLevel() {
-        Streams.stream(values).filter(value -> value instanceof ComponentPrinter).forEach(component -> ((ComponentPrinter) component).setIndentLevel(indentLevel + 1));
+        int newIndentLevel = indentLevel + 1;
+        for (T value : values) {
+            if (!(value instanceof ComponentPrinter printer)) continue;
+            printer.setIndentLevel(newIndentLevel);
+        }
     }
 
     @Override

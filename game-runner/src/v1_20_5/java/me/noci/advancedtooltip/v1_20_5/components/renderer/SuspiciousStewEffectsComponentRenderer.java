@@ -8,6 +8,6 @@ public class SuspiciousStewEffectsComponentRenderer implements ComponentRenderer
     @Override
     public ComponentPrinter parse(SuspiciousStewEffects stewEffects) {
         return ComponentPrinter.list("effects", stewEffects.effects())
-                .handler(effect -> "'%s':%s".formatted(effect.effect().getRegisteredName(), effect.duration()));
+                .handler(effect -> "'" + effect.effect().getRegisteredName() + "':" + effect.duration());
     }
 }

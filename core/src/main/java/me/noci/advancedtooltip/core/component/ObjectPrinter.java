@@ -2,23 +2,22 @@ package me.noci.advancedtooltip.core.component;
 
 import me.noci.advancedtooltip.core.TooltipAddon;
 import net.labymod.api.util.I18n;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 public class ObjectPrinter implements ObjectComponentPrinter {
 
-    private final static ListComponentPrinter.ValueHandler<ComponentPrinter> HANDLER = value -> value != null ? value.print() : "NULL";
-
-    private final List<ComponentPrinter> values;
+    private final List<ComponentPrinter> printers;
     private final boolean expandable;
-    @SuppressWarnings("OptionalUsedAsFieldOrParameterType") private final Optional<String> name;
+    @Nullable private final String name;
     private int indentLevel = 0;
     private boolean inline = false;
 
-    protected ObjectPrinter(String name, List<ComponentPrinter> values, boolean expandable) {
-        this.name = Optional.ofNullable(name).map(s -> s.isBlank() ? null : s);
-        this.values = values;
+    protected ObjectPrinter(String name, List<ComponentPrinter> printers, boolean expandable) {
+        this.name = name == null || name.isBlank() ? null : name;
+        this.printers = printers;
         this.expandable = expandable;
         updateIndentLevel();
     }
@@ -26,8 +25,13 @@ public class ObjectPrinter implements ObjectComponentPrinter {
     @Override
     public String print() {
         StringBuilder builder = new StringBuilder();
-        name.ifPresent(s -> builder.append(s).append(": "));
-        if (values.isEmpty()) {
+
+        if (name != null) {
+            builder.append(name).append(": ");
+        }
+
+        Iterator<ComponentPrinter> printers = this.printers.iterator();
+        if (!printers.hasNext()) {
             builder.append("{}");
             return builder.toString();
         }
@@ -41,11 +45,11 @@ public class ObjectPrinter implements ObjectComponentPrinter {
 
         builder.append("{");
         if (!inline) builder.append("\n");
-        for (int i = 0; i < values.size(); i++) {
-            ComponentPrinter value = values.get(i);
+
+        while (printers.hasNext()) {
             if (!inline) indent(builder, 1);
-            builder.append(HANDLER.apply(value));
-            if (i + 1 != values.size()) builder.append(",");
+            builder.append(printers.next().print());
+            if (printers.hasNext()) builder.append(",");
             if (!inline) builder.append("\n");
         }
 
@@ -72,7 +76,10 @@ public class ObjectPrinter implements ObjectComponentPrinter {
     }
 
     private void updateIndentLevel() {
-        values.forEach(component -> component.setIndentLevel(indentLevel + 1));
+        int newIndentLevel = indentLevel + 1;
+        for (ComponentPrinter printer : printers) {
+            printer.setIndentLevel(newIndentLevel);
+        }
     }
 
 }

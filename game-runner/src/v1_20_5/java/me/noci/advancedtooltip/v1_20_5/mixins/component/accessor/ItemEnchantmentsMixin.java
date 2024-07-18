@@ -5,6 +5,7 @@ import me.noci.advancedtooltip.v1_20_5.components.accessor.ItemEnchantmentsAcces
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
+import org.apache.commons.compress.utils.Lists;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,6 +26,12 @@ public class ItemEnchantmentsMixin implements ItemEnchantmentsAccessor {
 
     @Override
     public List<Enchantment> enchantments() {
-        return enchantments.keySet().stream().map(Holder::value).toList();
+        List<Enchantment> output = Lists.newArrayList();
+
+        for (Holder<Enchantment> enchantmentHolder : enchantments.keySet()) {
+            output.add(enchantmentHolder.value());
+        }
+
+        return output;
     }
 }

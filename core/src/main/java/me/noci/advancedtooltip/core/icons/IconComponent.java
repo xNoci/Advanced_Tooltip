@@ -21,13 +21,13 @@ public abstract class IconComponent {
 
     public IconComponent(List<TooltipIcon> icons) {
         this.icons = icons;
-        this.iconSize = TooltipIcon.maximum(icons, IconConfig::iconSize).orElse(IconConfig.DEFAULT_ICON_SIZE);
+        this.iconSize = TooltipIcon.maximum(icons, IconConfig::iconSize, IconConfig.DEFAULT_ICON_SIZE);
         this.width = TooltipIcon.width(icons);
 
-        this.iconPaddingTop = TooltipIcon.maximum(icons, IconConfig::paddingTop).orElse(IconConfig.DEFAULT_PADDING);
-        this.iconPaddingBottom = TooltipIcon.maximum(icons, IconConfig::pattingBottom).orElse(IconConfig.DEFAULT_PADDING);
-        this.iconPaddingLeft = TooltipIcon.maximum(icons, IconConfig::pattingLeft).orElse(IconConfig.DEFAULT_PADDING);
-        this.iconPaddingRight = TooltipIcon.maximum(icons, IconConfig::pattingRight).orElse(IconConfig.DEFAULT_PADDING);
+        this.iconPaddingTop = TooltipIcon.maximum(icons, IconConfig::paddingTop, IconConfig.DEFAULT_PADDING);
+        this.iconPaddingBottom = TooltipIcon.maximum(icons, IconConfig::pattingBottom, IconConfig.DEFAULT_PADDING);
+        this.iconPaddingLeft = TooltipIcon.maximum(icons, IconConfig::pattingLeft, IconConfig.DEFAULT_PADDING);
+        this.iconPaddingRight = TooltipIcon.maximum(icons, IconConfig::pattingRight, IconConfig.DEFAULT_PADDING);
     }
 
     public int getHeight() {

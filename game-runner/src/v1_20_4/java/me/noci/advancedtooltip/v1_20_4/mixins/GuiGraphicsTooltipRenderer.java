@@ -1,5 +1,6 @@
 package me.noci.advancedtooltip.v1_20_4.mixins;
 
+import com.google.common.collect.Lists;
 import me.noci.advancedtooltip.core.TooltipAddon;
 import me.noci.advancedtooltip.v1_20_4.utils.VersionedClientIconComponent;
 import net.minecraft.client.gui.Font;
@@ -12,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Mixin(GuiGraphics.class)
 public class GuiGraphicsTooltipRenderer {
@@ -21,12 +21,18 @@ public class GuiGraphicsTooltipRenderer {
     private List<ClientTooltipComponent> alterComponentList(List<ClientTooltipComponent> original, Font font, List<Component> components) {
         if (!TooltipAddon.enabled()) return original;
 
-        return components.stream().map(component -> {
+        List<ClientTooltipComponent> output = Lists.newArrayList();
+
+        for (Component component : components) {
             if (component instanceof VersionedClientIconComponent iconComponent) {
-                return iconComponent;
+                output.add(iconComponent);
+                continue;
             }
-            return new ClientTextTooltip(component.getVisualOrderText());
-        }).collect(Collectors.toList());
+
+            output.add(new ClientTextTooltip(component.getVisualOrderText()));
+        }
+
+        return output;
     }
 
 }

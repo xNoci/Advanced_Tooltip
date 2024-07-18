@@ -10,7 +10,7 @@ public class StringComponentPrinter implements ComponentPrinter {
 
     @Override
     public String print() {
-        return indent(new StringBuilder()).append(text).toString();
+        return indentString(0) + text;
     }
 
     @Override

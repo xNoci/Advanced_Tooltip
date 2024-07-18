@@ -11,8 +11,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-
 public record CompassLocationTarget(@Nullable ResourceKey<Level> dimension, int x, int y, int z) {
 
     private static final CompassLocationTarget EMPTY = new CompassLocationTarget(null, -1, -1, -1);
@@ -32,12 +30,12 @@ public record CompassLocationTarget(@Nullable ResourceKey<Level> dimension, int 
                 return EMPTY;
             }
 
-            Optional<ResourceKey<Level>> lodestoneDimension = CompassItem.getLodestoneDimension(tag);
-            if (lodestoneDimension.isEmpty() || level.dimension() != lodestoneDimension.get()) {
+            ResourceKey<Level> lodestoneDimension = CompassItem.getLodestoneDimension(tag).orElse(null);
+            if (lodestoneDimension == null || level.dimension() != lodestoneDimension) {
                 return EMPTY;
             }
 
-            dimension = lodestoneDimension.get();
+            dimension = lodestoneDimension;
             location = NbtUtils.readBlockPos(tag.getCompound("LodestonePos"));
         } else {
             if (!level.dimensionType().natural()) return EMPTY;

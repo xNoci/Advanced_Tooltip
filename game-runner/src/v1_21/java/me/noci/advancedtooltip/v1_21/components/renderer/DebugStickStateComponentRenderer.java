@@ -4,16 +4,22 @@ import me.noci.advancedtooltip.core.component.ComponentPrinter;
 import me.noci.advancedtooltip.core.component.ComponentRenderer;
 import net.minecraft.world.item.component.DebugStickState;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DebugStickStateComponentRenderer implements ComponentRenderer<DebugStickState> {
     @Override
     public ComponentPrinter parse(DebugStickState debugStickState) {
-        var entries = debugStickState.properties().entrySet().stream().map(propertyEntry -> {
-            String blockKey = propertyEntry.getKey().getRegisteredName();
-            String propertyName = propertyEntry.getValue().getName();
-            String propertyValues = propertyEntry.getValue().getPossibleValues().toString();
-            return ComponentPrinter.text("'%s'=%s %s".formatted(blockKey, propertyName, propertyValues));
-        }).toList();
+        List<ComponentPrinter> propertyComponents = new ArrayList<>();
 
-        return ComponentPrinter.expandableObject(entries);
+        for (var entry : debugStickState.properties().entrySet()) {
+            String blockKey = entry.getKey().getRegisteredName();
+            String propertyName = entry.getValue().getName();
+            String propertyValues = entry.getValue().getPossibleValues().toString();
+
+            propertyComponents.add(ComponentPrinter.text("'" + blockKey + "'=" + propertyName + " " + propertyValues));
+        }
+
+        return ComponentPrinter.expandableObject(propertyComponents);
     }
 }

@@ -5,20 +5,28 @@ import me.noci.advancedtooltip.core.component.ComponentRenderer;
 import me.noci.advancedtooltip.v1_20_5.utils.PotionEffectUtils;
 import net.minecraft.world.food.FoodProperties;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FoodPropertiesComponentRenderer implements ComponentRenderer<FoodProperties> {
     @Override
     public ComponentPrinter parse(FoodProperties foodProperties) {
-        var effectComponents = foodProperties.effects().stream().map(possibleEffect -> ComponentPrinter.expandableObject(
-                ComponentPrinter.value("effect", PotionEffectUtils.asString(possibleEffect.effect())),
-                ComponentPrinter.value("probability", possibleEffect.probability())
-        )).toList();
+        List<ComponentPrinter> effects = new ArrayList<>();
+
+        for (FoodProperties.PossibleEffect possibleEffect : foodProperties.effects()) {
+
+            ComponentPrinter effect = ComponentPrinter.value("effect", PotionEffectUtils.asString(possibleEffect.effect()));
+            ComponentPrinter probability = ComponentPrinter.value("probability", possibleEffect.probability());
+
+            effects.add(ComponentPrinter.expandableObject(effect, probability));
+        }
 
         return ComponentPrinter.object(
                 ComponentPrinter.value("nutrition", foodProperties.nutrition()),
                 ComponentPrinter.value("saturation", foodProperties.saturation()),
                 ComponentPrinter.value("can_always_eat", foodProperties.canAlwaysEat()),
                 ComponentPrinter.value("eat_seconds", foodProperties.eatSeconds()),
-                ComponentPrinter.expandableList("effects", effectComponents).handler(ComponentPrinter::print)
+                ComponentPrinter.expandableList("effects", effects).handler(ComponentPrinter::print)
         );
     }
 }

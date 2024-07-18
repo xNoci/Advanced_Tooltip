@@ -4,26 +4,32 @@ import me.noci.advancedtooltip.core.component.ComponentPrinter;
 import me.noci.advancedtooltip.core.component.ComponentRenderer;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ItemAttributeModifiersComponentRenderer implements ComponentRenderer<ItemAttributeModifiers> {
     @Override
-    public ComponentPrinter parse(ItemAttributeModifiers modifiers) {
-        var showInTooltipComponent = ComponentPrinter.value("show_in_tooltip", modifiers.showInTooltip());
-        var modifierObjects = modifiers.modifiers().stream().map(entry -> {
-            var attributeKeyComponent = ComponentPrinter.value("attribute", entry.attribute().getRegisteredName());
-            var equipmentSlotComponent = ComponentPrinter.value("equipment_slot", entry.slot().getSerializedName());
+    public ComponentPrinter parse(ItemAttributeModifiers attributeModifiers) {
+        ComponentPrinter showInTooltip = ComponentPrinter.value("show_in_tooltip", attributeModifiers.showInTooltip());
 
-            var attributeModifierComponent = ComponentPrinter.object("attribute_modifier",
-                    ComponentPrinter.value("amount", entry.modifier().amount()),
-                    ComponentPrinter.value("operation", entry.modifier().operation().getSerializedName()),
-                    ComponentPrinter.value("id", entry.modifier().id().toString())
+        List<ComponentPrinter> modifierEntries = new ArrayList<>();
+
+        for (ItemAttributeModifiers.Entry modifier : attributeModifiers.modifiers()) {
+            ComponentPrinter attributeKey = ComponentPrinter.value("attribute", modifier.attribute().getRegisteredName());
+            ComponentPrinter equipmentSlot = ComponentPrinter.value("equipment_slot", modifier.slot().getSerializedName());
+
+            ComponentPrinter attributeModifier = ComponentPrinter.object("attribute_modifier",
+                    ComponentPrinter.value("amount", modifier.modifier().amount()),
+                    ComponentPrinter.value("operation", modifier.modifier().operation().getSerializedName()),
+                    ComponentPrinter.value("id", modifier.modifier().id().toString())
             );
 
-            return ComponentPrinter.object(attributeKeyComponent, equipmentSlotComponent, attributeModifierComponent);
-        }).toList();
+            modifierEntries.add(ComponentPrinter.object(attributeKey, equipmentSlot, attributeModifier));
+        }
 
-        boolean hasModifiers = !modifiers.modifiers().isEmpty();
-        var modifierListComponent = ComponentPrinter.expandableList("modifiers", modifierObjects).handler(ComponentPrinter::print);
+        boolean hasModifiers = !attributeModifiers.modifiers().isEmpty();
+        ComponentPrinter modifiers = ComponentPrinter.expandableList("modifiers", modifierEntries).handler(ComponentPrinter::print);
 
-        return ComponentPrinter.object(showInTooltipComponent, modifierListComponent).inline(!hasModifiers);
+        return ComponentPrinter.object(showInTooltip, modifiers).inline(!hasModifiers);
     }
 }

@@ -2,9 +2,8 @@ package me.noci.advancedtooltip.core.component;
 
 import me.noci.advancedtooltip.core.TooltipAddon;
 import net.labymod.api.util.I18n;
-import net.labymod.api.util.collection.Lists;
 
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 
 public class MapPrinter<K, V> implements MapComponentPrinter<K, V> {
@@ -26,8 +25,8 @@ public class MapPrinter<K, V> implements MapComponentPrinter<K, V> {
 
     @Override
     public String print() {
-        List<Map.Entry<K, V>> entries = Lists.newArrayList(map.entrySet());
-        if (entries.isEmpty()) {
+        Iterator<Map.Entry<K, V>> entries = map.entrySet().iterator();
+        if (!entries.hasNext()) {
             return name + ": {}";
         }
 
@@ -40,14 +39,13 @@ public class MapPrinter<K, V> implements MapComponentPrinter<K, V> {
         StringBuilder builder = new StringBuilder();
         builder.append(name).append(": {\n");
 
-        for (int i = 0; i < entries.size(); i++) {
-            var entry = entries.get(i);
-
+        while (entries.hasNext()) {
+            var entry = entries.next();
             ComponentPrinter value = valueHandler.apply(entry.getValue());
             value.setIndentLevel(indentLevel + 1);
 
             indent(builder, 1).append("'").append(keyHandler.apply(entry.getKey())).append("': ").append(value.print());
-            if (i + 1 != entries.size()) builder.append(",");
+            if (entries.hasNext()) builder.append(",");
             builder.append("\n");
         }
 

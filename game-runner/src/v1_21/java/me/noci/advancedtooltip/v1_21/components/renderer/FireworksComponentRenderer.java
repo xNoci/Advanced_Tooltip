@@ -3,24 +3,30 @@ package me.noci.advancedtooltip.v1_21.components.renderer;
 import me.noci.advancedtooltip.core.component.ComponentPrinter;
 import me.noci.advancedtooltip.core.component.ComponentRenderer;
 import me.noci.advancedtooltip.core.utils.StringUtils;
+import net.minecraft.world.item.component.FireworkExplosion;
 import net.minecraft.world.item.component.Fireworks;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FireworksComponentRenderer implements ComponentRenderer<Fireworks> {
     @Override
     public ComponentPrinter parse(Fireworks fireworks) {
-        var flightDurationComponent = ComponentPrinter.value("flight_duration", fireworks.flightDuration());
+        ComponentPrinter flightDuration = ComponentPrinter.value("flight_duration", fireworks.flightDuration());
 
-        var explosionsObjectComponentList = fireworks.explosions().stream().map(explosion -> {
-                    var shapeComponent = ComponentPrinter.value("shape", explosion.shape().name());
-                    var colorsListComponent = ComponentPrinter.list("colors", explosion.colors()).handler(StringUtils::toHexString);
-                    var fadeColorsListComponent = ComponentPrinter.list("fade_colors", explosion.fadeColors()).handler(StringUtils::toHexString);
-                    var hasTrailComponent = ComponentPrinter.value("has_trail", explosion.hasTrail());
-                    var hasTwinkleComponent = ComponentPrinter.value("has_twinkle", explosion.hasTwinkle());
-                    return ComponentPrinter.object(shapeComponent, colorsListComponent, fadeColorsListComponent, hasTrailComponent, hasTwinkleComponent);
-                }
-        ).toList();
+        List<ComponentPrinter> explosions = new ArrayList<>();
 
-        var explosionsListComponent = ComponentPrinter.expandableList("explosions", explosionsObjectComponentList).handler(ComponentPrinter::print);
-        return ComponentPrinter.object(flightDurationComponent, explosionsListComponent);
+        for (FireworkExplosion explosion : fireworks.explosions()) {
+            ComponentPrinter shape = ComponentPrinter.value("shape", explosion.shape().name());
+            ComponentPrinter colors = ComponentPrinter.list("colors", explosion.colors()).handler(StringUtils::toHexString);
+            ComponentPrinter fadeColors = ComponentPrinter.list("fade_colors", explosion.fadeColors()).handler(StringUtils::toHexString);
+            ComponentPrinter hasTrail = ComponentPrinter.value("has_trail", explosion.hasTrail());
+            ComponentPrinter hasTwinkle = ComponentPrinter.value("has_twinkle", explosion.hasTwinkle());
+
+            explosions.add(ComponentPrinter.object(shape, colors, fadeColors, hasTrail, hasTwinkle));
+        }
+
+        ComponentPrinter explosionList = ComponentPrinter.expandableList("explosions", explosions).handler(ComponentPrinter::print);
+        return ComponentPrinter.object(flightDuration, explosionList);
     }
 }

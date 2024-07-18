@@ -1,5 +1,6 @@
 package me.noci.advancedtooltip.v1_20_6.items;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -15,6 +16,7 @@ import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.MapDecorations;
@@ -65,13 +67,14 @@ public class VersionedComponentHelper implements ComponentHelper {
     public @Nullable List<MapDecoration> mapDecorations(ItemStack itemStack) {
         MapDecorations decorations = ItemCast.typedDataComponent(itemStack, DataComponents.MAP_DECORATIONS);
         if (decorations == null) return null;
-        return decorations.decorations().values().stream()
-                .map(decoration -> {
-                    var type = MapDecoration.Type.byResourceLocation(resourceLocation -> decoration.type().is((ResourceLocation) resourceLocation.getMinecraftLocation()));
-                    var x = decoration.x();
-                    var z = decoration.z();
-                    return new MapDecoration(type, x, z);
-                }).toList();
+        List<MapDecoration> mapDecorations = Lists.newArrayList();
+
+        for (MapDecorations.Entry value : decorations.decorations().values()) {
+            var type = MapDecoration.Type.byResourceLocation(resourceLocation -> value.type().is((ResourceLocation) resourceLocation.getMinecraftLocation()));
+            mapDecorations.add(new MapDecoration(type, value.x(), value.z()));
+        }
+
+        return mapDecorations;
     }
 
     @Override
@@ -96,17 +99,23 @@ public class VersionedComponentHelper implements ComponentHelper {
         if (compoundTag.contains("front_text")) {
             CompoundTag frontTextCompound = compoundTag.getCompound("front_text");
             ListTag lines = frontTextCompound.getList("messages", ListTag.TAG_STRING);
-            frontText = lines.stream()
-                    .map(tag -> GSON.fromJson(tag.getAsString(), JsonObject.class).get("text").getAsString())
-                    .toArray(String[]::new);
+            frontText = new String[lines.size()];
+
+            for (int i = 0; i < lines.size(); i++) {
+                Tag tag = lines.get(i);
+                frontText[i] = GSON.fromJson(tag.getAsString(), JsonObject.class).get("text").getAsString();
+            }
         }
 
         if (compoundTag.contains("back_text")) {
             CompoundTag frontTextCompound = compoundTag.getCompound("back_text");
             ListTag lines = frontTextCompound.getList("messages", ListTag.TAG_STRING);
-            backText = lines.stream()
-                    .map(tag -> GSON.fromJson(tag.getAsString(), JsonObject.class).get("text").getAsString())
-                    .toArray(String[]::new);
+            backText = new String[lines.size()];
+
+            for (int i = 0; i < lines.size(); i++) {
+                Tag tag = lines.get(i);
+                backText[i] = GSON.fromJson(tag.getAsString(), JsonObject.class).get("text").getAsString();
+            }
         }
 
         return new SignText(frontText, backText);

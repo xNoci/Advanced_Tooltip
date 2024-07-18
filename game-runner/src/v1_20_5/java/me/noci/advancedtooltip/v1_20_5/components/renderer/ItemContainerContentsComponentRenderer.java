@@ -7,17 +7,23 @@ import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.component.ItemContainerContents;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ItemContainerContentsComponentRenderer implements ComponentRenderer<ItemContainerContents> {
     @Override
     public ComponentPrinter parse(ItemContainerContents value) {
         ItemContainerContentsAccessor accessor = cast(value);
 
-        var slots = accessor.slots().stream()
-                .map(slot -> {
-                    String slotIndex = Integer.toString(slot.index());
-                    String itemKey = Util.getRegisteredName(BuiltInRegistries.ITEM, slot.item().getItem());
-                    return ComponentPrinter.value(slotIndex, "'%s':%s".formatted(itemKey, slot.item().getCount()));
-                }).toList();
+        List<ComponentPrinter> slots = new ArrayList<>();
+
+        for (ItemContainerContentsAccessor.Slot slot : accessor.slots()) {
+            String slotIndex = Integer.toString(slot.index());
+            String itemKey = Util.getRegisteredName(BuiltInRegistries.ITEM, slot.item().getItem());
+
+            slots.add(ComponentPrinter.value(slotIndex, "'" + itemKey + "':" + slot.item().getCount()));
+        }
+
         return ComponentPrinter.expandableObject("slots", slots);
     }
 

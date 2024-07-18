@@ -7,11 +7,10 @@ import me.noci.advancedtooltip.core.referenceable.items.FoodItems;
 import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.util.collection.Lists;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValidator itemValidator,
                         ShowFunction showFunction, LevelFunction levelFunction) {
@@ -29,10 +28,13 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValida
         TooltipConfiguration config = addon.configuration();
         if (config.displayComponent().displayItemData()) return new ArrayList<>();
 
-        List<T> iconComponents = iconQueries.stream()
-                .map(iconQuery -> iconQuery.itemIcons(itemStack, mapper))
-                .flatMap(Optional::stream)
-                .collect(Collectors.toCollection(ArrayList::new));
+        List<T> iconComponents = Lists.newArrayList();
+
+        for (IconQuery iconQuery : iconQueries) {
+            T icon = iconQuery.itemIcons(itemStack, mapper);
+            if (icon == null) continue;
+            iconComponents.add(icon);
+        }
 
         if (!iconComponents.isEmpty()) {
             iconComponents.getFirst().setFirstComponent();
@@ -42,12 +44,12 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValida
         return iconComponents;
     }
 
-    private <T extends IconComponent> Optional<T> itemIcons(ItemStack itemStack, VersionedIconComponentMapper<T> mapper) {
+    private <T extends IconComponent> @Nullable T itemIcons(ItemStack itemStack, VersionedIconComponentMapper<T> mapper) {
         TooltipConfiguration config = TooltipAddon.get().configuration();
         FoodItems foodItems = TooltipAddon.foodItems();
         ItemHelper itemHelper = TooltipAddon.itemHelper();
 
-        if (!itemValidator.isValid(itemHelper, itemStack) || !showFunction.shouldShow(config)) return Optional.empty();
+        if (!itemValidator.isValid(itemHelper, itemStack) || !showFunction.shouldShow(config)) return null;
 
         List<TooltipIcon> itemIcons = Lists.newArrayList();
         float level = Math.max(0, levelFunction.get(config, foodItems, itemHelper, itemStack));
@@ -60,10 +62,9 @@ public record IconQuery(TooltipIcon full_icon, TooltipIcon half_icon, ItemValida
             itemIcons.add(half_icon);
         }
 
-        if (itemIcons.isEmpty()) return Optional.empty();
+        if (itemIcons.isEmpty()) return null;
 
-        T versionIconComponent = mapper.apply(itemIcons);
-        return Optional.of(versionIconComponent);
+        return mapper.apply(itemIcons);
     }
 
     @FunctionalInterface

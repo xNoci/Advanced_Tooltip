@@ -4,7 +4,6 @@ import lombok.Getter;
 import net.labymod.api.Laby;
 import net.labymod.api.client.resources.ResourceLocation;
 
-import java.util.Arrays;
 import java.util.function.Predicate;
 
 public record MapDecoration(Type type, double x, double z) {
@@ -68,17 +67,19 @@ public record MapDecoration(Type type, double x, double z) {
         }
 
         public static Type byType(int type) {
-            return Arrays.stream(values())
-                    .filter(decorationType -> decorationType.id == type)
-                    .findFirst()
-                    .orElse(UNKNOWN);
+            for (Type value : values()) {
+                if (value.id == type) return value;
+            }
+
+            return UNKNOWN;
         }
 
         public static Type byResourceLocation(Predicate<ResourceLocation> resourceLocation) {
-            return Arrays.stream(values())
-                    .filter(decorationType -> resourceLocation.test(decorationType.resourceLocation))
-                    .findFirst()
-                    .orElse(UNKNOWN);
+            for (Type value : values()) {
+                if (resourceLocation.test(value.resourceLocation)) return value;
+            }
+
+            return UNKNOWN;
         }
 
     }
