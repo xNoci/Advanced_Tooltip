@@ -2,7 +2,7 @@ package me.noci.advancedtooltip.v1_17_1.items;
 
 import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
 import me.noci.advancedtooltip.core.utils.CompassTarget;
-import me.noci.advancedtooltip.v1_16_5.utils.CompassLocationTarget;
+import me.noci.advancedtooltip.v1_17_1.utils.CompassLocationTarget;
 import me.noci.advancedtooltip.v1_17_1.utils.ItemCast;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
