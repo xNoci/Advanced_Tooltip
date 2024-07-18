@@ -63,6 +63,7 @@ public interface ComponentPrinter {
         return new MapPrinter<>(name, map, true);
     }
 
+    //TODO Add overload list(String name, Iterable<T> values, ValueHandler<T> handler)
     static <T> ListComponentPrinter<T> list(String name, Iterable<T> values) {
         return new ListPrinter<>(name, values, false);
     }
