@@ -15,7 +15,6 @@ import net.labymod.api.models.addon.annotation.AddonMain;
 import net.labymod.api.revision.SimpleRevision;
 import net.labymod.api.util.version.SemanticVersion;
 
-import java.util.Optional;
 import java.util.function.Consumer;
 
 @AddonMain
@@ -61,7 +60,7 @@ public class TooltipAddon extends LabyAddon<TooltipConfiguration> {
     }
 
     private static <T> void versionedReference(T reference, Consumer<T> setter) {
-        Optional.ofNullable(reference).ifPresent(setter);
+        if (reference != null) setter.accept(reference);
     }
 
     //TODO View Components separate and cycle through them (2.0)

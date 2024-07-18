@@ -110,14 +110,12 @@ public class ItemStackTooltipListener {
 
             if (decorations != null) {
                 TextColor color = mapDecoration.textColor();
-                decorations.stream()
-                        .filter(decoration -> decoration.type().showInTooltip())
-                        .forEach(mapLocation -> {
-                            String translationKey = mapLocation.type().translationKey();
-                            double x = mapLocation.x();
-                            double z = mapLocation.z();
-                            renderer.render(color, translationKey, x, z);
-                        });
+
+                for (MapDecoration decoration : decorations) {
+                    if (!decoration.type().showInTooltip()) continue;
+                    String translationKey = decoration.type().translationKey();
+                    renderer.render(color, translationKey, decoration.x(), decoration.z());
+                }
             }
 
         }

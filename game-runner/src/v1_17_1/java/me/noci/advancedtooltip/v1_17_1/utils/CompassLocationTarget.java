@@ -1,4 +1,4 @@
-package me.noci.advancedtooltip.v1_16_5.utils;
+package me.noci.advancedtooltip.v1_17_1.utils;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -10,8 +10,6 @@ import net.minecraft.world.item.CompassItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 public record CompassLocationTarget(@Nullable ResourceKey<Level> dimension, int x, int y, int z) {
 
@@ -32,12 +30,12 @@ public record CompassLocationTarget(@Nullable ResourceKey<Level> dimension, int 
                 return EMPTY;
             }
 
-            Optional<ResourceKey<Level>> lodestoneDimension = CompassItem.getLodestoneDimension(tag);
-            if (lodestoneDimension.isEmpty() || level.dimension() != lodestoneDimension.get()) {
+            ResourceKey<Level> lodestoneDimension = CompassItem.getLodestoneDimension(tag).orElse(null);
+            if (lodestoneDimension == null || level.dimension() != lodestoneDimension) {
                 return EMPTY;
             }
 
-            dimension = lodestoneDimension.get();
+            dimension = lodestoneDimension;
             location = NbtUtils.readBlockPos(tag.getCompound("LodestonePos"));
         } else {
             if (!level.dimensionType().natural()) return EMPTY;

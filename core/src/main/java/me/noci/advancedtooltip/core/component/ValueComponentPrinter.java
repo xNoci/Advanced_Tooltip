@@ -12,7 +12,7 @@ public class ValueComponentPrinter<T> implements ComponentPrinter {
 
     @Override
     public String print() {
-        return indent(new StringBuilder()).append(name).append("=").append(value).toString();
+        return indentString(0) + name + "=" + value;
     }
 
     @Override

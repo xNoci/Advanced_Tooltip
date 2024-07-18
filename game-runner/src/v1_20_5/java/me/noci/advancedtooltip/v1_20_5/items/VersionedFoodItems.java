@@ -1,5 +1,6 @@
 package me.noci.advancedtooltip.v1_20_5.items;
 
+import com.google.common.collect.Lists;
 import me.noci.advancedtooltip.core.referenceable.items.FoodItems;
 import me.noci.advancedtooltip.v1_20_5.utils.ItemCast;
 import net.labymod.api.client.world.effect.PotionEffect;
@@ -21,10 +22,14 @@ public class VersionedFoodItems extends FoodItems.DefaultFoodItems {
     public @Nullable List<PotionEffect> stewEffect(ItemStack itemStack) {
         SuspiciousStewEffects stewEffects = ItemCast.typedDataComponent(itemStack, DataComponents.SUSPICIOUS_STEW_EFFECTS);
         if (stewEffects == null) return null;
-        return stewEffects.effects()
-                .stream()
-                .map(entry -> (PotionEffect) new MobEffectInstance(entry.effect(), entry.duration()))
-                .toList();
+
+        List<PotionEffect> effects = Lists.newArrayList();
+
+        for (SuspiciousStewEffects.Entry effect : stewEffects.effects()) {
+            effects.add((PotionEffect) new MobEffectInstance(effect.effect(), effect.duration()));
+        }
+
+        return effects;
     }
 
     @Override

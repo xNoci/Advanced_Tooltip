@@ -16,7 +16,6 @@ public class ItemContainerContentsMixin implements ItemContainerContentsAccessor
 
     @Final @Shadow private NonNullList<ItemStack> items;
 
-
     @Override
     public List<Slot> slots() {
         List<Slot> slots = Lists.newArrayList();

@@ -3,19 +3,18 @@ package me.noci.advancedtooltip.core.component;
 import me.noci.advancedtooltip.core.TooltipAddon;
 import me.noci.advancedtooltip.core.referenceable.items.ComponentHelper;
 import net.labymod.api.util.I18n;
-
-import java.util.Optional;
+import org.jetbrains.annotations.Nullable;
 
 public class NbtPrinter implements ComponentPrinter {
 
     private static final StringBuilder FALLBACK_BUILDER = new StringBuilder("{}");
 
     private final Object compoundTag;
-    @SuppressWarnings("OptionalUsedAsFieldOrParameterType") private final Optional<String> name;
+    @Nullable private final String name;
     private int indentLevel = 0;
 
     protected NbtPrinter(String name, Object compoundTag) {
-        this.name = Optional.ofNullable(name).map(s -> s.isBlank() ? null : s);
+        this.name = name == null || name.isBlank() ? null : name;
         this.compoundTag = compoundTag;
     }
 
@@ -25,7 +24,10 @@ public class NbtPrinter implements ComponentPrinter {
         var settings = TooltipAddon.get().configuration().displayComponent();
         StringBuilder builder = new StringBuilder();
 
-        name.ifPresent(s -> builder.append(s).append(": "));
+        if (name != null) {
+            builder.append(name).append(": ");
+        }
+
         if (helper.isEmptyCompound(compoundTag)) {
             return builder.append("{}").toString();
         }

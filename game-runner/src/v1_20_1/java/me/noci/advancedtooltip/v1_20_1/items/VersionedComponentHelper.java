@@ -1,5 +1,6 @@
 package me.noci.advancedtooltip.v1_20_1.items;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -12,6 +13,7 @@ import net.labymod.api.models.Implements;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
 import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Singleton;
@@ -46,13 +48,17 @@ public class VersionedComponentHelper extends ComponentHelper.DefaultComponentHe
         ListTag decorationsListTag = tag.getList("Decorations", ListTag.TAG_COMPOUND);
         if (decorationsListTag.isEmpty()) return null;
 
-        return decorationsListTag.stream().map(t -> {
-            var compound = (CompoundTag) t;
+        List<MapDecoration> decorations = Lists.newArrayList();
+
+        for (Tag listTag : decorationsListTag) {
+            var compound = (CompoundTag) listTag;
             var type = MapDecoration.Type.byType(compound.getByte("type"));
             var x = compound.getDouble("x");
             var y = compound.getDouble("y");
-            return new MapDecoration(type, x, y);
-        }).toList();
+            decorations.add(new MapDecoration(type, x, y));
+        }
+
+        return decorations;
     }
 
     @Override
@@ -72,17 +78,23 @@ public class VersionedComponentHelper extends ComponentHelper.DefaultComponentHe
         if (blockEntityTag.contains("front_text")) {
             CompoundTag frontTextCompound = blockEntityTag.getCompound("front_text");
             ListTag lines = frontTextCompound.getList("messages", ListTag.TAG_STRING);
-            frontText = lines.stream()
-                    .map(tag -> GSON.fromJson(tag.getAsString(), JsonObject.class).get("text").getAsString())
-                    .toArray(String[]::new);
+            frontText = new String[lines.size()];
+
+            for (int i = 0; i < lines.size(); i++) {
+                Tag tag = lines.get(i);
+                frontText[i] = GSON.fromJson(tag.getAsString(), JsonObject.class).get("text").getAsString();
+            }
         }
 
         if (blockEntityTag.contains("back_text")) {
             CompoundTag frontTextCompound = blockEntityTag.getCompound("back_text");
             ListTag lines = frontTextCompound.getList("messages", ListTag.TAG_STRING);
-            backText = lines.stream()
-                    .map(tag -> GSON.fromJson(tag.getAsString(), JsonObject.class).get("text").getAsString())
-                    .toArray(String[]::new);
+            backText = new String[lines.size()];
+
+            for (int i = 0; i < lines.size(); i++) {
+                Tag tag = lines.get(i);
+                backText[i] = GSON.fromJson(tag.getAsString(), JsonObject.class).get("text").getAsString();
+            }
         }
 
         return new SignText(frontText, backText);

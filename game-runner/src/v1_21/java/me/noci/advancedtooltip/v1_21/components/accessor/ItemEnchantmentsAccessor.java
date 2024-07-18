@@ -6,18 +6,21 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ItemEnchantmentsAccessor {
     boolean isShownInTooltip();
 
-    List<Holder<Enchantment>> enchantments();
+    Set<Holder<Enchantment>> enchantments();
 
     default int getLevel(ItemStack itemStack, ResourceKey<Enchantment> enchantmentResourceKey) {
-        return enchantments().stream()
-                .filter(enchantmentHolder -> enchantmentHolder.is(enchantmentResourceKey))
-                .findFirst()
-                .map(enchantmentHolder -> itemStack.getEnchantments().getLevel(enchantmentHolder))
-                .orElse(0);
+
+        for (Holder<Enchantment> enchantment : enchantments()) {
+            if (!enchantment.is(enchantmentResourceKey)) continue;
+            return itemStack.getEnchantments().getLevel(enchantment);
+        }
+
+        return 0;
     }
 
 }

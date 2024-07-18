@@ -1,5 +1,6 @@
 package me.noci.advancedtooltip.v1_16_5.items;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -12,6 +13,7 @@ import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Singleton;
@@ -45,13 +47,17 @@ public class VersionedComponentHelper extends ComponentHelper.DefaultComponentHe
         ListTag decorationsListTag = tag.getList("Decorations", 10 /*TAG_COMPOUND*/);
         if (decorationsListTag.isEmpty()) return null;
 
-        return decorationsListTag.stream().map(t -> {
-            var compound = (CompoundTag) t;
+        List<MapDecoration> decorations = Lists.newArrayList();
+
+        for (Tag listTag : decorationsListTag) {
+            var compound = (CompoundTag) listTag;
             var type = MapDecoration.Type.byType(compound.getByte("type"));
             var x = compound.getDouble("x");
             var y = compound.getDouble("y");
-            return new MapDecoration(type, x, y);
-        }).toList();
+            decorations.add(new MapDecoration(type, x, y));
+        }
+
+        return decorations;
     }
 
     @Override

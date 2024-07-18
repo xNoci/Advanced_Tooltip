@@ -1,5 +1,6 @@
 package me.noci.advancedtooltip.v1_19_4.mixins;
 
+import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.PoseStack;
 import me.noci.advancedtooltip.core.TooltipAddon;
 import me.noci.advancedtooltip.core.icons.IconQuery;
@@ -17,7 +18,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Mixin(Screen.class)
@@ -39,12 +39,18 @@ public abstract class ScreenTooltipRenderer {
     private List<ClientTooltipComponent> alterComponentList(List<ClientTooltipComponent> original, PoseStack poseStack, List<Component> components) {
         if (!TooltipAddon.enabled()) return original;
 
-        return components.stream().map(component -> {
+        List<ClientTooltipComponent> output = Lists.newArrayList();
+
+        for (Component component : components) {
             if (component instanceof VersionedClientIconComponent iconComponent) {
-                return iconComponent;
+                output.add(iconComponent);
+                continue;
             }
-            return new ClientTextTooltip(component.getVisualOrderText());
-        }).collect(Collectors.toList());
+
+            output.add(new ClientTextTooltip(component.getVisualOrderText()));
+        }
+
+        return output;
     }
 
 }
