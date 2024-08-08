@@ -18,7 +18,7 @@ import net.labymod.api.util.Color;
 @ConfigName("settings")
 public class TooltipConfiguration extends AddonConfig {
 
-    public static final String LATEST_SUPPORTED_VERSION = "1.21";
+    public static final String LATEST_SUPPORTED_VERSION = "1.21.1";
 
     @SwitchSetting
     private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
