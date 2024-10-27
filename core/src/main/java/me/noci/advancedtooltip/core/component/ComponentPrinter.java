@@ -84,6 +84,10 @@ public interface ComponentPrinter {
         return ComponentPrinter.component(component, UnsupportedComponentPrinter.PRINTER);
     }
 
+    static ComponentPrinter unsupported() {
+        return UnsupportedComponentPrinter.PRINTER;
+    }
+
     static String print(List<ComponentPrinter> components) {
         int componentCount = components.size();
         String name = I18n.translate("advancedtooltip.components.count", componentCount);
