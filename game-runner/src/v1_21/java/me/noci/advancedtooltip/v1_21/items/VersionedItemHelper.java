@@ -2,13 +2,13 @@ package me.noci.advancedtooltip.v1_21.items;
 
 import me.noci.advancedtooltip.core.referenceable.items.ItemHelper;
 import me.noci.advancedtooltip.core.utils.CompassTarget;
-import me.noci.advancedtooltip.v1_21.components.accessor.ItemEnchantmentsAccessor;
 import me.noci.advancedtooltip.v1_21.utils.ItemCast;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.models.Implements;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.LodestoneTracker;
@@ -60,9 +60,11 @@ public class VersionedItemHelper implements ItemHelper {
         if (tieredItem == null) return 0;
         float speed = tieredItem.getTier().getSpeed();
 
-        if (applyEnchantments) {
+        var level = Minecraft.getInstance().level;
+        if (applyEnchantments && level != null) {
             var itemStack = ItemCast.toMinecraftItemStack(labyItemStack);
-            int efficiency = ((ItemEnchantmentsAccessor) itemStack.getEnchantments()).getLevel(itemStack, Enchantments.EFFICIENCY);
+            var enchantmentHolder = level.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.EFFICIENCY);
+            int efficiency = itemStack.getEnchantments().getLevel(enchantmentHolder);
             int modifier = efficiency > 0 ? efficiency * efficiency + 1 : 0;
             speed += modifier;
         }

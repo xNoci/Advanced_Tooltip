@@ -1,5 +1,6 @@
 package me.noci.advancedtooltip.v1_21_1.mixins;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import me.noci.advancedtooltip.core.TooltipAddon;
 import me.noci.advancedtooltip.core.icons.IconQuery;
 import me.noci.advancedtooltip.v1_21_1.utils.ItemCast;
@@ -34,10 +35,9 @@ public abstract class MixinAbstractContainerScreen extends Screen {
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/gui/GuiGraphics;renderTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"
             ),
-            locals = LocalCapture.CAPTURE_FAILHARD,
             cancellable = true
     )
-    private void injectIcons(GuiGraphics graphics, int x, int y, CallbackInfo ci, ItemStack itemStack) {
+    private void injectIcons(GuiGraphics graphics, int x, int y, CallbackInfo ci, @Local ItemStack itemStack) {
         if (!TooltipAddon.enabled()) {
             return;
         }
