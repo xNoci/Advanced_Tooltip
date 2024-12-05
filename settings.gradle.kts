@@ -1,7 +1,7 @@
 rootProject.name = "advancedtooltip"
 
 pluginManagement {
-    val labyGradlePluginVersion = "0.5.6"
+    val labyGradlePluginVersion = "0.5.7"
 
     buildscript {
         repositories {
