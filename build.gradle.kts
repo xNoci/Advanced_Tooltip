@@ -6,7 +6,7 @@ plugins {
 val versions = providers.gradleProperty("net.labymod.minecraft-versions").get().split(";")
 
 group = "me.noci"
-version = providers.environmentVariable("VERSION").getOrElse("1.8.4")
+version = providers.environmentVariable("VERSION").getOrElse("1.8.5")
 
 labyMod {
     defaultPackageName = "me.noci.advancedtooltip"
